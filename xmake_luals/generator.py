@@ -55,18 +55,35 @@ class LuaLSGenerator:
         )
         desc_doc = f"---{fn.description}\n---\n" if fn.description else ""
 
+        # Issue 1: Ensure function arguments strictly contain clean identifiers (no '?')
+        clean_fn_args = [arg.rstrip("?").strip() for arg in fn.fn_args]
+
         params_doc = ""
         for p in fn.params:
+            clean_name = p.clean_name
+
+            # Issue 2: Guarantee no unused @param warning in LuaLS:
+            # Only emit @param if parameter exists in function signature or is '...'
+            if clean_name not in clean_fn_args and clean_name != "...":
+                continue
+
+            # Issue 1: '?' is placed in the @param tag, NOT in the function argument
+            param_tag = (
+                f"{clean_name}?"
+                if p.is_optional and clean_name != "..."
+                else clean_name
+            )
+            clean_type = p.type_name.rstrip("?")
             params_doc += (
-                f"---@param {p.name} {p.type_name} {p.description}".rstrip() + "\n"
+                f"---@param {param_tag} {clean_type} {p.description}".rstrip() + "\n"
             )
 
         if is_instance and class_name:
             m_name = fn.api_id.split(":")[-1]
-            func_sig = f"{class_name}:{m_name}({', '.join(fn.fn_args)})"
+            func_sig = f"{class_name}:{m_name}({', '.join(clean_fn_args)})"
         else:
             func_name = fn.api_id.split(":")[-1] if ":" in fn.api_id else fn.api_id
-            func_sig = f"{func_name}({', '.join(fn.fn_args)})"
+            func_sig = f"{func_name}({', '.join(clean_fn_args)})"
 
         return LUA_FUNCTION_TEMPLATE.format(
             scope_doc=scope_doc,

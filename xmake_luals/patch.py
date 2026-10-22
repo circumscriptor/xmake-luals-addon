@@ -42,8 +42,9 @@ class DocPatcher:
     def _patch_function(self, fn: DocFunction, is_instance: bool) -> None:
         # 1. Map parameter types
         for p in fn.params:
-            if p.name in self.TYPE_MAPPINGS:
-                p.type_name = self.TYPE_MAPPINGS[p.name]
+            clean_pname = p.clean_name
+            if clean_pname in self.TYPE_MAPPINGS:
+                p.type_name = self.TYPE_MAPPINGS[clean_pname]
             elif "<string|array>" in p.type_name:
                 p.type_name = "string|string[]"
             elif "<boolean>" in p.type_name:
@@ -53,7 +54,12 @@ class DocPatcher:
             elif p.type_name.startswith("<function"):
                 p.type_name = "fun(target: any, ...: any)"
             else:
-                p.type_name = p.type_name.replace("<", "").replace(">", "") or "any"
+                p.type_name = (
+                    p.type_name.replace("<", "").replace(">", "").rstrip("?") or "any"
+                )
+
+        # Ensure fn_args are clean Lua identifiers (no '?')
+        fn.fn_args = [arg.rstrip("?").strip() for arg in fn.fn_args]
 
         # 2. Infer return types
         if not is_instance:
@@ -68,10 +74,15 @@ class DocPatcher:
                 fn.return_type = override_entry["return_type"]
             if "params" in override_entry:
                 fn.params = [
-                    DocParam(p["name"], p["type"], p.get("desc", ""))
+                    DocParam(
+                        p["name"].rstrip("?"),
+                        p["type"],
+                        p.get("desc", ""),
+                        is_optional=p["name"].endswith("?") or p.get("optional", False),
+                    )
                     for p in override_entry["params"]
                 ]
-                fn.fn_args = [p.name for p in fn.params]
+                fn.fn_args = [p.clean_name for p in fn.params]
 
     @staticmethod
     def _infer_instance_return(api_id: str, desc: str) -> str:
