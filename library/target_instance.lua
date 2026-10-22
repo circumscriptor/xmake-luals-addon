@@ -54,7 +54,7 @@ function Target:kind() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/target-instance#target-is-plat)
 ---
----@param plat string Platform name
+---@param plat Platform Platform name
 ---@return boolean
 function Target:is_plat(plat) end
 
@@ -63,7 +63,7 @@ function Target:is_plat(plat) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/target-instance#target-is-arch)
 ---
----@param arch string Architecture name
+---@param arch Architecture Architecture name
 ---@return boolean
 function Target:is_arch(arch) end
 
@@ -88,7 +88,7 @@ function Target:targetfile() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/target-instance#target-artifactfile)
 ---
----@param kind string Target kind
+---@param kind TargetKind Target kind
 ---@return string
 function Target:artifactfile(kind) end
 

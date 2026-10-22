@@ -17,7 +17,7 @@ function Option:name() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/option-instance#option-fullname)
 ---
----@return string
+---@return any
 function Option:fullname() end
 
 ---
@@ -25,7 +25,7 @@ function Option:fullname() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/option-instance#option-namespace)
 ---
----@return string
+---@return any
 function Option:namespace() end
 
 ---
@@ -49,7 +49,7 @@ function Option:value() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/option-instance#option-enabled)
 ---
----@return boolean
+---@return any
 function Option:enabled() end
 
 ---

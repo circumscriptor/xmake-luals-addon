@@ -2,6 +2,10 @@
 ---[package_dependencies](https://xmake.io/api/description/package-dependencies)
 
 ---
+---**Scoped: package**
+---
+---- Define package configuration
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#package)
 ---
 ---@param name string Package name string
@@ -10,6 +14,8 @@ function package(name) end
 
 ---
 ---**Scoped: package**
+---
+---- Set package homepage
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#set-homepage)
 ---
@@ -20,6 +26,8 @@ function set_homepage(url) end
 ---
 ---**Scoped: package**
 ---
+---- Set package description
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#set-description)
 ---
 ---@param description string Package description string
@@ -29,39 +37,37 @@ function set_description(description) end
 ---
 ---**Scoped: package**
 ---
----library
+---- Set package kind
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#set-kind)
 ---
----@param kind string Package type: "library", "binary", "toolchain"
----@param opt table? Options (-----------, kind, headeronly)
 ---@return nil
-function set_kind(kind, opt) end
+function set_kind() end
 
 ---
 ---**Scoped: package**
+---
+---- Set package urls
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#set-urls)
 ---
----@param urls string|string[] Package source URL string or array
----@param ... any Variable parameters, can pass multiple URLs
----@param opt table? Options (-----------, urls, excludes)
 ---@return nil
-function set_urls(urls, ...) end
+function set_urls() end
 
 ---
 ---**Scoped: package**
+---
+---- Add package urls
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-urls)
 ---
----@param urls string|string[] Package source URL string or array
----@param ... any Variable parameters, can pass multiple URLs
----@param opt table? Options (-----------, urls, alias)
 ---@return nil
-function add_urls(urls, ...) end
+function add_urls() end
 
 ---
 ---**Scoped: package**
+---
+---- Add package versions
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-versions)
 ---
@@ -73,6 +79,8 @@ function add_versions(version, hash) end
 ---
 ---**Scoped: package**
 ---
+---- Adding a list of package versions
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-versionfiles)
 ---
 ---@param file string Version file path containing version and hash pairs
@@ -82,6 +90,8 @@ function add_versionfiles(file) end
 ---
 ---**Scoped: package**
 ---
+---- Set the source directory of the package
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#set-sourcedir)
 ---
 ---@param sourcedir string Package source directory path
@@ -90,6 +100,8 @@ function set_sourcedir(sourcedir) end
 
 ---
 ---**Scoped: package**
+---
+---- Add package patches
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-patches)
 ---
@@ -102,6 +114,8 @@ function add_patches(version, url, hash) end
 ---
 ---**Scoped: package**
 ---
+---- Add package links
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-links)
 ---
 ---@param links string|string[] Library link name string or array
@@ -111,6 +125,8 @@ function add_links(links, ...) end
 
 ---
 ---**Scoped: package**
+---
+---- Add system library links
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-syslinks)
 ---
@@ -122,6 +138,8 @@ function add_syslinks(syslinks, ...) end
 ---
 ---**Scoped: package**
 ---
+---- Adjust the link order within the package
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-linkorders)
 ---
 ---@param orders string|string[] Link order string or array
@@ -132,16 +150,17 @@ function add_linkorders(orders, ...) end
 ---
 ---**Scoped: package**
 ---
+---- Configure the link group of the package
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-linkgroups)
 ---
----@param groups string|string[] Link group name string or array
----@param ... any Variable parameters, can pass multiple group names
----@param opt table? Options (-----------, groups, group)
 ---@return nil
-function add_linkgroups(groups, ...) end
+function add_linkgroups() end
 
 ---
 ---**Scoped: package**
+---
+---- Add frameworks
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-frameworks)
 ---
@@ -153,6 +172,8 @@ function add_frameworks(frameworks, ...) end
 ---
 ---**Scoped: package**
 ---
+---- Add link directories
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-linkdirs)
 ---
 ---@param dirs string|string[] Link directory path string or array
@@ -162,6 +183,8 @@ function add_linkdirs(dirs, ...) end
 
 ---
 ---**Scoped: package**
+---
+---- Add include directories
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-includedirs)
 ---
@@ -173,6 +196,8 @@ function add_includedirs(dirs, ...) end
 ---
 ---**Scoped: package**
 ---
+---- Add executable file directory
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-bindirs)
 ---
 ---@param dirs string|string[] Executable directory path string or array
@@ -182,6 +207,8 @@ function add_bindirs(dirs, ...) end
 
 ---
 ---**Scoped: package**
+---
+---- Add definition
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-defines)
 ---
@@ -193,6 +220,8 @@ function add_defines(defines, ...) end
 ---
 ---**Scoped: package**
 ---
+---- Add package schemes
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-schemes)
 ---
 ---@param schemes string|string[] Scheme name string or array
@@ -203,15 +232,17 @@ function add_schemes(schemes, ...) end
 ---
 ---**Scoped: package**
 ---
+---- Add package configs
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-configs)
 ---
----@param name string Configuration parameter name
----@param opt table? Options (-----------, description, default)
 ---@return nil
-function add_configs(name, opt) end
+function add_configs() end
 
 ---
 ---**Scoped: package**
+---
+---- Add external package sources
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-extsources)
 ---
@@ -223,6 +254,8 @@ function add_extsources(sources, ...) end
 ---
 ---**Scoped: package**
 ---
+---- Add package dependencies
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-deps)
 ---
 ---@param deps string|string[] Dependency package name string or array
@@ -233,16 +266,17 @@ function add_deps(deps, ...) end
 ---
 ---**Scoped: package**
 ---
+---- Add package components
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-components)
 ---
----@param components string|string[] Component name string or array
----@param ... any Variable parameters, can pass multiple component names
----@param opt table? Options (-----------, components)
 ---@return nil
-function add_components(components, ...) end
+function add_components() end
 
 ---
 ---**Scoped: package**
+---
+---- Inherit package configuration
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#set-base)
 ---
@@ -253,75 +287,83 @@ function set_base(package) end
 ---
 ---**Scoped: package**
 ---
+---- Load package configuration
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-load)
 ---
----@param script fun(package: any) Package load script function with package parameter
+---@param script fun(target: any, ...: any) Package load script function with package parameter
 ---@return nil
 function on_load(script) end
 
 ---
 ---**Scoped: package**
 ---
+---- Fetch package libraries
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-fetch)
 ---
 ---@param platforms string|string[] Platform filter string or array, optional
 ---@param ... any Variable parameters, can pass multiple platform filters
----@param script fun(package: any, opt?: table) Fetch script function with package and opt parameters
+---@param script fun(target: any, ...: any) Fetch script function with package and opt parameters
 ---@return nil
-function on_fetch(platforms, ...) end
+function on_fetch(platforms, script, ...) end
 
 ---
 ---**Scoped: package**
+---
+---- Check whether the package supports the current platform
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-check)
 ---
 ---@param platforms string|string[] Platform filter string or array, optional
 ---@param ... any Variable parameters, can pass multiple platform filters
----@param script fun(package: any) Check script function with package parameter
+---@param script fun(target: any, ...: any) Check script function with package parameter
 ---@return nil
-function on_check(platforms, ...) end
+function on_check(platforms, script, ...) end
 
 ---
 ---**Scoped: package**
 ---
----Platform filtering
+---- Installation package
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-install)
 ---
 ---@param platforms string|string[] Platform filter string or array, optional
 ---@param ... any Variable parameters, can pass multiple platform filters
----@param script fun(package: any) Install script function with package parameter
+---@param script fun(target: any, ...: any) Install script function with package parameter
 ---@return nil
-function on_install(platforms, ...) end
+function on_install(platforms, script, ...) end
 
 ---
 ---**Scoped: package**
 ---
----Platform Filtering
+---- Custom download package
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-download)
 ---
----@param script fun(package: any, opt?: table) Download script function with package and opt parameters
+---@param script fun(target: any, ...: any) Download script function with package and opt parameters
 ---@return nil
 function on_download(script) end
 
 ---
 ---**Scoped: package**
 ---
+---- Test package
+---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-test)
 ---
----@param script fun(package: any) Test script function with package parameter
+---@param script fun(target: any, ...: any) Test script function with package parameter
 ---@return nil
 function on_test(script) end
 
 ---
 ---**Scoped: package**
 ---
----Configuring component link information
+---- Define package component
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-component)
 ---
 ---@param component string Component name string, optional (if not provided, applies to all components)
----@param script fun(package: any, component: any) Component configuration script function with package and component parameters
+---@param script fun(target: any, ...: any) Component configuration script function with package and component parameters
 ---@return nil
 function on_component(component, script) end

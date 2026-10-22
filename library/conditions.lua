@@ -20,7 +20,7 @@ function is_os(os, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/conditions#is-arch)
 ---
----@param arch string Architecture name string
+---@param arch Architecture Architecture name string
 ---@param ... any Variable parameters, can pass multiple architecture names
 ---@return nil
 function is_arch(arch, ...) end
@@ -32,7 +32,7 @@ function is_arch(arch, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/conditions#is-plat)
 ---
----@param plat string Platform name string
+---@param plat Platform Platform name string
 ---@param ... any Variable parameters, can pass multiple platform names
 ---@return nil
 function is_plat(plat, ...) end
@@ -90,7 +90,7 @@ function is_cross() end
 ---
 ---[Open in browser](https://xmake.io/api/description/conditions#is-mode)
 ---
----@param mode string Compilation mode name string
+---@param mode StripMode Compilation mode name string
 ---@param ... any Variable parameters, can pass multiple mode names
 ---@return nil
 function is_mode(mode, ...) end
@@ -102,7 +102,7 @@ function is_mode(mode, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/conditions#is-kind)
 ---
----@param kind string Target kind name string
+---@param kind TargetKind Target kind name string
 ---@param ... any Variable parameters, can pass multiple kind names
 ---@return nil
 function is_kind(kind, ...) end

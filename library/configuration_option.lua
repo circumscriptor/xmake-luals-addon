@@ -2,6 +2,8 @@
 ---[configuration_option](https://xmake.io/api/description/configuration-option)
 
 ---
+---**Scoped: option**
+---
 ---Defining options
 ---
 ---[Open in browser](https://xmake.io/api/description/configuration-option#option)
@@ -10,6 +12,8 @@
 ---@return nil
 function option(name) end
 
+---
+---**Scoped: option**
 ---
 ---End definition option
 ---
@@ -33,9 +37,11 @@ function add_deps(deps, ...) end
 ---
 ---**Scoped: option**
 ---
+---Execute this script before option detection
+---
 ---[Open in browser](https://xmake.io/api/description/configuration-option#before-check)
 ---
----@param script fun(option: any) Before check script function with option parameter
+---@param script fun(target: any, ...: any) Before check script function with option parameter
 ---@return nil
 function before_check(script) end
 
@@ -46,16 +52,18 @@ function before_check(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/configuration-option#on-check)
 ---
----@param script fun(option: any) Check script function with option parameter
+---@param script fun(target: any, ...: any) Check script function with option parameter
 ---@return nil
 function on_check(script) end
 
 ---
 ---**Scoped: option**
 ---
+---Execute this script after option detection
+---
 ---[Open in browser](https://xmake.io/api/description/configuration-option#after-check)
 ---
----@param script fun(option: any) After check script function with option parameter
+---@param script fun(target: any, ...: any) After check script function with option parameter
 ---@return nil
 function after_check(script) end
 
@@ -207,11 +215,8 @@ function add_cxxtypes(types, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/configuration-option#add-csnippets)
 ---
----@param name string Code snippet name string
----@param code string C code fragment string
----@param opt table? Options (-----------, code, tryrun)
 ---@return nil
-function add_csnippets(name, code, opt) end
+function add_csnippets() end
 
 ---
 ---**Scoped: option**
@@ -220,11 +225,8 @@ function add_csnippets(name, code, opt) end
 ---
 ---[Open in browser](https://xmake.io/api/description/configuration-option#add-cxxsnippets)
 ---
----@param name string Code snippet name string
----@param code string C++ code fragment string
----@param opt table? Options (-----------, code, tryrun)
 ---@return nil
-function add_cxxsnippets(name, code, opt) end
+function add_cxxsnippets() end
 
 ---
 ---**Scoped: option**

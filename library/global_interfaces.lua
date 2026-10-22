@@ -8,11 +8,8 @@
 ---
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#includes)
 ---
----@param paths string|string[] Sub-project file or directory path, supports pattern matching like "**/xmake.lua"
----@param ... any Variable parameters, can pass multiple paths
----@param opt table? Options (-----------, paths, rootdir)
 ---@return nil
-function includes(paths, ...) end
+function includes() end
 
 ---
 ---**Scoped: global-interfaces**
@@ -32,10 +29,8 @@ function set_project(name) end
 ---
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#set-version)
 ---
----@param version string Project version string, e.g. "1.5.1"
----@param opt table? Options (-----------, version, build)
 ---@return nil
-function set_version(version, opt) end
+function set_version() end
 
 ---
 ---**Scoped: global-interfaces**
@@ -114,11 +109,8 @@ function add_addons(addons, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#add-requires)
 ---
----@param packages string|string[] Package name string or array, supports semantic version like "tbox 1.6.*"
----@param ... any Other package-specific configuration parameters
----@param opt table? Options (-----------, packages, optional)
 ---@return nil
-function add_requires(packages, ...) end
+function add_requires() end
 
 ---
 ---**Scoped: global-interfaces**
@@ -127,11 +119,8 @@ function add_requires(packages, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#add-requireconfs)
 ---
----@param packages string|string[] Package name string or array, supports pattern matching like "*" or "libpng.zlib"
----@param ... any Other package-specific configuration parameters
----@param opt table? Options (-----------, packages, configs)
 ---@return nil
-function add_requireconfs(packages, ...) end
+function add_requireconfs() end
 
 ---
 ---**Scoped: global-interfaces**
@@ -140,11 +129,8 @@ function add_requireconfs(packages, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#add-repositories)
 ---
----@param repos string|string[] Repository name and URL string or array, format: "name url"
----@param ... any Variable parameters, can pass multiple repositories
----@param opt table? Options (-----------, repos, rootdir)
 ---@return nil
-function add_repositories(repos, ...) end
+function add_repositories() end
 
 ---
 ---**Scoped: global-interfaces**
@@ -153,7 +139,7 @@ function add_repositories(repos, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#set-defaultplat)
 ---
----@param platform string Default compilation platform name, e.g. "iphoneos", "windows"
+---@param platform Platform Default compilation platform name, e.g. "iphoneos", "windows"
 ---@return nil
 function set_defaultplat(platform) end
 
@@ -176,7 +162,7 @@ function set_defaultarchs(archs, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#set-defaultmode)
 ---
----@param mode string Default compilation mode name, e.g. "release", "debug", "releasedbg"
+---@param mode StripMode Default compilation mode name, e.g. "release", "debug", "releasedbg"
 ---@return nil
 function set_defaultmode(mode) end
 
@@ -224,7 +210,7 @@ function set_allowedmodes(modes, ...) end
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#namespace)
 ---
 ---@param name string Namespace name string
----@param script function Namespace script function
+---@param script fun(target: any, ...: any) Namespace script function
 ---@return nil
 function namespace(name, script) end
 

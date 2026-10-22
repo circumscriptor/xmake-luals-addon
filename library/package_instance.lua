@@ -94,7 +94,7 @@ function Package:targetarch() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-plat)
 ---
----@param plat string Platform name
+---@param plat Platform Platform name
 ---@return boolean
 function Package:is_plat(plat) end
 
@@ -103,7 +103,7 @@ function Package:is_plat(plat) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-arch)
 ---
----@param arch string Architecture name
+---@param arch Architecture Architecture name
 ---@return boolean
 function Package:is_arch(arch) end
 
@@ -145,7 +145,7 @@ function Package:urls() end
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-dep)
 ---
 ---@param name string Dependency name
----@return string
+---@return any
 function Package:dep(name) end
 
 ---
@@ -306,7 +306,7 @@ function Package:addenv() end
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-scheme)
 ---
 ---@param name string Scheme name
----@return string
+---@return any
 function Package:scheme(name) end
 
 ---

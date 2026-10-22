@@ -4,6 +4,8 @@
 ---
 ---**Scoped: plugin-and-task**
 ---
+---- Defining plugins or tasks
+---
 ---[Open in browser](https://xmake.io/api/description/plugin-and-task#task)
 ---
 ---@param name string Task name string
@@ -13,6 +15,8 @@ function task(name) end
 ---
 ---**Scoped: plugin-and-task**
 ---
+---- End defining plugins or tasks
+---
 ---[Open in browser](https://xmake.io/api/description/plugin-and-task#task-end)
 ---
 ---@return nil
@@ -20,6 +24,8 @@ function task_end() end
 
 ---
 ---**Scoped: plugin-and-task**
+---
+---- Setting the task menu
 ---
 ---[Open in browser](https://xmake.io/api/description/plugin-and-task#set-menu)
 ---
@@ -30,6 +36,8 @@ function set_menu(options) end
 ---
 ---**Scoped: plugin-and-task**
 ---
+---- Setting task categories
+---
 ---[Open in browser](https://xmake.io/api/description/plugin-and-task#set-category)
 ---
 ---@param category string Category name string
@@ -39,8 +47,10 @@ function set_category(category) end
 ---
 ---**Scoped: plugin-and-task**
 ---
+---- Setting up a task to run a script
+---
 ---[Open in browser](https://xmake.io/api/description/plugin-and-task#on-run)
 ---
----@param script function Task execution function
+---@param script fun(target: any, ...: any) Task execution function
 ---@return nil
 function on_run(script) end

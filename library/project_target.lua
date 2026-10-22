@@ -2,15 +2,17 @@
 ---[project_target](https://xmake.io/api/description/project-target)
 
 ---
+---**Scoped: target**
+---
 ---Define a project target
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#target)
 ---
----@param name string Target name string, used to identify the project target
----@param opt table? Options (-----------, kind)
 ---@return nil
-function target(name, opt) end
+function target() end
 
+---
+---**Scoped: target**
 ---
 ---End target definition
 ---
@@ -26,7 +28,7 @@ function target_end() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-kind)
 ---
----@param kind string Target type string, specifies the type of compilation target
+---@param kind TargetKind Target type string, specifies the type of compilation target
 ---@return nil
 function set_kind(kind) end
 
@@ -59,9 +61,9 @@ function set_enabled(enabled) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-default)
 ---
----@param is_default boolean Whether to mark as default build target, true means default build, false means not default build
+---@param default boolean Whether to mark as default build target, true means default build, false means not default build
 ---@return nil
-function set_default(is_default) end
+function set_default(default) end
 
 ---
 ---**Scoped: target**
@@ -82,10 +84,8 @@ function set_options(options, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-symbols)
 ---
----@param symbols string Symbol mode string, optional values: debug, hidden, none
----@param opt table? Options (-----------, symbols, public\)
 ---@return nil
-function set_symbols(symbols, opt) end
+function set_symbols() end
 
 ---
 ---**Scoped: target**
@@ -149,10 +149,8 @@ function set_extension(extension) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-warnings)
 ---
----@param warnings string Warning level string, optional values: none, less, more, all, error
----@param opt table? Options (-----------, warnings, public\)
 ---@return nil
-function set_warnings(warnings, opt) end
+function set_warnings() end
 
 ---
 ---**Scoped: target**
@@ -161,7 +159,7 @@ function set_warnings(warnings, opt) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-optimize)
 ---
----@param optimize string Optimization level string, optional values: none, fast, faster, fastest, smallest, aggressive
+---@param optimize OptimizationLevel Optimization level string, optional values: none, fast, faster, fastest, smallest, aggressive
 ---@return nil
 function set_optimize(optimize) end
 
@@ -172,11 +170,8 @@ function set_optimize(optimize) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-languages)
 ---
----@param languages string|string[] Language standard string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple language standard strings
----@param opt table? Options (-----------, languages, public\)
 ---@return nil
-function set_languages(languages, ...) end
+function set_languages() end
 
 ---
 ---**Scoped: target**
@@ -185,11 +180,8 @@ function set_languages(languages, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-fpmodels)
 ---
----@param fpmodels string|string[] Float-point mode string or array, optional values: fast, strict, except, precise
----@param ... any Variable parameters, can pass multiple float-point mode strings
----@param opt table? Options (-----------, fpmodels, public\)
 ---@return nil
-function set_fpmodels(fpmodels, ...) end
+function set_fpmodels() end
 
 ---
 ---**Scoped: target**
@@ -198,10 +190,8 @@ function set_fpmodels(fpmodels, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-targetdir)
 ---
----@param dir string Target file output directory
----@param opt table? Target directory options
 ---@return nil
-function set_targetdir(dir, opt) end
+function set_targetdir() end
 
 ---
 ---**Scoped: target**
@@ -210,9 +200,8 @@ function set_targetdir(dir, opt) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-objectdir)
 ---
----@param dir string Object file output directory
 ---@return nil
-function set_objectdir(dir) end
+function set_objectdir() end
 
 ---
 ---**Scoped: target**
@@ -221,9 +210,8 @@ function set_objectdir(dir) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-dependir)
 ---
----@param dir string Dependent file output directory
 ---@return nil
-function set_dependir(dir) end
+function set_dependir() end
 
 ---
 ---**Scoped: target**
@@ -232,10 +220,8 @@ function set_dependir(dir) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-imports)
 ---
----@param name string Module name
----@param ... string Module names
 ---@return nil
-function add_imports(name, ...) end
+function add_imports() end
 
 ---
 ---**Scoped: target**
@@ -244,11 +230,8 @@ function add_imports(name, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-rules)
 ---
----@param rules string|string[] Rule name string or array, such as "markdown"
----@param ... any Variable parameters, can pass multiple rule name strings
----@param opt table? Options (-----------, rules, public\)
 ---@return nil
-function add_rules(rules, ...) end
+function add_rules() end
 
 ---
 ---**Scoped: target**
@@ -257,7 +240,7 @@ function add_rules(rules, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-load)
 ---
----@param script fun(target: any) Load script function, receives target parameter
+---@param script fun(target: any, ...: any) Load script function, receives target parameter
 ---@return nil
 function on_load(script) end
 
@@ -268,7 +251,7 @@ function on_load(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-config)
 ---
----@param script fun(target: any) Configuration script function, receives target parameter
+---@param script fun(target: any, ...: any) Configuration script function, receives target parameter
 ---@return nil
 function on_config(script) end
 
@@ -279,7 +262,7 @@ function on_config(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-prepare)
 ---
----@param script fun(target: any, opt?: table) Prepare phase script function, receives target, opt parameters
+---@param script fun(target: any, ...: any) Prepare phase script function, receives target, opt parameters
 ---@return nil
 function on_prepare(script) end
 
@@ -290,7 +273,7 @@ function on_prepare(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-prepare-file)
 ---
----@param script fun(target: any, sourcefile: string, opt?: table) Single file processing script function, receives target, sourcefile, opt parameters
+---@param script fun(target: any, ...: any) Single file processing script function, receives target, sourcefile, opt parameters
 ---@return nil
 function on_prepare_file(script) end
 
@@ -301,10 +284,9 @@ function on_prepare_file(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-prepare-files)
 ---
----@param script fun(target: any, jobgraph: any, sourcebatch: any, opt?: table) Batch file processing script function, receives target, jobgraph, sourcebatch, opt parameters
----@param opt table? Options (-----------, script, jobgraph)
+---@param script fun(target: any, ...: any) Batch file processing script function, receives target, jobgraph, sourcebatch, opt parameters
 ---@return nil
-function on_prepare_files(script, opt) end
+function on_prepare_files(script) end
 
 ---
 ---**Scoped: target**
@@ -313,7 +295,7 @@ function on_prepare_files(script, opt) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-link)
 ---
----@param script fun(target: any) Link script function, receives target parameter
+---@param script fun(target: any, ...: any) Link script function, receives target parameter
 ---@return nil
 function on_link(script) end
 
@@ -324,7 +306,7 @@ function on_link(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-build)
 ---
----@param script fun(target: any) Build script function, receives target parameter
+---@param script fun(target: any, ...: any) Build script function, receives target parameter
 ---@return nil
 function on_build(script) end
 
@@ -335,7 +317,7 @@ function on_build(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-build-file)
 ---
----@param script fun(target: any, sourcefile: string, opt?: table) Single file build script function, receives target, sourcefile, opt parameters
+---@param script fun(target: any, ...: any) Single file build script function, receives target, sourcefile, opt parameters
 ---@return nil
 function on_build_file(script) end
 
@@ -346,7 +328,7 @@ function on_build_file(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-build-files)
 ---
----@param script fun(target: any, sourcebatch: any, opt?: table) Multi-file build script function, receives target, sourcebatch, opt parameters
+---@param script fun(target: any, ...: any) Multi-file build script function, receives target, sourcebatch, opt parameters
 ---@return nil
 function on_build_files(script) end
 
@@ -357,7 +339,7 @@ function on_build_files(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-clean)
 ---
----@param script fun(target: any) Clean script function, receives target parameter
+---@param script fun(target: any, ...: any) Clean script function, receives target parameter
 ---@return nil
 function on_clean(script) end
 
@@ -368,7 +350,7 @@ function on_clean(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-package)
 ---
----@param script fun(target: any) Package script function, receives target parameter
+---@param script fun(target: any, ...: any) Package script function, receives target parameter
 ---@return nil
 function on_package(script) end
 
@@ -379,7 +361,7 @@ function on_package(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-install)
 ---
----@param script fun(target: any) Install script function, receives target parameter
+---@param script fun(target: any, ...: any) Install script function, receives target parameter
 ---@return nil
 function on_install(script) end
 
@@ -390,7 +372,7 @@ function on_install(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-uninstall)
 ---
----@param script fun(target: any) Uninstall script function, receives target parameter
+---@param script fun(target: any, ...: any) Uninstall script function, receives target parameter
 ---@return nil
 function on_uninstall(script) end
 
@@ -401,7 +383,7 @@ function on_uninstall(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#on-run)
 ---
----@param script fun(target: any) Run script function, receives target parameter
+---@param script fun(target: any, ...: any) Run script function, receives target parameter
 ---@return nil
 function on_run(script) end
 
@@ -412,7 +394,7 @@ function on_run(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#before-prepare)
 ---
----@param script fun(target: any) Before prepare script function, receives target parameter
+---@param script fun(target: any, ...: any) Before prepare script function, receives target parameter
 ---@return nil
 function before_prepare(script) end
 
@@ -423,7 +405,7 @@ function before_prepare(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#before-prepare-file)
 ---
----@param script fun(target: any, sourcefile: string, opt?: table) Before prepare single file script function, receives target, sourcefile, opt parameters
+---@param script fun(target: any, ...: any) Before prepare single file script function, receives target, sourcefile, opt parameters
 ---@return nil
 function before_prepare_file(script) end
 
@@ -434,7 +416,7 @@ function before_prepare_file(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#before-prepare-files)
 ---
----@param script fun(target: any, sourcebatch: any, opt?: table) Before prepare batch files script function, receives target, sourcebatch, opt parameters
+---@param script fun(target: any, ...: any) Before prepare batch files script function, receives target, sourcebatch, opt parameters
 ---@return nil
 function before_prepare_files(script) end
 
@@ -445,7 +427,7 @@ function before_prepare_files(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#before-link)
 ---
----@param script fun(target: any) Before link script function, receives target parameter
+---@param script fun(target: any, ...: any) Before link script function, receives target parameter
 ---@return nil
 function before_link(script) end
 
@@ -456,7 +438,7 @@ function before_link(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#before-build)
 ---
----@param script fun(target: any) Before build script function, receives target parameter
+---@param script fun(target: any, ...: any) Before build script function, receives target parameter
 ---@return nil
 function before_build(script) end
 
@@ -467,7 +449,7 @@ function before_build(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#before-build-file)
 ---
----@param script fun(target: any, sourcefile: string, opt?: table) Before build single file script function, receives target, sourcefile, opt parameters
+---@param script fun(target: any, ...: any) Before build single file script function, receives target, sourcefile, opt parameters
 ---@return nil
 function before_build_file(script) end
 
@@ -478,7 +460,7 @@ function before_build_file(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#before-build-files)
 ---
----@param script fun(target: any, sourcebatch: any, opt?: table) Before build files script function, receives target, sourcebatch, opt parameters
+---@param script fun(target: any, ...: any) Before build files script function, receives target, sourcebatch, opt parameters
 ---@return nil
 function before_build_files(script) end
 
@@ -489,7 +471,7 @@ function before_build_files(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#before-clean)
 ---
----@param script fun(target: any) Before clean script function, receives target parameter
+---@param script fun(target: any, ...: any) Before clean script function, receives target parameter
 ---@return nil
 function before_clean(script) end
 
@@ -500,7 +482,7 @@ function before_clean(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#before-package)
 ---
----@param script fun(target: any) Before package script function, receives target parameter
+---@param script fun(target: any, ...: any) Before package script function, receives target parameter
 ---@return nil
 function before_package(script) end
 
@@ -511,7 +493,7 @@ function before_package(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#before-install)
 ---
----@param script fun(target: any) Before install script function, receives target parameter
+---@param script fun(target: any, ...: any) Before install script function, receives target parameter
 ---@return nil
 function before_install(script) end
 
@@ -522,7 +504,7 @@ function before_install(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#before-uninstall)
 ---
----@param script fun(target: any) Before uninstall script function, receives target parameter
+---@param script fun(target: any, ...: any) Before uninstall script function, receives target parameter
 ---@return nil
 function before_uninstall(script) end
 
@@ -533,7 +515,7 @@ function before_uninstall(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#before-run)
 ---
----@param script fun(target: any) Before run script function, receives target parameter
+---@param script fun(target: any, ...: any) Before run script function, receives target parameter
 ---@return nil
 function before_run(script) end
 
@@ -544,7 +526,7 @@ function before_run(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#after-prepare)
 ---
----@param script fun(target: any) After prepare script function, receives target parameter
+---@param script fun(target: any, ...: any) After prepare script function, receives target parameter
 ---@return nil
 function after_prepare(script) end
 
@@ -555,7 +537,7 @@ function after_prepare(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#after-prepare-file)
 ---
----@param script fun(target: any, sourcefile: string, opt?: table) After prepare single file script function, receives target, sourcefile, opt parameters
+---@param script fun(target: any, ...: any) After prepare single file script function, receives target, sourcefile, opt parameters
 ---@return nil
 function after_prepare_file(script) end
 
@@ -566,7 +548,7 @@ function after_prepare_file(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#after-prepare-files)
 ---
----@param script fun(target: any, sourcebatch: any, opt?: table) After prepare batch files script function, receives target, sourcebatch, opt parameters
+---@param script fun(target: any, ...: any) After prepare batch files script function, receives target, sourcebatch, opt parameters
 ---@return nil
 function after_prepare_files(script) end
 
@@ -577,7 +559,7 @@ function after_prepare_files(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#after-link)
 ---
----@param script fun(target: any) After link script function, receives target parameter
+---@param script fun(target: any, ...: any) After link script function, receives target parameter
 ---@return nil
 function after_link(script) end
 
@@ -588,7 +570,7 @@ function after_link(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#after-build)
 ---
----@param script fun(target: any) After build script function, receives target parameter
+---@param script fun(target: any, ...: any) After build script function, receives target parameter
 ---@return nil
 function after_build(script) end
 
@@ -599,7 +581,7 @@ function after_build(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#after-build-file)
 ---
----@param script fun(target: any, sourcefile: string, opt?: table) After build single file script function, receives target, sourcefile, opt parameters
+---@param script fun(target: any, ...: any) After build single file script function, receives target, sourcefile, opt parameters
 ---@return nil
 function after_build_file(script) end
 
@@ -610,7 +592,7 @@ function after_build_file(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#after-build-files)
 ---
----@param script fun(target: any, sourcebatch: any, opt?: table) After build files script function, receives target, sourcebatch, opt parameters
+---@param script fun(target: any, ...: any) After build files script function, receives target, sourcebatch, opt parameters
 ---@return nil
 function after_build_files(script) end
 
@@ -621,7 +603,7 @@ function after_build_files(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#after-clean)
 ---
----@param script fun(target: any) After clean script function, receives target parameter
+---@param script fun(target: any, ...: any) After clean script function, receives target parameter
 ---@return nil
 function after_clean(script) end
 
@@ -632,7 +614,7 @@ function after_clean(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#after-package)
 ---
----@param script fun(target: any) After package script function, receives target parameter
+---@param script fun(target: any, ...: any) After package script function, receives target parameter
 ---@return nil
 function after_package(script) end
 
@@ -643,7 +625,7 @@ function after_package(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#after-install)
 ---
----@param script fun(target: any) After install script function, receives target parameter
+---@param script fun(target: any, ...: any) After install script function, receives target parameter
 ---@return nil
 function after_install(script) end
 
@@ -654,7 +636,7 @@ function after_install(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#after-uninstall)
 ---
----@param script fun(target: any) After uninstall script function, receives target parameter
+---@param script fun(target: any, ...: any) After uninstall script function, receives target parameter
 ---@return nil
 function after_uninstall(script) end
 
@@ -665,7 +647,7 @@ function after_uninstall(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#after-run)
 ---
----@param script fun(target: any) After run script function, receives target parameter
+---@param script fun(target: any, ...: any) After run script function, receives target parameter
 ---@return nil
 function after_run(script) end
 
@@ -720,11 +702,8 @@ function set_pmxxheader(header) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-deps)
 ---
----@param deps string|string[] Dependency target name string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple dependency target name strings
----@param opt table? Options (-----------, inherit)
 ---@return nil
-function add_deps(deps, ...) end
+function add_deps() end
 
 ---
 ---**Scoped: target**
@@ -733,11 +712,8 @@ function add_deps(deps, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-links)
 ---
----@param links string|string[] Link library name string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple link library name strings
----@param opt table? Options (-----------, links, public\)
 ---@return nil
-function add_links(links, ...) end
+function add_links() end
 
 ---
 ---**Scoped: target**
@@ -746,11 +722,8 @@ function add_links(links, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-syslinks)
 ---
----@param syslinks string|string[] System link library name string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple system link library name strings
----@param opt table? Options (-----------, syslinks, public\)
 ---@return nil
-function add_syslinks(syslinks, ...) end
+function add_syslinks() end
 
 ---
 ---**Scoped: target**
@@ -771,11 +744,8 @@ function add_linkorders(linkorders, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-linkgroups)
 ---
----@param linkgroups string|string[] Link group name string or array, such as "group1", "group2"
----@param ... any Variable parameters, can pass multiple link group name strings
----@param opt table? Options (-----------, linkgroups, public\)
 ---@return nil
-function add_linkgroups(linkgroups, ...) end
+function add_linkgroups() end
 
 ---
 ---**Scoped: target**
@@ -784,11 +754,8 @@ function add_linkgroups(linkgroups, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-files)
 ---
----@param files string|string[] File path string or file path array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple file path strings
----@param opt table? Options (-----------, defines, languages)
 ---@return nil
-function add_files(files, ...) end
+function add_files() end
 
 ---
 ---**Scoped: target**
@@ -821,11 +788,8 @@ function remove_headerfiles(headerfiles, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-linkdirs)
 ---
----@param linkdirs string|string[] Link library search directory string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple link library search directory strings
----@param opt table? Options (-----------, linkdirs, public\)
 ---@return nil
-function add_linkdirs(linkdirs, ...) end
+function add_linkdirs() end
 
 ---
 ---**Scoped: target**
@@ -834,11 +798,8 @@ function add_linkdirs(linkdirs, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-rpathdirs)
 ---
----@param rpathdirs string|string[] Runtime library search directory string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple runtime library search directory strings
----@param opt table? Options (-----------, rpathdirs, public\)
 ---@return nil
-function add_rpathdirs(rpathdirs, ...) end
+function add_rpathdirs() end
 
 ---
 ---**Scoped: target**
@@ -847,11 +808,8 @@ function add_rpathdirs(rpathdirs, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-includedirs)
 ---
----@param includedirs string|string[] Header file search directory string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple header file search directory strings
----@param opt table? Options (-----------, includedirs, public\)
 ---@return nil
-function add_includedirs(includedirs, ...) end
+function add_includedirs() end
 
 ---
 ---**Scoped: target**
@@ -860,11 +818,8 @@ function add_includedirs(includedirs, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-sysincludedirs)
 ---
----@param includedirs string|string[] System header file search directory string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple system header file search directory strings
----@param opt table? Options (-----------, includedirs, public\)
 ---@return nil
-function add_sysincludedirs(includedirs, ...) end
+function add_sysincludedirs() end
 
 ---
 ---**Scoped: target**
@@ -873,11 +828,8 @@ function add_sysincludedirs(includedirs, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-embeddirs)
 ---
----@param embeddirs string|string[] #embed search directory string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple #embed search directory strings
----@param opt table? Options (-----------, embeddirs, public\)
 ---@return nil
-function add_embeddirs(embeddirs, ...) end
+function add_embeddirs() end
 
 ---
 ---**Scoped: target**
@@ -886,11 +838,8 @@ function add_embeddirs(embeddirs, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-defines)
 ---
----@param defines string|string[] Macro definition string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple macro definition strings
----@param opt table? Options (-----------, defines, public\)
 ---@return nil
-function add_defines(defines, ...) end
+function add_defines() end
 
 ---
 ---**Scoped: target**
@@ -899,11 +848,8 @@ function add_defines(defines, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-undefines)
 ---
----@param undefines string|string[] Macro definition name string or array, such as "DEBUG"
----@param ... any Variable parameters, can pass multiple macro definition name strings
----@param opt table? Options (-----------, undefines, public\)
 ---@return nil
-function add_undefines(undefines, ...) end
+function add_undefines() end
 
 ---
 ---**Scoped: target**
@@ -912,11 +858,9 @@ function add_undefines(undefines, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-cflags)
 ---
----@param cflags string|string[] C compilation option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple C compilation option strings
----@param opt table? Options (-----------, cflags, public\)
+---@param ... string|CompilationFlagAttr Compilation flags or attributes
 ---@return nil
-function add_cflags(cflags, ...) end
+function add_cflags(...) end
 
 ---
 ---**Scoped: target**
@@ -925,10 +869,9 @@ function add_cflags(cflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-cxflags)
 ---
----@param flag string C/C++ compilation flag
----@param ... string C/C++ compilation flags
+---@param ... string|CompilationFlagAttr Compilation flags or attributes
 ---@return nil
-function add_cxflags(flag, ...) end
+function add_cxflags(...) end
 
 ---
 ---**Scoped: target**
@@ -937,11 +880,9 @@ function add_cxflags(flag, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-cxxflags)
 ---
----@param cxxflags string|string[] C++ compilation option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple C++ compilation option strings
----@param opt table? Options (-----------, cxxflags, public\)
+---@param ... string|CompilationFlagAttr Compilation flags or attributes
 ---@return nil
-function add_cxxflags(cxxflags, ...) end
+function add_cxxflags(...) end
 
 ---
 ---**Scoped: target**
@@ -950,11 +891,8 @@ function add_cxxflags(cxxflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-mflags)
 ---
----@param mflags string|string[] ObjC compilation option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple ObjC compilation option strings
----@param opt table? Options (-----------, mflags, public\)
 ---@return nil
-function add_mflags(mflags, ...) end
+function add_mflags() end
 
 ---
 ---**Scoped: target**
@@ -963,11 +901,8 @@ function add_mflags(mflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-mxflags)
 ---
----@param mxflags string|string[] ObjC/ObjC++ compilation option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple ObjC/ObjC++ compilation option strings
----@param opt table? Options (-----------, mxflags, public\)
 ---@return nil
-function add_mxflags(mxflags, ...) end
+function add_mxflags() end
 
 ---
 ---**Scoped: target**
@@ -976,11 +911,8 @@ function add_mxflags(mxflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-mxxflags)
 ---
----@param mxxflags string|string[] ObjC++ compilation option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple ObjC++ compilation option strings
----@param opt table? Options (-----------, mxxflags, public\)
 ---@return nil
-function add_mxxflags(mxxflags, ...) end
+function add_mxxflags() end
 
 ---
 ---**Scoped: target**
@@ -989,11 +921,8 @@ function add_mxxflags(mxxflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-scflags)
 ---
----@param scflags string|string[] Swift compilation option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple Swift compilation option strings
----@param opt table? Options (-----------, scflags, public\)
 ---@return nil
-function add_scflags(scflags, ...) end
+function add_scflags() end
 
 ---
 ---**Scoped: target**
@@ -1002,11 +931,8 @@ function add_scflags(scflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-asflags)
 ---
----@param asflags string|string[] Assembly compilation option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple assembly compilation option strings
----@param opt table? Options (-----------, asflags, public\)
 ---@return nil
-function add_asflags(asflags, ...) end
+function add_asflags() end
 
 ---
 ---**Scoped: target**
@@ -1015,11 +941,8 @@ function add_asflags(asflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-gcflags)
 ---
----@param gcflags string|string[] Go compilation option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple Go compilation option strings
----@param opt table? Options (-----------, gcflags, public\)
 ---@return nil
-function add_gcflags(gcflags, ...) end
+function add_gcflags() end
 
 ---
 ---**Scoped: target**
@@ -1028,11 +951,8 @@ function add_gcflags(gcflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-dcflags)
 ---
----@param dcflags string|string[] D language compilation option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple D language compilation option strings
----@param opt table? Options (-----------, dcflags, public\)
 ---@return nil
-function add_dcflags(dcflags, ...) end
+function add_dcflags() end
 
 ---
 ---**Scoped: target**
@@ -1041,11 +961,8 @@ function add_dcflags(dcflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-rcflags)
 ---
----@param rcflags string|string[] Rust compilation option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple Rust compilation option strings
----@param opt table? Options (-----------, rcflags, public\)
 ---@return nil
-function add_rcflags(rcflags, ...) end
+function add_rcflags() end
 
 ---
 ---**Scoped: target**
@@ -1054,11 +971,8 @@ function add_rcflags(rcflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-fcflags)
 ---
----@param fcflags string|string[] Fortran compilation option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple Fortran compilation option strings
----@param opt table? Options (-----------, fcflags, public\)
 ---@return nil
-function add_fcflags(fcflags, ...) end
+function add_fcflags() end
 
 ---
 ---**Scoped: target**
@@ -1067,11 +981,8 @@ function add_fcflags(fcflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-zcflags)
 ---
----@param zcflags string|string[] Zig compilation option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple Zig compilation option strings
----@param opt table? Options (-----------, zcflags, public\)
 ---@return nil
-function add_zcflags(zcflags, ...) end
+function add_zcflags() end
 
 ---
 ---**Scoped: target**
@@ -1080,11 +991,8 @@ function add_zcflags(zcflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-cuflags)
 ---
----@param cuflags string|string[] CUDA compilation option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple CUDA compilation option strings
----@param opt table? Options (-----------, cuflags, public\)
 ---@return nil
-function add_cuflags(cuflags, ...) end
+function add_cuflags() end
 
 ---
 ---**Scoped: target**
@@ -1093,11 +1001,8 @@ function add_cuflags(cuflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-culdflags)
 ---
----@param culdflags string|string[] CUDA device link option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple CUDA device link option strings
----@param opt table? Options (-----------, culdflags, public\)
 ---@return nil
-function add_culdflags(culdflags, ...) end
+function add_culdflags() end
 
 ---
 ---**Scoped: target**
@@ -1106,11 +1011,8 @@ function add_culdflags(culdflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-cugencodes)
 ---
----@param cugencodes string|string[] CUDA device gencode setting string or array, such as "sm_30", "sm_50"
----@param ... any Variable parameters, can pass multiple CUDA device gencode setting strings
----@param opt table? Options (-----------, cugencodes, public\)
 ---@return nil
-function add_cugencodes(cugencodes, ...) end
+function add_cugencodes() end
 
 ---
 ---**Scoped: target**
@@ -1131,11 +1033,8 @@ function add_ascnpuarchs(archs, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-ldflags)
 ---
----@param ldflags string|string[] Link option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple link option strings
----@param opt table? Options (-----------, ldflags, public\)
 ---@return nil
-function add_ldflags(ldflags, ...) end
+function add_ldflags() end
 
 ---
 ---**Scoped: target**
@@ -1144,11 +1043,8 @@ function add_ldflags(ldflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-arflags)
 ---
----@param arflags string|string[] Static library archive option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple static library archive option strings
----@param opt table? Options (-----------, arflags, public\)
 ---@return nil
-function add_arflags(arflags, ...) end
+function add_arflags() end
 
 ---
 ---**Scoped: target**
@@ -1157,11 +1053,8 @@ function add_arflags(arflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-shflags)
 ---
----@param shflags string|string[] Dynamic library link option string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple dynamic library link option strings
----@param opt table? Options (-----------, shflags, public\)
 ---@return nil
-function add_shflags(shflags, ...) end
+function add_shflags() end
 
 ---
 ---**Scoped: target**
@@ -1170,10 +1063,8 @@ function add_shflags(shflags, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-options)
 ---
----@param name string Option name
----@param ... string Option names
 ---@return nil
-function add_options(name, ...) end
+function add_options() end
 
 ---
 ---**Scoped: target**
@@ -1182,11 +1073,8 @@ function add_options(name, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-packages)
 ---
----@param packages string|string[] Package name string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple package name strings
----@param opt table? Options (-----------, packages, public\)
 ---@return nil
-function add_packages(packages, ...) end
+function add_packages() end
 
 ---
 ---**Scoped: target**
@@ -1195,11 +1083,8 @@ function add_packages(packages, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-languages)
 ---
----@param languages string|string[] Language standard string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple language standard strings
----@param opt table? Options (-----------, languages)
 ---@return nil
-function add_languages(languages, ...) end
+function add_languages() end
 
 ---
 ---**Scoped: target**
@@ -1208,11 +1093,8 @@ function add_languages(languages, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-vectorexts)
 ---
----@param vectorexts string|string[] Vector extension instruction string or array, such as "mmx", "neon", "avx"
----@param ... any Variable parameters, can pass multiple vector extension instruction strings
----@param opt table? Options (-----------, vectorexts, public\)
 ---@return nil
-function add_vectorexts(vectorexts, ...) end
+function add_vectorexts() end
 
 ---
 ---**Scoped: target**
@@ -1221,11 +1103,8 @@ function add_vectorexts(vectorexts, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-frameworks)
 ---
----@param frameworks string|string[] Framework name string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple framework name strings
----@param opt table? Options (-----------, frameworks, public\)
 ---@return nil
-function add_frameworks(frameworks, ...) end
+function add_frameworks() end
 
 ---
 ---**Scoped: target**
@@ -1234,11 +1113,8 @@ function add_frameworks(frameworks, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-frameworkdirs)
 ---
----@param frameworkdirs string|string[] Framework search directory string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple framework search directory strings
----@param opt table? Options (-----------, frameworkdirs, public\)
 ---@return nil
-function add_frameworkdirs(frameworkdirs, ...) end
+function add_frameworkdirs() end
 
 ---
 ---**Scoped: target**
@@ -1259,11 +1135,8 @@ function set_toolset(toolname, tool) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-toolchains)
 ---
----@param toolchains string|string[] Toolchain name string or array, such as "gcc", "clang", "msvc", "ndk[gcc]", "mingw[clang]@llvm-mingw", "msvc[vs=2025]"
----@param ... any Variable parameters, can pass multiple toolchain name strings
----@param opt table? Options (-----------, toolchains, vs)
 ---@return nil
-function set_toolchains(toolchains, ...) end
+function set_toolchains() end
 
 ---
 ---**Scoped: target**
@@ -1272,7 +1145,7 @@ function set_toolchains(toolchains, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-plat)
 ---
----@param plat string Platform name string, such as "linux", "macosx", "windows", "android"
+---@param plat Platform Platform name string, such as "linux", "macosx", "windows", "android"
 ---@return nil
 function set_plat(plat) end
 
@@ -1283,7 +1156,7 @@ function set_plat(plat) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-arch)
 ---
----@param arch string Architecture name string, such as "x86", "x64", "arm64", "armv7"
+---@param arch Architecture Architecture name string, such as "x86", "x64", "arm64", "armv7"
 ---@return nil
 function set_arch(arch) end
 
@@ -1390,11 +1263,8 @@ function set_prefixdir(prefixdir) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-installfiles)
 ---
----@param installfiles string|string[] Installation file path string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple installation file path strings
----@param opt table? Options (-----------, installfiles, prefixdir)
 ---@return nil
-function add_installfiles(installfiles, ...) end
+function add_installfiles() end
 
 ---
 ---**Scoped: target**
@@ -1403,11 +1273,8 @@ function add_installfiles(installfiles, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-headerfiles)
 ---
----@param headerfiles string|string[] Header file path string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple header file path strings
----@param opt table? Options (-----------, headerfiles, prefixdir)
 ---@return nil
-function add_headerfiles(headerfiles, ...) end
+function add_headerfiles() end
 
 ---
 ---**Scoped: target**
@@ -1439,11 +1306,8 @@ function set_configvar(name, value) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-configfiles)
 ---
----@param configfiles string|string[] Configuration file path string or array, supports wildcard matching patterns
----@param ... any Variable parameters, can pass multiple configuration file path strings
----@param opt table? Options (-----------, configfiles, prefixdir)
 ---@return nil
-function add_configfiles(configfiles, ...) end
+function add_configfiles() end
 
 ---
 ---**Scoped: target**
@@ -1452,7 +1316,7 @@ function add_configfiles(configfiles, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-policy)
 ---
----@param policy string Policy name string, such as "check.auto_ignore_flags", "build.warning"
+---@param policy BuildPolicy Policy name string, such as "check.auto_ignore_flags", "build.warning"
 ---@param value boolean Policy value, true means enable, false means disable
 ---@return nil
 function set_policy(policy, value) end
@@ -1524,11 +1388,8 @@ function set_encodings(encodings, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-forceincludes)
 ---
----@param includes string|string[] Header file path string or array, such as "config.h"
----@param ... any Variable parameters, can pass multiple header file path strings
----@param opt table? Options (-----------, includes, public\)
 ---@return nil
-function add_forceincludes(includes, ...) end
+function add_forceincludes() end
 
 ---
 ---**Scoped: target**
@@ -1549,8 +1410,5 @@ function add_extrafiles(extrafiles, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-tests)
 ---
----@param tests string|string[] Test case name string or array, such as "test1", "test2"
----@param ... any Other test configuration parameters, optional
----@param opt table? Options (-----------, tests, runargs)
 ---@return nil
-function add_tests(tests, ...) end
+function add_tests() end
