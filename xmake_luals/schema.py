@@ -86,6 +86,6 @@ class SchemaManager:
     def _render_class(class_name: str, metadata: dict[str, Any]) -> str:
         lines = [f"---@class {class_name}"]
         for field_name, field_type in metadata.get("fields", {}).items():
-            lines.append(f"---@field {field_name} {field_type}")
+            lines.append(f"---@field {field_name}? {field_type}")
         lines.append("")
         return "\n".join(lines)

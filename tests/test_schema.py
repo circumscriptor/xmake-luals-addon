@@ -62,8 +62,8 @@ def test_renders_aliases_and_classes(tmp_path: Path):
         "---Supported Empty\n---@alias Empty string\n"
         "\n"
         "---@class Target\n"
-        "---@field name string\n"
-        "---@field kind TargetKind\n"
+        "---@field name? string\n"
+        "---@field kind? TargetKind\n"
     )
 
 

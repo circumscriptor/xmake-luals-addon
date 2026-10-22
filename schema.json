@@ -137,7 +137,8 @@
                 "public": "boolean",
                 "private": "boolean",
                 "interface": "boolean",
-                "inherit": "boolean"
+                "inherit": "boolean",
+                "installonly": "boolean"
             }
         },
         "CompilationOption": {
@@ -221,7 +222,7 @@
                 "extension": "string",
                 "prefixname": "string",
                 "suffixname": "string",
-                "warnings": "WarningLevel",
+                "warnings": "WarningLevel|WarningLevel[]",
                 "fpmodels": "FloatPointModel|FloatPointModel[]",
                 "optimize": "OptimizationLevel",
                 "runtimes": "Runtime|Runtime[]",
@@ -362,7 +363,14 @@
         "LinkGroupOption": {
             "fields": {
                 "name": "string",
-                "group": "boolean"
+                "group": "boolean",
+                "whole": "boolean",
+                "static": "boolean",
+                "as_needed": "boolean",
+                "public": "boolean",
+                "private": "boolean",
+                "interface": "boolean",
+                "inherit": "boolean"
             }
         },
         "ConfigOption": {
@@ -416,7 +424,7 @@
                 "default": "string|boolean|number",
                 "showmenu": "boolean",
                 "category": "string",
-                "warnings": "WarningLevel",
+                "warnings": "WarningLevel|WarningLevel[]",
                 "optimize": "OptimizationLevel",
                 "languages": "LanguageStandard|LanguageStandard[]",
                 "description": "string",
@@ -505,6 +513,13 @@
             "fields": {
                 "menu": "table",
                 "category": "string"
+            }
+        },
+        "PrefixDirOption": {
+            "fields": {
+                "bindir": "string",
+                "libdir": "string",
+                "includedir": "string"
             }
         }
     }

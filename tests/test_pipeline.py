@@ -164,6 +164,11 @@ def test_cached_docs_match_committed_library(
     assert "---@param ... string|CompilationFlagAttr" in project_target
     assert "function add_cflags(cflags, ...) end" in project_target
     assert "---@param ... string|DependencyAttr" in project_target
+    assert "---@param ... WarningLevel|AccessSpecifier" in project_target
+    assert "function set_warnings(warnings, ...) end" in project_target
+    assert "---@param opt? PrefixDirOption Configuration options" in project_target
+    assert "function set_prefixdir(prefixdir, opt) end" in project_target
+    assert "---@param ... string|LinkGroupOption" in project_target
 
     custom_rule = generated["custom_rule.lua"].read_text(encoding="utf-8")
     assert "---@param opt? RuleAttr|fun() Configuration options" in custom_rule
@@ -186,6 +191,17 @@ def test_cached_docs_match_committed_library(
         package_dependencies
     )
     assert "function package(name, opt) end" in package_dependencies
+    assert "---@param ... string|fun(package: Package)" in package_dependencies
+    assert "function on_load(...) end" in package_dependencies
+    assert "---@param ... string|fun(package: Package, opt: any): table|nil" in (
+        package_dependencies
+    )
+    assert "function on_fetch(...) end" in package_dependencies
+    assert "function on_check(...) end" in package_dependencies
+    assert "function on_install(...) end" in package_dependencies
+    assert "function on_download(...) end" in package_dependencies
+    assert "function on_test(...) end" in package_dependencies
+    assert "function on_component(...) end" in package_dependencies
 
     custom_toolchain = generated["custom_toolchain.lua"].read_text(encoding="utf-8")
     assert "---@param opt? ToolchainAttr|fun() Configuration options" in (
@@ -218,11 +234,14 @@ def test_cached_docs_match_committed_library(
     common = (output_dir / "common.lua").read_text(encoding="utf-8")
     assert "---@class Rect" in common
     assert "---@class TargetAttr" in common
-    assert "---@field defines string|string[]" in common
-    assert "---@field deps string|string[]" in common
-    assert "---@field links string|string[]" in common
+    assert "---@field defines? string|string[]" in common
+    assert "---@field deps? string|string[]" in common
+    assert "---@field links? string|string[]" in common
     assert "---@class OptionAttr" in common
     assert "---@class PackageAttr" in common
     assert "---@class RuleAttr" in common
     assert "---@class ToolchainAttr" in common
     assert "---@class TaskAttr" in common
+    assert "---@class PrefixDirOption" in common
+    assert "---@field installonly? boolean" in common
+    assert "---@field as_needed? boolean" in common

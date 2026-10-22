@@ -304,9 +304,9 @@ function set_base(package) end
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-load)
 ---
----@param script fun(target: any, ...: any) Package load script function with package parameter
+---@param ... string|fun(package: Package) Platform filters and package load script function
 ---@return nil
-function on_load(script) end
+function on_load(...) end
 
 ---
 ---**Scoped: package**
@@ -315,11 +315,9 @@ function on_load(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-fetch)
 ---
----@param platforms string|string[] Platform filter string or array, optional
----@param ... any Variable parameters, can pass multiple platform filters
----@param script fun(target: any, ...: any) Fetch script function with package and opt parameters
+---@param ... string|fun(package: Package, opt: any): table|nil Platform filters and fetch script function
 ---@return nil
-function on_fetch(platforms, script, ...) end
+function on_fetch(...) end
 
 ---
 ---**Scoped: package**
@@ -328,11 +326,9 @@ function on_fetch(platforms, script, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-check)
 ---
----@param platforms string|string[] Platform filter string or array, optional
----@param ... any Variable parameters, can pass multiple platform filters
----@param script fun(target: any, ...: any) Check script function with package parameter
+---@param ... string|fun(package: Package) Platform filters and check script function
 ---@return nil
-function on_check(platforms, script, ...) end
+function on_check(...) end
 
 ---
 ---**Scoped: package**
@@ -341,11 +337,9 @@ function on_check(platforms, script, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-install)
 ---
----@param platforms string|string[] Platform filter string or array, optional
----@param ... any Variable parameters, can pass multiple platform filters
----@param script fun(target: any, ...: any) Install script function with package parameter
+---@param ... string|fun(package: Package) Platform filters and install script function
 ---@return nil
-function on_install(platforms, script, ...) end
+function on_install(...) end
 
 ---
 ---**Scoped: package**
@@ -354,9 +348,9 @@ function on_install(platforms, script, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-download)
 ---
----@param script fun(target: any, ...: any) Download script function with package and opt parameters
+---@param ... string|fun(package: Package, opt: any) Platform filters and download script function
 ---@return nil
-function on_download(script) end
+function on_download(...) end
 
 ---
 ---**Scoped: package**
@@ -365,9 +359,9 @@ function on_download(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-test)
 ---
----@param script fun(target: any, ...: any) Test script function with package parameter
+---@param ... string|fun(package: Package) Platform filters and test script function
 ---@return nil
-function on_test(script) end
+function on_test(...) end
 
 ---
 ---**Scoped: package**
@@ -376,7 +370,6 @@ function on_test(script) end
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#on-component)
 ---
----@param component string Component name string, optional (if not provided, applies to all components)
----@param script fun(target: any, ...: any) Component configuration script function with package and component parameters
+---@param ... string|fun(package: Package, component: any) Component names and component configuration script function
 ---@return nil
-function on_component(component, script) end
+function on_component(...) end

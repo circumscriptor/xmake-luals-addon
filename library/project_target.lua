@@ -153,10 +153,10 @@ function set_extension(extension) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-warnings)
 ---
----@param warnings string Warning level string, optional values: none, less, more, all, error
----@param opt? AccessSpecifier Configuration options
+---@param warnings WarningLevel Warning level string, optional values: none, less, more, all, error
+---@param ... WarningLevel|AccessSpecifier Additional warning levels or visibility options
 ---@return nil
-function set_warnings(warnings, opt) end
+function set_warnings(warnings, ...) end
 
 ---
 ---**Scoped: target**
@@ -764,7 +764,7 @@ function add_linkorders(linkorders, ...) end
 ---[Open in browser](https://xmake.io/api/description/project-target#add-linkgroups)
 ---
 ---@param linkgroups string|string[] Link group name string or array, such as "group1", "group2"
----@param ... string|AccessSpecifier Variable parameters, can pass multiple link group name strings
+---@param ... string|LinkGroupOption Variable parameters, can pass multiple link group name strings
 ---@return nil
 function add_linkgroups(linkgroups, ...) end
 
@@ -1336,8 +1336,9 @@ function set_installdir(installdir) end
 ---[Open in browser](https://xmake.io/api/description/project-target#set-prefixdir)
 ---
 ---@param prefixdir string Installation prefix subdirectory path string
+---@param opt? PrefixDirOption Configuration options
 ---@return nil
-function set_prefixdir(prefixdir) end
+function set_prefixdir(prefixdir, opt) end
 
 ---
 ---**Scoped: target**

@@ -1,92 +1,58 @@
+# xmake LuaLS Addon
 
-# XMake Lua Language Server Addon
+LuaLS addon for [xmake](https://xmake.io), a cross-platform build system based on
+Lua. It provides type annotations for the xmake `xmake.lua` API.
 
 <!--toc:start-->
-- [XMake Lua Language Server Addon](#xmake-lua-language-server-addon)
-  - [Installation](#installation)
+- [xmake LuaLS Addon](#xmake-luals-addon)
+  - [Overview](#overview)
   - [Development](#development)
+    - [Overrides](#overrides)
+  - [Authors](#authors)
   - [License](#license)
 <!--toc:end-->
 
-This is the official lua language server addon for xmake, A cross-platform build utility based on Lua language.
+## Overview
 
-## Installation
+- `library/` contains the generated LuaLS definitions loaded by the addon.
+- `config.json` is the addon manifest. It recommends the addon for `xmake.lua`
+  files and sets the Lua runtime to LuaJIT.
+- `schema.json` contains type aliases and configuration classes used by the
+  generated annotations.
+- `overrides.json` contains manual corrections for annotations that cannot be
+  inferred from the documentation.
+- `xmake_luals/` contains the generator.
+- `tests/` contains the test suite.
 
-For [Zed Editor](https://zed.dev/):
-
-- Install [Scoop](https://scoop.sh/)
-
-```bash
-  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
-```
-
-- Install [Zed Editor](https://zed.dev/)
-
-```bash
-scoop install extras/zed
-```
-
-- Install [Lua](https://www.lua.org/)
-
-```bash
-scoop install main/lua
-```
-
-- Install [Lua Language Server](https://luals.github.io/)
-
-```bash
-scoop install main/lua-language-server
-```
-
-- Clone [LLS-Addons](https://github.com/LuaLS/LLS-Addons) and initialize xmake submodule
-
-```bash
-git clone https://github.com/LuaLS/LLS-Addons.git; Set-Location LLS-Addons; git submodule update --init addons/xmake/module
-```
-
-- Create an xmake project in the directory of your choice
-
-```bash
-xmake create -P "hello"
-```
-
-- Open the project folder inside Zed Editor, then create a project settings file by pressing Ctrl + Shift + P and typing 'Open Project Settings', inside there point to the lua language server, by giving its binary directory
-
-```bash
-{
-    "lsp": {
-        "lua-language-server": {
-            "binary": {
-                "path": "C:/Users/cakit/scoop/apps/lua-language-server/current/bin/lua-language-server.exe"
-            }
-        }
-    },
-    "languages": {
-        "Lua": {
-            "language_servers": ["lua-language-server"]
-        }
-    }
-}
-```
-
-- Create .luarc.json file by running this command at the project directory, this file must point to your addons directory and the library folder of the xmake addon. Also disable the runtime builtin os module from showing up in the lsp.
-
-```bash
-@'
-{
-    "workspace.userThirdParty": ["C:/Users/cakit/Documents/LLS-Addons/addons"],
-    "workspace.library": [
-        "C:/Users/cakit/Documents/LLS-Addons/addons/xmake-luals-addon/library"
-    ],
-    "runtime.builtin":{
-        "os": "disable"
-    }
-}
-'@ | Out-File -Encoding utf8 .luarc.json
-```
+Do not edit files in `library/` by hand. Change the schema, overrides, or
+generator and regenerate the library.
 
 ## Development
+
+Requirements:
+
+- Python 3.10 or newer.
+- xmake is optional. When it is available, the generator queries it for
+  platform, architecture, build mode, toolchain, and policy values. Without it,
+  the static schema is used.
+
+Install the package and test dependencies from the repository root:
+
+```bash
+python3 -m pip install -e ".[test]"
+```
+
+Generate the annotations:
+
+```bash
+python3 main.py
+```
+
+After an editable install, the same command is available as `xmake-luals`.
+
+The generator reads the xmake documentation from `.cache/xmake-docs` and fetches
+it when the directory is empty. The default output directory is `library/`. Use
+`python3 main.py --help` to list the available path and generation options.
 
 The generator is split into small modules:
 
@@ -99,6 +65,16 @@ The generator is split into small modules:
 - `xmake_luals/patch.py` applies those heuristics and the manual overrides.
 - `xmake_luals/generator.py` and `xmake_luals/schema.py` render the Lua files.
 - `xmake_luals/xmake.py` queries the local xmake CLI.
+
+Run the tests:
+
+```bash
+python3 -m pytest
+```
+
+The cached-docs integration test compares the generated API modules with the
+committed `library/` files. It is skipped when the documentation cache is
+unavailable; run the generator once to populate the cache.
 
 ### Overrides
 
@@ -125,7 +101,9 @@ name exists in multiple scopes:
 `config_type` must name a class from `schema.json`. For functions with `...`,
 the configuration table is merged into the variadic argument because Lua does
 not allow parameters after `...`. Functions without `...` receive the schema
-class as their optional `opt` parameter.
+class as their optional `opt` parameter. Schema fields are emitted as optional
+(`---@field name? type`), so configuration tables only need to specify the keys
+they use.
 
 Setting `callback` to `true` allows the same optional argument to also be a
 callback function, producing types such as `TargetAttr|fun()`. This is used by
@@ -133,18 +111,6 @@ the scoped APIs (`target`, `option`, `package`, `rule`, `toolchain`, and
 `task`) that support both a configuration table and a closure, for example
 `target("foo", function() ... end)`. `return_type` and a complete manual
 `params` list remain available as escape hatches.
-
-Install the test dependencies and run the suite with:
-
-```bash
-python3 -m pip install -e ".[test]"
-python3 -m pytest
-```
-
-The integration tests use the documentation checkout in `.cache/xmake-docs`
-when it is available, and verify that the generated definitions match the
-committed `library/` output. They are skipped automatically when the cache has
-not been populated yet. To populate it, run `python3 main.py` once.
 
 ## Authors
 

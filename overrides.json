@@ -126,7 +126,7 @@
         "config_type": "AccessSpecifier"
     },
     "target.add_linkgroups": {
-        "config_type": "AccessSpecifier"
+        "config_type": "LinkGroupOption"
     },
     "target.add_links": {
         "config_type": "AccessSpecifier"
@@ -192,7 +192,18 @@
         "config_type": "ToolchainOption"
     },
     "target.set_warnings": {
-        "config_type": "AccessSpecifier"
+        "params": [
+            {
+                "name": "warnings",
+                "type": "WarningLevel",
+                "desc": "Warning level string, optional values: none, less, more, all, error"
+            },
+            {
+                "name": "...",
+                "type": "WarningLevel|AccessSpecifier",
+                "desc": "Additional warning levels or visibility options"
+            }
+        ]
     },
     "target.target": {
         "config_type": "TargetAttr",
@@ -243,5 +254,71 @@
     "toolchain.toolchain": {
         "config_type": "ToolchainAttr",
         "callback": true
+    },
+    "target.set_prefixdir": {
+        "config_type": "PrefixDirOption"
+    },
+    "package.on_load": {
+        "params": [
+            {
+                "name": "...",
+                "type": "string|fun(package: Package)",
+                "desc": "Platform filters and package load script function"
+            }
+        ]
+    },
+    "package.on_fetch": {
+        "params": [
+            {
+                "name": "...",
+                "type": "string|fun(package: Package, opt: any): table|nil",
+                "desc": "Platform filters and fetch script function"
+            }
+        ]
+    },
+    "package.on_check": {
+        "params": [
+            {
+                "name": "...",
+                "type": "string|fun(package: Package)",
+                "desc": "Platform filters and check script function"
+            }
+        ]
+    },
+    "package.on_install": {
+        "params": [
+            {
+                "name": "...",
+                "type": "string|fun(package: Package)",
+                "desc": "Platform filters and install script function"
+            }
+        ]
+    },
+    "package.on_download": {
+        "params": [
+            {
+                "name": "...",
+                "type": "string|fun(package: Package, opt: any)",
+                "desc": "Platform filters and download script function"
+            }
+        ]
+    },
+    "package.on_test": {
+        "params": [
+            {
+                "name": "...",
+                "type": "string|fun(package: Package)",
+                "desc": "Platform filters and test script function"
+            }
+        ]
+    },
+    "package.on_component": {
+        "params": [
+            {
+                "name": "...",
+                "type": "string|fun(package: Package, component: any)",
+                "desc": "Component names and component configuration script function"
+            }
+        ]
     }
 }
