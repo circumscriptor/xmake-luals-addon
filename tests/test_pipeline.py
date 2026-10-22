@@ -1,7 +1,9 @@
 """End-to-end tests for the generation pipeline."""
 
+import logging
 from pathlib import Path
 
+from xmake_luals.constants import DOCS_COMMIT_FILE
 from xmake_luals.models import DocFile
 from xmake_luals.pipeline import GenerationOptions, GenerationPipeline
 
@@ -49,6 +51,32 @@ def test_pipeline_generates_definitions_from_docs(
     assert "---@class Bytes\nlocal Bytes = {}" in bytes_page
     assert "function bytes(size, initval, str) end" in bytes_page
     assert "function Bytes:size() end" in bytes_page
+
+
+def test_pipeline_records_docs_commit(
+    docs_repo: Path,
+    schema_file: Path,
+    overrides_file: Path,
+    tmp_path: Path,
+    monkeypatch,
+    caplog,
+):
+    output_dir = tmp_path / "library"
+    output_dir.mkdir()
+    (output_dir / "docs-commit.txt").write_text("oldc0ffee\n", encoding="utf-8")
+    monkeypatch.setattr(
+        "xmake_luals.pipeline.RepoManager.get_commit_hash",
+        lambda self: "deadbeef",
+    )
+
+    with caplog.at_level(logging.INFO):
+        stats = GenerationPipeline(
+            _options(docs_repo, output_dir, schema_file, overrides_file)
+        ).run()
+
+    assert stats.docs_commit == "deadbeef"
+    assert (output_dir / "docs-commit.txt").read_text(encoding="utf-8") == "deadbeef\n"
+    assert "xmake-docs commit changed: oldc0ffee -> deadbeef" in caplog.text
 
 
 def test_type_alias_builder_does_not_shadow_lua_builtins():
@@ -156,6 +184,13 @@ def test_cached_docs_match_committed_library(
 
     assert stats.modules == len(committed)
     assert stats.functions > 0
+    if stats.docs_commit:
+        generated_commit = (output_dir / DOCS_COMMIT_FILE).read_text(encoding="utf-8")
+        committed_commit = (project_root / "library" / DOCS_COMMIT_FILE).read_text(
+            encoding="utf-8"
+        )
+        assert generated_commit.strip() == stats.docs_commit
+        assert committed_commit == generated_commit
 
     project_target = generated["project_target.lua"].read_text(encoding="utf-8")
     assert "---@param opt? TargetAttr|fun() Configuration options" in project_target

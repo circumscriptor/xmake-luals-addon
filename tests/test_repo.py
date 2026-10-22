@@ -25,6 +25,29 @@ def test_finds_real_api_files_and_excludes_guides(cached_repo: Path):
     assert files == sorted(files)
 
 
+def test_reads_docs_commit_hash_from_git_checkout(tmp_path: Path, monkeypatch):
+    repo = tmp_path / "repo"
+    (repo / ".git").mkdir(parents=True)
+    calls: list[list[str]] = []
+
+    class _Result:
+        stdout = "abc123\n"
+
+    def fake_run(command, **kwargs):
+        calls.append(command)
+        return _Result()
+
+    monkeypatch.setattr("xmake_luals.repo.shutil.which", lambda _: "/usr/bin/git")
+    monkeypatch.setattr("xmake_luals.repo.subprocess.run", fake_run)
+
+    assert RepoManager(str(repo)).get_commit_hash() == "abc123"
+    assert calls == [["/usr/bin/git", "-C", str(repo), "rev-parse", "HEAD"]]
+
+
+def test_commit_hash_is_optional_for_archive_checkouts(tmp_path: Path):
+    assert RepoManager(str(tmp_path / "repo")).get_commit_hash() is None
+
+
 def test_filters_synthetic_repository(tmp_path: Path):
     repo = tmp_path / "repo"
     _write(repo / "docs/api/description/target.md")

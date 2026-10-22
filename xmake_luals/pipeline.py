@@ -9,6 +9,7 @@ from .constants import (
     DEFAULT_OVERRIDES_FILE,
     DEFAULT_REPO_DIR,
     DEFAULT_SCHEMA_FILE,
+    DOCS_COMMIT_FILE,
 )
 from .generator import LuaLSGenerator
 from .models import DocFile
@@ -40,6 +41,7 @@ class GenerationStats:
     modules: int
     functions: int
     common_lua_path: str
+    docs_commit: str | None = None
 
 
 class GenerationPipeline:
@@ -51,7 +53,7 @@ class GenerationPipeline:
     def run(self) -> GenerationStats:
         """Run all generation steps and return a summary."""
         common_lua_path, schema_manager = self._generate_schema()
-        repo_root, doc_files = self._prepare_docs()
+        repo_root, doc_files, docs_commit = self._prepare_docs()
 
         parser = MarkdownParser()
         documents = [
@@ -83,10 +85,13 @@ class GenerationPipeline:
             module_count += 1
             logger.info("Generated %-35s (%d APIs)", output_path, function_count)
 
+        self._write_docs_commit(docs_commit)
+
         return GenerationStats(
             modules=module_count,
             functions=total_functions,
             common_lua_path=common_lua_path,
+            docs_commit=docs_commit,
         )
 
     @staticmethod
@@ -137,15 +142,43 @@ class GenerationPipeline:
         logger.info("Generated: %s", common_lua_path)
         return common_lua_path, schema_manager
 
-    def _prepare_docs(self) -> tuple[str, list[str]]:
+    def _prepare_docs(self) -> tuple[str, list[str], str | None]:
         repo_manager = RepoManager(self.options.repo_dir)
         logger.info("Preparing xmake-docs in: %s", self.options.repo_dir)
         repo_root = repo_manager.ensure_repository()
         doc_files = repo_manager.get_api_files()
+        docs_commit = repo_manager.get_commit_hash()
+        if docs_commit:
+            logger.info("xmake-docs commit: %s", docs_commit)
+        else:
+            logger.warning("Could not determine the xmake-docs commit hash.")
         logger.info(
             "Discovered %d documentation files matching whitelist.", len(doc_files)
         )
-        return repo_root, doc_files
+        return repo_root, doc_files, docs_commit
+
+    def _write_docs_commit(self, docs_commit: str | None) -> None:
+        """Record the docs revision used to generate the committed library."""
+        if not docs_commit:
+            return
+
+        os.makedirs(self.options.output_dir, exist_ok=True)
+        output_path = os.path.join(self.options.output_dir, DOCS_COMMIT_FILE)
+
+        previous_commit = None
+        if os.path.isfile(output_path):
+            with open(output_path, "r", encoding="utf-8") as handle:
+                previous_commit = handle.read().strip()
+        if previous_commit and previous_commit != docs_commit:
+            logger.info(
+                "xmake-docs commit changed: %s -> %s",
+                previous_commit,
+                docs_commit,
+            )
+
+        with open(output_path, "w", encoding="utf-8") as handle:
+            handle.write(f"{docs_commit}\n")
+        logger.info("Recorded xmake-docs commit: %s", output_path)
 
     def _log_inspector_status(self, inspector: XmakeInspector) -> None:
         if self.options.skip_xmake:

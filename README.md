@@ -15,6 +15,8 @@ Lua. It provides type annotations for the xmake `xmake.lua` API.
 ## Overview
 
 - `library/` contains the generated LuaLS definitions loaded by the addon.
+- `library/docs-commit.txt` records the xmake-docs commit used for the last
+  generation, so documentation changes can be compared later.
 - `config.json` is the addon manifest. It recommends the addon for `xmake.lua`
   files and sets the Lua runtime to LuaJIT.
 - `schema.json` contains type aliases and configuration classes used by the
@@ -26,6 +28,10 @@ Lua. It provides type annotations for the xmake `xmake.lua` API.
 
 Do not edit files in `library/` by hand. Change the schema, overrides, or
 generator and regenerate the library.
+
+When `library/docs-commit.txt` changes after regeneration, the old and new
+hashes can be compared with
+`https://github.com/xmake-io/xmake-docs/compare/<old>...<new>`.
 
 ## Development
 

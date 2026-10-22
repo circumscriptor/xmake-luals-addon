@@ -10,6 +10,7 @@ DEFAULT_REPO_DIR = ".cache/xmake-docs"
 DEFAULT_OUTPUT_DIR = "library"
 DEFAULT_SCHEMA_FILE = "schema.json"
 DEFAULT_OVERRIDES_FILE = "overrides.json"
+DOCS_COMMIT_FILE = "docs-commit.txt"
 
 # Whitelist patterns: only parse API descriptions and scripts.
 DEFAULT_INCLUDE = [

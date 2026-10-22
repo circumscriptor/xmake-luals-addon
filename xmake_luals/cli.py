@@ -85,5 +85,7 @@ def main(argv: list[str] | None = None) -> int:
         stats.functions,
         stats.modules,
     )
+    if stats.docs_commit:
+        logger.info("xmake-docs commit: %s", stats.docs_commit)
     logger.info("=" * 60)
     return 0

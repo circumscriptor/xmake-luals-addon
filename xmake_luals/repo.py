@@ -41,6 +41,29 @@ class RepoManager:
         self._download_archive()
         return self.repo_dir
 
+    def get_commit_hash(self) -> str | None:
+        """Return the checked-out docs commit hash, if it is available."""
+        if not os.path.exists(os.path.join(self.repo_dir, ".git")):
+            return None
+
+        git_path = shutil.which("git")
+        if git_path is None:
+            return None
+
+        try:
+            result = subprocess.run(
+                [git_path, "-C", self.repo_dir, "rev-parse", "HEAD"],
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+        except (subprocess.SubprocessError, OSError):
+            return None
+
+        commit_hash = result.stdout.strip()
+        return commit_hash or None
+
     def get_api_files(
         self,
         whitelist: list[str] | None = None,
