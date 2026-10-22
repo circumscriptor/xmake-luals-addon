@@ -10,6 +10,14 @@ FILE_HEADER_TEMPLATE = """---@meta
 CLASS_HEADER_TEMPLATE = """---@class {class_name}
 local {class_name} = {{}}"""
 
+MODULE_HEADER_TEMPLATE = """---@class {class_name}
+{module_name} = {{}}"""
+
+# These modules already exist in the Lua/LuaJIT runtime. Declaring a new
+# global table with the same name would hide their native definitions, so the
+# generated functions augment the existing tables instead.
+LUA_RUNTIME_MODULES = frozenset({"coroutine", "io", "os", "string", "table"})
+
 FUNCTION_TEMPLATE = """
 ---
 {scope_doc}{description_doc}---[Open in browser]({link})
@@ -49,6 +57,17 @@ class LuaLSGenerator:
 
         if doc_file.is_instance and doc_file.class_name:
             parts.append(CLASS_HEADER_TEMPLATE.format(class_name=doc_file.class_name))
+        elif (
+            doc_file.module_name
+            and doc_file.module_name not in LUA_RUNTIME_MODULES
+            and any(function.is_static for function in doc_file.functions)
+        ):
+            parts.append(
+                MODULE_HEADER_TEMPLATE.format(
+                    class_name=doc_file.module_name.capitalize(),
+                    module_name=doc_file.module_name,
+                )
+            )
 
         parts.extend(
             self._render_function(function, doc_file) for function in doc_file.functions

@@ -221,6 +221,32 @@ def test_cached_docs_match_committed_library(
     assert "---@param buffer Bytes" in bytes_module
     assert "---@param buffer bytes" not in bytes_module
 
+    os_module = generated["os.lua"].read_text(encoding="utf-8")
+    assert "function os.trycp(source, destination) end" in os_module
+    assert "function os.cp(source, destination, options) end" in os_module
+    assert "---@param options? table Options table (optional)" in os_module
+
+    path_module = generated["path.lua"].read_text(encoding="utf-8")
+    assert "---@class Path\npath = {}" in path_module
+    assert "function path.join(paths, ...) end" in path_module
+
+    import_module = generated["import.lua"].read_text(encoding="utf-8")
+    assert "---@param options? table Import options table (optional)" in import_module
+    assert "function import(modulename, options) end" in import_module
+
+    target_instance = generated["target_instance.lua"].read_text(encoding="utf-8")
+    assert "function Target:check_csnippets(snippets, opt) end" in target_instance
+    assert "function Target:check_cxxsnippets(snippets, opt) end" in target_instance
+    assert "---@param opt? SnippetOption Optional options table" in target_instance
+
+    package_instance = generated["package_instance.lua"].read_text(encoding="utf-8")
+    assert "function Package:check_csnippets(snippets, opt) end" in package_instance
+    assert "function Package:check_fcsnippets(snippets, opt) end" in package_instance
+    assert "---@param opt? SnippetOption Optional options table" in package_instance
+    assert "function Package:config(name) end" in package_instance
+    assert "function Package:config_set(name, value) end" in package_instance
+    assert "function Package:installdir(...) end" in package_instance
+
     dialog = generated["dialog.lua"].read_text(encoding="utf-8")
     assert "---@param bounds Rect" in dialog
     assert "---@param e Event" in dialog
@@ -245,3 +271,7 @@ def test_cached_docs_match_committed_library(
     assert "---@class PrefixDirOption" in common
     assert "---@field installonly? boolean" in common
     assert "---@field as_needed? boolean" in common
+    assert "---@class SnippetOption" in common
+    assert "---@field includes? string|string[]" in common
+    assert "---@field configs? table" in common
+    assert "---@field tryrun? boolean" in common

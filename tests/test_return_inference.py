@@ -26,6 +26,10 @@ from xmake_luals.return_inference import infer_instance_return
         ("target:get", "any"),
         ("target:values", "any"),
         ("target:unknown", "any"),
+        ("path.files", "string[]"),
+        ("path.basename", "string"),
+        ("os.is_host", "boolean"),
+        ("os.setenv", "any"),
     ],
 )
 def test_infers_return_type(api_id: str, expected: str):

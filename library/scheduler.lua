@@ -9,7 +9,7 @@ local Scheduler = {}
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/scheduler#co-semaphore-wait)
 ---
----@param timeout number Optional. Timeout in milliseconds, -1 means wait indefinitely, 0 means don't wait
+---@param timeout? number Optional. Timeout in milliseconds, -1 means wait indefinitely, 0 means don't wait
 ---@return any
 function Scheduler:wait(timeout) end
 

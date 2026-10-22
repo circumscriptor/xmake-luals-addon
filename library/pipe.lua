@@ -11,7 +11,7 @@ local Pipe = {}
 ---
 ---@param buff Bytes Required. bytes buffer object to store the read data
 ---@param size number Required. Number of bytes to read
----@param opt table Optional. Option parameters
+---@param opt? table Optional. Option parameters
 ---@return any
 function Pipe:read(buff, size, opt) end
 
@@ -21,7 +21,7 @@ function Pipe:read(buff, size, opt) end
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/pipe#pipe-write)
 ---
 ---@param data string|Bytes Required. Data to write, can be string or bytes object
----@param opt table Optional. Option parameters
+---@param opt? table Optional. Option parameters
 ---@return any
 function Pipe:write(data, opt) end
 
@@ -30,7 +30,7 @@ function Pipe:write(data, opt) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/pipe#pipe-connect)
 ---
----@param opt table Optional. Option parameters
+---@param opt? table Optional. Option parameters
 ---@return any
 function Pipe:connect(opt) end
 

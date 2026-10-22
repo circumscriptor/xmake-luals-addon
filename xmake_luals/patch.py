@@ -40,6 +40,7 @@ class DocPatcher:
                 function,
                 doc_file.is_instance,
                 scope=function.scope,
+                is_module=doc_file.module_name is not None,
             )
 
     def patch_function(
@@ -47,12 +48,15 @@ class DocPatcher:
         function: DocFunction,
         is_instance: bool,
         scope: str | None = None,
+        is_module: bool = False,
     ) -> None:
         """Apply all transformations to a single function."""
-        map_parameter_types(function.params)
+        map_parameter_types(function.params, use_name_mappings=not is_module)
         function.fn_args = [arg.rstrip("?").strip() for arg in function.fn_args]
         function.return_type = (
-            infer_instance_return(function.api_id) if is_instance else "nil"
+            infer_instance_return(function.api_id)
+            if is_instance or is_module
+            else "nil"
         )
         self._apply_override(function, scope)
         self._normalise_type_aliases(function)

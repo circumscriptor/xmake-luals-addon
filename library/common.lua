@@ -209,9 +209,18 @@
 ---@field dependfiles? string[]
 
 ---@class SnippetOption
+---@field includes? string|string[]
+---@field config? table
+---@field configs? table
+---@field types? string|string[]
+---@field funcs? string|string[]
 ---@field tryrun? boolean
 ---@field output? boolean
 ---@field number? boolean
+---@field verbose? boolean
+---@field binary_match? boolean
+---@field linkerkind? string
+---@field sourcekind? string
 
 ---@class RuleDependencyOption
 ---@field order? boolean

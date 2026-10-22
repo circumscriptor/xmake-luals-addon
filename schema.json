@@ -307,9 +307,18 @@
         },
         "SnippetOption": {
             "fields": {
+                "includes": "string|string[]",
+                "config": "table",
+                "configs": "table",
+                "types": "string|string[]",
+                "funcs": "string|string[]",
                 "tryrun": "boolean",
                 "output": "boolean",
-                "number": "boolean"
+                "number": "boolean",
+                "verbose": "boolean",
+                "binary_match": "boolean",
+                "linkerkind": "string",
+                "sourcekind": "string"
             }
         },
         "RuleDependencyOption": {

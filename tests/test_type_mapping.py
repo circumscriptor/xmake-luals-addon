@@ -40,6 +40,17 @@ def test_maps_pseudo_generic_annotations():
     ]
 
 
+def test_builtin_modules_keep_documented_mode_and_level_types():
+    params = [
+        _param("mode", "string"),
+        _param("level", "<number>"),
+    ]
+
+    map_parameter_types(params, use_name_mappings=False)
+
+    assert [param.type_name for param in params] == ["string", "number"]
+
+
 def test_vararg_inherits_previous_mapped_type():
     params = [
         _param("kind", "string"),

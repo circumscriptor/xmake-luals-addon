@@ -176,6 +176,34 @@
     "target.add_zcflags": {
         "config_type": "CompilationFlagAttr"
     },
+    "target:check_csnippets": {
+        "params": [
+            {
+                "name": "snippets",
+                "type": "string|table",
+                "desc": "Code snippet or code snippet list"
+            },
+            {
+                "name": "opt?",
+                "type": "SnippetOption",
+                "desc": "Optional options table"
+            }
+        ]
+    },
+    "target:check_cxxsnippets": {
+        "params": [
+            {
+                "name": "snippets",
+                "type": "string|table",
+                "desc": "Code snippet or code snippet list"
+            },
+            {
+                "name": "opt?",
+                "type": "SnippetOption",
+                "desc": "Optional options table"
+            }
+        ]
+    },
     "target.on_prepare_files": {
         "config_type": "PrepareFilesOption"
     },
@@ -257,6 +285,83 @@
     },
     "target.set_prefixdir": {
         "config_type": "PrefixDirOption"
+    },
+    "package:config": {
+        "params": [
+            {
+                "name": "name",
+                "type": "string",
+                "desc": "Configuration name"
+            }
+        ],
+        "return_type": "any"
+    },
+    "package:config_set": {
+        "params": [
+            {
+                "name": "name",
+                "type": "string",
+                "desc": "Configuration name"
+            },
+            {
+                "name": "value",
+                "type": "any",
+                "desc": "Configuration value"
+            }
+        ],
+        "return_type": "nil"
+    },
+    "package:installdir": {
+        "params": [
+            {
+                "name": "...",
+                "type": "string",
+                "desc": "Optional subdirectory components"
+            }
+        ],
+        "return_type": "string"
+    },
+    "package:check_csnippets": {
+        "params": [
+            {
+                "name": "snippets",
+                "type": "string|table",
+                "desc": "Code snippet or code snippet list"
+            },
+            {
+                "name": "opt?",
+                "type": "SnippetOption",
+                "desc": "Optional options table"
+            }
+        ]
+    },
+    "package:check_cxxsnippets": {
+        "params": [
+            {
+                "name": "snippets",
+                "type": "string|table",
+                "desc": "Code snippet or code snippet list"
+            },
+            {
+                "name": "opt?",
+                "type": "SnippetOption",
+                "desc": "Optional options table"
+            }
+        ]
+    },
+    "package:check_fcsnippets": {
+        "params": [
+            {
+                "name": "snippets",
+                "type": "string|table",
+                "desc": "Fortran code snippet or code snippet list"
+            },
+            {
+                "name": "opt?",
+                "type": "SnippetOption",
+                "desc": "Optional options table"
+            }
+        ]
     },
     "package.on_load": {
         "params": [

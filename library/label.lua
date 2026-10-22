@@ -72,6 +72,6 @@ function Label:splitext(text, width) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/label#label-on-draw)
 ---
----@param transparent boolean Optional. Draw with transparency
+---@param transparent? boolean Optional. Draw with transparency
 ---@return any
 function Label:on_draw(transparent) end

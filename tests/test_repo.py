@@ -19,6 +19,7 @@ def test_finds_real_api_files_and_excludes_guides(cached_repo: Path):
 
     assert "docs/api/description/project-target.md" in relative_paths
     assert "docs/api/scripts/extension-modules/core/base/bytes.md" in relative_paths
+    assert "docs/api/scripts/builtin-modules/os.md" in relative_paths
     assert not any("/guide/" in path for path in relative_paths)
     assert not any(path.endswith("/README.md") for path in relative_paths)
     assert files == sorted(files)

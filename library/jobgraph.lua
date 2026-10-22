@@ -11,7 +11,7 @@ local Jobgraph = {}
 ---
 ---@param name string Job name string
 ---@param jobfunc fun(target: any, ...: any) Job function
----@param options table Options table (optional)
+---@param options? table Options table (optional)
 ---@return nil
 function Jobgraph:add(name, jobfunc, options) end
 

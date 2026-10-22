@@ -257,8 +257,9 @@ function Package:cachedir() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-installdir)
 ---
+---@param ... string Optional subdirectory components
 ---@return string
-function Package:installdir() end
+function Package:installdir(...) end
 
 ---
 ---- Get the directory where the xmake.lua of the package lies
@@ -346,16 +347,19 @@ function Package:version_str() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-config)
 ---
+---@param name string Configuration name
 ---@return any
-function Package:config() end
+function Package:config(name) end
 
 ---
 ---- Set the given configuration value of the package
 ---
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-config-set)
 ---
----@return any
-function Package:config_set() end
+---@param name string Configuration name
+---@param value any Configuration value
+---@return nil
+function Package:config_set(name, value) end
 
 ---
 ---- Get all configurations of the package
@@ -440,8 +444,9 @@ function Package:has_cxxincludes(includes) end
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-check-csnippets)
 ---
 ---@param snippets string|table Code snippet or code snippet list
+---@param opt? SnippetOption Optional options table
 ---@return boolean
-function Package:check_csnippets(snippets) end
+function Package:check_csnippets(snippets, opt) end
 
 ---
 ---- Wether the given C++ snippet can be compiled and linked
@@ -449,13 +454,16 @@ function Package:check_csnippets(snippets) end
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-check-cxxsnippets)
 ---
 ---@param snippets string|table Code snippet or code snippet list
+---@param opt? SnippetOption Optional options table
 ---@return boolean
-function Package:check_cxxsnippets(snippets) end
+function Package:check_cxxsnippets(snippets, opt) end
 
 ---
 ---- Wether the given Fortran snippet can be compiled and linked
 ---
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-check-fcsnippets)
 ---
+---@param snippets string|table Fortran code snippet or code snippet list
+---@param opt? SnippetOption Optional options table
 ---@return boolean
-function Package:check_fcsnippets() end
+function Package:check_fcsnippets(snippets, opt) end

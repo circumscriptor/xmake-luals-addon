@@ -18,7 +18,7 @@ function Heap:push(value) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/heap#heap-pop)
 ---
----@param index number Optional. The position to pop from (1-based). Defaults to 1 (top of heap)
+---@param index? number Optional. The position to pop from (1-based). Defaults to 1 (top of heap)
 ---@return any
 function Heap:pop(index) end
 
@@ -27,7 +27,7 @@ function Heap:pop(index) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/heap#heap-peek)
 ---
----@param index number Optional. The position to peek at (1-based). Defaults to 1 (top of heap)
+---@param index? number Optional. The position to peek at (1-based). Defaults to 1 (top of heap)
 ---@return any
 function Heap:peek(index) end
 

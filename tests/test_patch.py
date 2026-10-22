@@ -50,6 +50,38 @@ def test_non_instance_functions_always_return_nil(tmp_path):
     assert function.return_type == "nil"
 
 
+def test_builtin_module_functions_use_return_inference(tmp_path):
+    function = _function("path.files")
+
+    DocPatcher(str(tmp_path / "missing.json")).patch_function(
+        function, False, is_module=True
+    )
+
+    assert function.return_type == "string[]"
+
+
+def test_check_snippets_overrides_add_optional_options():
+    overrides = Path(__file__).resolve().parents[1] / "overrides.json"
+    function = _function(
+        "target:check_csnippets",
+        params=[DocParam("snippets", "string|table", "Code snippet")],
+        fn_args=["snippets"],
+    )
+
+    DocPatcher(str(overrides)).patch_function(function, True)
+
+    assert function.fn_args == ["snippets", "opt"]
+    assert function.params == [
+        DocParam("snippets", "string|table", "Code snippet or code snippet list"),
+        DocParam(
+            "opt",
+            "SnippetOption",
+            "Optional options table",
+            is_optional=True,
+        ),
+    ]
+
+
 def test_cleans_optional_markers_from_function_arguments(tmp_path):
     function = _function(fn_args=["kind?", "...?"])
 

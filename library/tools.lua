@@ -11,7 +11,7 @@ local Tools = {}
 ---
 ---@param package Package Required. Package instance object
 ---@param configs table Required. CMake configuration parameter list
----@param opt table Optional. Option parameters, supports the following:<br>- `cxflags` - C/C++ compile flags<br>- `cflags` - C compile flags<br>- `packagedeps` - Package dependencies list
+---@param opt? table Optional. Option parameters, supports the following:<br>- `cxflags` - C/C++ compile flags<br>- `cflags` - C compile flags<br>- `packagedeps` - Package dependencies list
 ---@return any
 function cmake(package, configs, opt) end
 
@@ -22,7 +22,7 @@ function cmake(package, configs, opt) end
 ---
 ---@param package Package Required. Package instance object
 ---@param configs table Required. Configuration parameter list
----@param opt table Optional. Option parameters, supports the following:<br>- `packagedeps` - Package dependencies list
+---@param opt? table Optional. Option parameters, supports the following:<br>- `packagedeps` - Package dependencies list
 ---@return any
 function autoconf(package, configs, opt) end
 
@@ -33,7 +33,7 @@ function autoconf(package, configs, opt) end
 ---
 ---@param package Package Required. Package instance object
 ---@param configs table Required. Meson configuration parameter list
----@param opt table Optional. Option parameters, supports the following:<br>- `packagedeps` - Package dependencies list
+---@param opt? table Optional. Option parameters, supports the following:<br>- `packagedeps` - Package dependencies list
 ---@return any
 function meson(package, configs, opt) end
 
@@ -44,7 +44,7 @@ function meson(package, configs, opt) end
 ---
 ---@param package Package Required. Package instance object
 ---@param configs table Required. Configuration parameter list
----@param opt table Optional. Option parameters, supports the following:<br>- `packagedeps` - Package dependencies list
+---@param opt? table Optional. Option parameters, supports the following:<br>- `packagedeps` - Package dependencies list
 ---@return any
 function make(package, configs, opt) end
 
@@ -55,7 +55,7 @@ function make(package, configs, opt) end
 ---
 ---@param package Package Required. Package instance object
 ---@param configs table Required. Configuration parameter list
----@param opt table Optional. Option parameters, supports the following:<br>- `packagedeps` - Package dependencies list
+---@param opt? table Optional. Option parameters, supports the following:<br>- `packagedeps` - Package dependencies list
 ---@return any
 function ninja(package, configs, opt) end
 
@@ -66,7 +66,7 @@ function ninja(package, configs, opt) end
 ---
 ---@param package Package Required. Package instance object
 ---@param configs table Required. MSBuild configuration parameter list
----@param opt table Optional. Option parameters, supports the following:<br>- `packagedeps` - Package dependencies list
+---@param opt? table Optional. Option parameters, supports the following:<br>- `packagedeps` - Package dependencies list
 ---@return any
 function msbuild(package, configs, opt) end
 
@@ -76,6 +76,6 @@ function msbuild(package, configs, opt) end
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/package/tools#xmake)
 ---
 ---@param package Package Required. Package instance object
----@param opt table Optional. Option parameters
+---@param opt? table Optional. Option parameters
 ---@return any
 function xmake(package, opt) end

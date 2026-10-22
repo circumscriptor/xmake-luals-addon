@@ -9,7 +9,7 @@ local Process = {}
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/process#process-wait)
 ---
----@param timeout number Optional. Timeout in milliseconds. Use -1 for infinite wait, 0 for non-blocking
+---@param timeout? number Optional. Timeout in milliseconds. Use -1 for infinite wait, 0 for non-blocking
 ---@return any
 function Process:wait(timeout) end
 

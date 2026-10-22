@@ -83,6 +83,7 @@ class DocFile:
     is_instance: bool
     class_name: str | None
     functions: list[DocFunction] = field(default_factory=list)
+    module_name: str | None = None
 
     @property
     def has_functions(self) -> bool:

@@ -42,12 +42,16 @@ TYPE_MAPPINGS: Final[dict[str, str]] = {
 }
 
 
-def map_parameter_types(params: Iterable[DocParam]) -> None:
+def map_parameter_types(
+    params: Iterable[DocParam], *, use_name_mappings: bool = True
+) -> None:
     """Normalise documented parameter types in place.
 
     The docs use pseudo-generic annotations such as ``<string|array>`` that
     LuaLS does not understand. This function translates those annotations to
     real LuaLS types and maps well-known parameter names to schema aliases.
+    Builtin module APIs opt out of the name mappings because names such as
+    ``mode`` and ``level`` have their documentation types there.
     """
     previous_type = "string"
 
@@ -61,7 +65,7 @@ def map_parameter_types(params: Iterable[DocParam]) -> None:
                 param.type_name = param.type_name.replace("string", previous_type)
             continue
 
-        if param.clean_name in TYPE_MAPPINGS:
+        if use_name_mappings and param.clean_name in TYPE_MAPPINGS:
             param.type_name = TYPE_MAPPINGS[param.clean_name]
         elif "<string|array>" in param.type_name:
             param.type_name = "string|string[]"

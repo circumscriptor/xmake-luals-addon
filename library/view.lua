@@ -217,7 +217,7 @@ function View:cursor_show(visible) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/view#view-on-draw)
 ---
----@param transparent boolean Optional. Whether to draw transparently
+---@param transparent? boolean Optional. Whether to draw transparently
 ---@return any
 function View:on_draw(transparent) end
 

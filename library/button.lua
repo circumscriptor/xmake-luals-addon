@@ -74,6 +74,6 @@ function Button:on_event(e) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/button#button-on-draw)
 ---
----@param transparent boolean Optional. Draw with transparency
+---@param transparent? boolean Optional. Draw with transparency
 ---@return any
 function Button:on_draw(transparent) end

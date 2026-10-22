@@ -250,8 +250,9 @@ function Target:has_cxxincludes(includes) end
 ---[Open in browser](https://xmake.io/api/scripts/target-instance#target-check-csnippets)
 ---
 ---@param snippets string|table Code snippet or code snippet list
+---@param opt? SnippetOption Optional options table
 ---@return boolean
-function Target:check_csnippets(snippets) end
+function Target:check_csnippets(snippets, opt) end
 
 ---
 ---- Detect if a given piece of C++ code can be compiled and linked
@@ -259,8 +260,9 @@ function Target:check_csnippets(snippets) end
 ---[Open in browser](https://xmake.io/api/scripts/target-instance#target-check-cxxsnippets)
 ---
 ---@param snippets string|table Code snippet or code snippet list
+---@param opt? SnippetOption Optional options table
 ---@return boolean
-function Target:check_cxxsnippets(snippets) end
+function Target:check_cxxsnippets(snippets, opt) end
 
 ---
 ---- Detect type size

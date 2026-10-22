@@ -44,7 +44,7 @@ function List:shift() end
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/list#list-insert)
 ---
 ---@param item any Required. The element to insert
----@param after any Optional. Insert after this element; if nil, inserts at the end
+---@param after? any Optional. Insert after this element; if nil, inserts at the end
 ---@return any
 function List:insert(item, after) end
 
@@ -112,7 +112,7 @@ function List:last() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/list#list-next)
 ---
----@param current any Optional. The current element; if nil, returns the first element
+---@param current? any Optional. The current element; if nil, returns the first element
 ---@return any
 function List:next(current) end
 
@@ -121,7 +121,7 @@ function List:next(current) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/list#list-prev)
 ---
----@param current any Optional. The current element; if nil, returns the last element
+---@param current? any Optional. The current element; if nil, returns the last element
 ---@return any
 function List:prev(current) end
 

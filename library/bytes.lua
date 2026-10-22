@@ -10,7 +10,7 @@ local Bytes = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/bytes#bytes)
 ---
 ---@param size number Required. Size of the slice
----@param initval number|string Optional. Initial value for buffer (number or character)
+---@param initval? number|string Optional. Initial value for buffer (number or character)
 ---@param str string Required. String to convert to bytes object
 ---@param buffer Bytes Required. Source bytes buffer for slice
 ---@param offset number Required. Offset position in source buffer
@@ -30,8 +30,8 @@ function Bytes:size() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/bytes#bytes-str)
 ---
----@param start number Start position (optional, default 1)
----@param last number End position (optional, default buffer size)
+---@param start? number Start position (optional, default 1)
+---@param last? number End position (optional, default buffer size)
 ---@return any
 function Bytes:str(start, last) end
 
@@ -59,8 +59,8 @@ function Bytes:clone() end
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/bytes#bytes-copy)
 ---
 ---@param src string|Bytes Source data, can be string or bytes object
----@param start number Source data start position (optional, default 1)
----@param last number Source data end position (optional, default source data size)
+---@param start? number Source data start position (optional, default 1)
+---@param last? number Source data end position (optional, default source data size)
 ---@return any
 function Bytes:copy(src, start, last) end
 
@@ -71,8 +71,8 @@ function Bytes:copy(src, start, last) end
 ---
 ---@param pos number Target position
 ---@param src string|Bytes Source data, can be string or bytes object
----@param start number Source data start position (optional)
----@param last number Source data end position (optional)
+---@param start? number Source data start position (optional)
+---@param last? number Source data end position (optional)
 ---@return any
 function Bytes:copy2(pos, src, start, last) end
 
@@ -82,7 +82,7 @@ function Bytes:copy2(pos, src, start, last) end
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/bytes#bytes-move)
 ---
 ---@param start number Source data start position
----@param last number Source data end position (optional)
+---@param last? number Source data end position (optional)
 ---@return any
 function Bytes:move(start, last) end
 
@@ -93,7 +93,7 @@ function Bytes:move(start, last) end
 ---
 ---@param pos number Target position
 ---@param start number Source data start position
----@param last number Source data end position (optional)
+---@param last? number Source data end position (optional)
 ---@return any
 function Bytes:move2(pos, start, last) end
 
@@ -206,8 +206,8 @@ function Bytes:u32be_set(offset, value) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/bytes#bytes-dump)
 ---
----@param start number Start position (optional, default 1)
----@param last number End position (optional, default buffer size)
+---@param start? number Start position (optional, default 1)
+---@param last? number End position (optional, default buffer size)
 ---@return any
 function Bytes:dump(start, last) end
 

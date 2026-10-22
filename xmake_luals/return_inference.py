@@ -23,12 +23,13 @@ _TABLE_FIELDS = frozenset({"sourcebatches", "deps"})
 
 
 def infer_instance_return(api_id: str) -> str:
-    """Infer a reasonable return type for an instance method.
+    """Infer a reasonable return type for an instance method or module API.
 
     The documentation rarely specifies return values for script modules, so
     a few naming conventions are used as a best-effort fallback.
     """
-    method_name = api_id.rsplit(":", 1)[-1].lower()
+    api_name = api_id.rsplit(":", 1)[-1]
+    method_name = api_name.rsplit(".", 1)[-1].lower()
 
     if method_name in _EXACT_RETURNS:
         return _EXACT_RETURNS[method_name]

@@ -21,6 +21,7 @@ def _file(
     *,
     is_instance: bool = False,
     class_name: str | None = None,
+    module_name: str | None = None,
 ) -> DocFile:
     return DocFile(
         file_base="demo",
@@ -28,6 +29,7 @@ def _file(
         is_instance=is_instance,
         class_name=class_name,
         functions=functions,
+        module_name=module_name,
     )
 
 
@@ -194,6 +196,39 @@ def test_non_constructor_keeps_return_type(tmp_path: Path):
 
     assert "function hash() end" in rendered
     assert "---@return any" in rendered
+
+
+def test_builtin_module_declares_missing_global_table(tmp_path: Path):
+    doc_file = _file(
+        [
+            _function(
+                "path.join",
+                is_scoped=True,
+                scope="path",
+                return_type="string",
+                fn_args=["paths"],
+                params=[DocParam("paths", "string", "Path")],
+            )
+        ],
+        module_name="path",
+    )
+
+    rendered = LuaLSGenerator(tmp_path).render(doc_file)
+
+    assert "---@class Path\npath = {}" in rendered
+    assert "function path.join(paths) end" in rendered
+
+
+def test_builtin_module_does_not_redeclare_runtime_table(tmp_path: Path):
+    doc_file = _file(
+        [_function("os.trycp", return_type="boolean")],
+        module_name="os",
+    )
+
+    rendered = LuaLSGenerator(tmp_path).render(doc_file)
+
+    assert "os = {}" not in rendered
+    assert "function os.trycp() end" in rendered
 
 
 def test_generate_writes_file_and_creates_output_directory(tmp_path: Path):

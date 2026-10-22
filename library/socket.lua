@@ -19,7 +19,7 @@ function Socket:bind(addr, port) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/socket#socket-listen)
 ---
----@param backlog number Optional. Maximum length of the pending connection queue, default 10
+---@param backlog? number Optional. Maximum length of the pending connection queue, default 10
 ---@return any
 function Socket:listen(backlog) end
 
@@ -28,7 +28,7 @@ function Socket:listen(backlog) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/socket#socket-accept)
 ---
----@param opt table Optional. Option parameters
+---@param opt? table Optional. Option parameters
 ---@return any
 function Socket:accept(opt) end
 
@@ -39,7 +39,7 @@ function Socket:accept(opt) end
 ---
 ---@param addr string Required. Target IP address
 ---@param port number Required. Target port number
----@param opt table Optional. Option parameters
+---@param opt? table Optional. Option parameters
 ---@return any
 function Socket:connect(addr, port, opt) end
 
@@ -49,7 +49,7 @@ function Socket:connect(addr, port, opt) end
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/socket#socket-send)
 ---
 ---@param data string|Bytes Required. Data to send, can be string or bytes object
----@param opt table Optional. Option parameters
+---@param opt? table Optional. Option parameters
 ---@return any
 function Socket:send(data, opt) end
 
@@ -60,7 +60,7 @@ function Socket:send(data, opt) end
 ---
 ---@param buff Bytes Required. bytes buffer object
 ---@param size number Required. Number of bytes to receive
----@param opt table Optional. Option parameters
+---@param opt? table Optional. Option parameters
 ---@return any
 function Socket:recv(buff, size, opt) end
 
@@ -72,7 +72,7 @@ function Socket:recv(buff, size, opt) end
 ---@param data string|Bytes Required. Data to send, can be string or bytes object
 ---@param addr string Required. Target IP address
 ---@param port number Required. Target port number
----@param opt table Optional. Option parameters
+---@param opt? table Optional. Option parameters
 ---@return any
 function Socket:sendto(data, addr, port, opt) end
 
@@ -83,7 +83,7 @@ function Socket:sendto(data, addr, port, opt) end
 ---
 ---@param buff Bytes Required. bytes buffer object
 ---@param size number Required. Number of bytes to receive
----@param opt table Optional. Option parameters
+---@param opt? table Optional. Option parameters
 ---@return any
 function Socket:recvfrom(buff, size, opt) end
 

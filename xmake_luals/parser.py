@@ -15,7 +15,9 @@ from .markdown import (
 )
 from .models import DocFile, DocFunction, DocParam
 
-IDENTIFIER_RE = re.compile(r"^([a-zA-Z_][a-zA-Z0-9_]*(?::[a-zA-Z_][a-zA-Z0-9_]*)?)$")
+IDENTIFIER_RE = re.compile(
+    r"^([a-zA-Z_][a-zA-Z0-9_]*(?:(?::|\.)[a-zA-Z_][a-zA-Z0-9_]*)?)$"
+)
 STOP_SECTIONS_RE = re.compile(
     r"^#+\s+(Function Prototype|Parameter Description|Usage|Return Value|Example)",
     re.IGNORECASE,
@@ -83,7 +85,41 @@ class MarkdownParser:
             if function is not None:
                 doc_file.functions.append(function)
 
+        if not doc_file.functions:
+            function = self._parse_title_section(lines, doc_file, default_scope)
+            if function is not None:
+                doc_file.functions.append(function)
+
         return doc_file
+
+    def _parse_title_section(
+        self,
+        lines: Sequence[str],
+        doc_file: DocFile,
+        default_scope: str,
+    ) -> DocFunction | None:
+        """Parse pages whose API is documented directly under the page title.
+
+        Builtin modules such as ``import`` and ``print`` use the level-one
+        heading as the function name instead of repeating it under ``##``.
+        """
+        if doc_file.module_name is None:
+            return None
+
+        for index, raw_line in enumerate(lines):
+            if not raw_line.startswith("# "):
+                continue
+
+            title = clean_heading(raw_line[2:].strip())
+            if IDENTIFIER_RE.match(title) is None:
+                return None
+            if not any("Function Prototype" in line for line in lines):
+                return None
+
+            section = [f"## {title}", *lines[index + 1 :]]
+            return self._parse_section(section, doc_file, default_scope)
+
+        return None
 
     @staticmethod
     def _build_doc_file(file_path: str, repo_root: str) -> tuple[DocFile, str]:
@@ -93,7 +129,10 @@ class MarkdownParser:
         )
         rel_path = rel_path.removeprefix("docs/")
 
-        is_instance = "api/scripts" in rel_path or "instance" in rel_path
+        is_builtin_module = rel_path.startswith("api/scripts/builtin-modules/")
+        is_instance = (
+            "api/scripts" in rel_path or "instance" in rel_path
+        ) and not is_builtin_module
         raw_base = os.path.basename(rel_path)
         default_scope = MarkdownParser._default_scope(raw_base)
         class_name = (
@@ -107,6 +146,7 @@ class MarkdownParser:
             doc_link=f"{DOCS_SITE_BASE_URL}/{rel_path}",
             is_instance=is_instance,
             class_name=class_name,
+            module_name=raw_base if is_builtin_module else None,
         )
         return doc_file, default_scope
 
@@ -134,6 +174,12 @@ class MarkdownParser:
             return None
 
         api_id_value = api_id.group(1)
+        if doc_file.module_name is None and "." in api_id_value:
+            # Outside builtin module pages, dotted headings are names of
+            # policies, rules, or imported extension module APIs rather than
+            # functions belonging to the current page.
+            return None
+
         parameter_table = self._parse_parameter_table(section)
         params, fn_args = self._parse_arguments(
             self._parse_prototype_lines(section),
@@ -287,8 +333,12 @@ class MarkdownParser:
         if ":" in argument:
             name_part, type_part = (part.strip() for part in argument.split(":", 1))
             clean_name = name_part.rstrip("?").strip()
-            is_optional = name_part.endswith("?") or type_part.endswith("?")
             description = parameter_table.get(clean_name, f"{clean_name} parameter")
+            is_optional = (
+                name_part.endswith("?")
+                or type_part.endswith("?")
+                or MarkdownParser._description_marks_optional(description)
+            )
             return (
                 DocParam(
                     clean_name,
@@ -301,7 +351,25 @@ class MarkdownParser:
 
         clean_name = argument.rstrip("?").strip()
         description = parameter_table.get(clean_name, f"{clean_name} parameter")
-        return DocParam(clean_name, "any", description), clean_name
+        return (
+            DocParam(
+                clean_name,
+                "any",
+                description,
+                is_optional=MarkdownParser._description_marks_optional(description),
+            ),
+            clean_name,
+        )
+
+    @staticmethod
+    def _description_marks_optional(description: str) -> bool:
+        """Whether a parameter description explicitly says it is optional."""
+        normalized = description.casefold().strip()
+        if normalized.startswith("optional"):
+            return True
+        if "(optional" in normalized:
+            return True
+        return normalized.rstrip(" .").endswith(", optional")
 
     @staticmethod
     def _resolve_scope(
