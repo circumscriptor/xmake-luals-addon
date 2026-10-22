@@ -29,10 +29,14 @@ class LuaLSGenerator:
 
     def generate(self, doc_file: DocFile) -> str:
         """Write the definition file for ``doc_file`` and return its path."""
-        target_path = self.output_dir / f"{doc_file.file_base}.lua"
+        target_path = self.output_path(doc_file)
         target_path.parent.mkdir(parents=True, exist_ok=True)
         target_path.write_text(self.render(doc_file), encoding="utf-8")
         return str(target_path)
+
+    def output_path(self, doc_file: DocFile) -> Path:
+        """Return the Lua file path that corresponds to ``doc_file``."""
+        return self.output_dir / f"{doc_file.file_base}.lua"
 
     def render(self, doc_file: DocFile) -> str:
         """Render a :class:`DocFile` into LuaLS annotation source."""

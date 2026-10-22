@@ -5,14 +5,6 @@
 local Action = {}
 
 ---
----These action constants are used to set event callback handlers:
----
----[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/action#Usage)
----
----@return any
-function Usage() end
-
----
 ---- Register custom action types
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/action#action-register)

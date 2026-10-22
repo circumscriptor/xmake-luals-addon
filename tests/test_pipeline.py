@@ -50,6 +50,24 @@ def test_pipeline_generates_definitions_from_docs(
     assert "function Bytes:size() end" in bytes_page
 
 
+def test_pipeline_removes_stale_output_for_pages_without_apis(
+    docs_repo: Path,
+    schema_file: Path,
+    overrides_file: Path,
+    tmp_path: Path,
+):
+    output_dir = tmp_path / "library"
+    output_dir.mkdir()
+    stale_file = output_dir / "usage_only.lua"
+    stale_file.write_text("function Usage() end\n", encoding="utf-8")
+
+    GenerationPipeline(
+        _options(docs_repo, output_dir, schema_file, overrides_file)
+    ).run()
+
+    assert not stale_file.exists()
+
+
 def test_pipeline_skip_xmake_does_not_invoke_cli(
     docs_repo: Path,
     schema_file: Path,

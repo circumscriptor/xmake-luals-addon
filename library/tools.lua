@@ -79,11 +79,3 @@ function msbuild(package, configs, opt) end
 ---@param opt table Optional. Option parameters
 ---@return any
 function xmake(package, opt) end
-
----
----- [xmake-repo package scripts](https://github.com/xmake-io/xmake-repo)
----
----[Open in browser](https://xmake.io/api/scripts/extension-modules/package/tools#References)
----
----@return any
-function References() end

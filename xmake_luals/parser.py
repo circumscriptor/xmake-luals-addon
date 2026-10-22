@@ -23,6 +23,37 @@ SCOPE_PREFIXES = (
     "custom_",
 )
 
+# Documentation pages use level-two headings for both API entries and prose
+# sections. These titles are never API names, even though some of them (such as
+# ``Usage``) happen to look like valid Lua identifiers.
+NON_API_SECTION_TITLES = frozenset(
+    {
+        "api",
+        "configuration",
+        "constants",
+        "example",
+        "examples",
+        "faq",
+        "function prototype",
+        "installation",
+        "introduction",
+        "note",
+        "notes",
+        "options",
+        "overview",
+        "parameter description",
+        "parameters",
+        "references",
+        "remarks",
+        "return value",
+        "return values",
+        "returns",
+        "see also",
+        "types",
+        "usage",
+    }
+)
+
 NO_PARAMS_MARKER = "__no_params__"
 
 
@@ -87,7 +118,11 @@ class MarkdownParser:
         default_scope: str,
     ) -> DocFunction | None:
         """Parse one level-two section into a function definition."""
-        api_id = IDENTIFIER_RE.match(clean_heading(section_heading(section)))
+        heading = clean_heading(section_heading(section))
+        if heading.casefold() in NON_API_SECTION_TITLES:
+            return None
+
+        api_id = IDENTIFIER_RE.match(heading)
         if api_id is None:
             return None
 

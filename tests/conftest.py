@@ -93,10 +93,12 @@ def docs_repo(tmp_path: Path) -> Path:
         """
     )
     guide_page = "# guide\n\nThis page must not be parsed.\n"
+    usage_only_page = "# usage only\n\n## Usage\n\nDocumentation prose, not an API.\n"
 
     for relative_path, content in (
         ("docs/api/description/project-target.md", project_target),
         ("docs/api/scripts/extension-modules/core/base/bytes.md", bytes_page),
+        ("docs/api/description/usage-only.md", usage_only_page),
         ("docs/guide/getting-started.md", guide_page),
         ("docs/README.md", "# readme\n"),
     ):

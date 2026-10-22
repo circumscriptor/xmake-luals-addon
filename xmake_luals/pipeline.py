@@ -11,6 +11,7 @@ from .constants import (
     DEFAULT_SCHEMA_FILE,
 )
 from .generator import LuaLSGenerator
+from .models import DocFile
 from .parser import MarkdownParser
 from .patch import DocPatcher
 from .repo import RepoManager
@@ -60,6 +61,7 @@ class GenerationPipeline:
         for file_path in doc_files:
             doc_file = parser.parse_file(file_path, repo_root)
             if not doc_file.has_functions:
+                self._remove_stale_output(generator, doc_file)
                 continue
 
             patcher.patch_file(doc_file)
@@ -74,6 +76,16 @@ class GenerationPipeline:
             functions=total_functions,
             common_lua_path=common_lua_path,
         )
+
+    @staticmethod
+    def _remove_stale_output(generator: LuaLSGenerator, doc_file: DocFile) -> None:
+        """Delete output left over from a page that no longer defines APIs."""
+        stale_path = generator.output_path(doc_file)
+        try:
+            stale_path.unlink()
+        except FileNotFoundError:
+            return
+        logger.info("Removed stale output: %s", stale_path)
 
     def _generate_schema(self) -> str:
         inspector = XmakeInspector(enabled=not self.options.skip_xmake)

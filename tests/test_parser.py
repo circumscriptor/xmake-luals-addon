@@ -244,3 +244,49 @@ Valid API
     doc_file = MarkdownParser().parse_file(str(path), str(repo))
 
     assert [function.api_id for function in doc_file.functions] == ["valid_name"]
+
+
+def test_skips_documentation_section_titles(tmp_path):
+    path, repo = _write_doc(
+        tmp_path,
+        "docs/api/description/demo.md",
+        """\
+## Usage
+
+How to use the module.
+
+## Overview
+
+A high-level overview.
+
+## References
+
+Some links.
+
+## valid_name
+
+Valid API
+""",
+    )
+
+    doc_file = MarkdownParser().parse_file(str(path), str(repo))
+
+    assert [function.api_id for function in doc_file.functions] == ["valid_name"]
+
+
+def test_real_pages_do_not_produce_usage_or_overview_functions(cached_repo: Path):
+    pages = [
+        cached_repo / "docs/api/description/builtin-policies.md",
+        cached_repo / "docs/api/scripts/extension-modules/core/base/bit.md",
+        cached_repo / "docs/api/scripts/extension-modules/core/ui/action.md",
+        cached_repo / "docs/api/scripts/extension-modules/package/tools.md",
+    ]
+
+    api_ids = []
+    for page in pages:
+        doc_file = MarkdownParser().parse_file(str(page), str(cached_repo))
+        api_ids.extend(function.api_id for function in doc_file.functions)
+
+    assert "Usage" not in api_ids
+    assert "Overview" not in api_ids
+    assert "References" not in api_ids
