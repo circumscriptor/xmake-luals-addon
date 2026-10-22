@@ -1,522 +1,461 @@
 ---@meta
----[package_instance](https://xmake.io/#/manual/package_instance)
+---[package_instance](https://xmake.io/api/scripts/package-instance)
 
 ---@class Package
 local Package = {}
 
 ---
----Get the name of the package
+---- Get the name of the package
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagename)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-name)
 ---
 ---@return string
 function Package:name() end
 
 ---
----Get the values of the package by name
+---- Get the values of the package by name
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageget)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-get)
 ---
----@param key string Key
----@return string
+---@param key string Configuration key name
+---@return any
 function Package:get(key) end
 
 ---
----Set the values of the package by name (If you just want to add values use [package:add](#packageadd))
+---- Set the values of the package by name
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageset)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-set)
 ---
----@param key string Key
----@param value string Value
+---@param key string Configuration key name
+---@param value any Configuration value
 ---@return nil
 function Package:set(key, value) end
 
 ---
----Add to the values of the package by name
+---- Add to the values of the package by name
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageadd)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-add)
 ---
----@param key string Key
----@param value string Value
+---@param key string Configuration key name
+---@param value any Value to add
 ---@return nil
 function Package:add(key, value) end
 
 ---
----Get the license of the package (Same as `package:get("license")`)
+---- Get the license of the package
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagelicense)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-license)
 ---
----@return string
+---@return any
 function Package:license() end
 
 ---
----Get the description of the package (Same as `package:get("description")`)
+---- Get the description of the package
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagedescription)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-description)
 ---
----@return string
+---@return any
 function Package:description() end
 
 ---
----Get the platform of the package.
+---- Get the platform of the package. Can be any of:
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageplat)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-plat)
 ---
----@return Platform
+---@return string
 function Package:plat() end
 
 ---
----Get the architecture of the package (e.g. x86, x64, x86_64)
+---- Get the architecture of the package (e.g. x86, x64, x86_64)
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagearch)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-arch)
 ---
----@return Architecture
+---@return string
 function Package:arch() end
 
 ---
----Get the targeted OS of the package. Can have the same values as [package:plat](#packageplat)
+---- Get the targeted OS of the package.
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagetargetos)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-targetos)
 ---
----@return Platform
+---@return any
 function Package:targetos() end
 
 ---
----Get the targeted architecture of the package. Can have the same values as [package:arch](#packagearch)
+---- Get the targeted architecture of the package.
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagetargetarch)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-targetarch)
 ---
----@return Architecture
+---@return any
 function Package:targetarch() end
 
 ---
----Wether the current platform is one of the given platforms
+---- Wether the current platform is one of the given platforms
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageis_plat)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-plat)
 ---
----@param platform Platform Checked platform
----@param ... Platform Checked platforms
+---@param plat string Platform name
 ---@return boolean
-function Package:is_plat(platform, ...) end
+function Package:is_plat(plat) end
 
 ---
----Wether the current platform is one of the given platforms
+---- Wether the current platform is one of the given platforms
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageis_arch)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-arch)
 ---
----@param arch Architecture Checked architecture
----@param ... Architecture Checked architectures
+---@param arch string Architecture name
 ---@return boolean
-function Package:is_arch(arch, ...) end
+function Package:is_arch(arch) end
 
 ---
----Wether the currently targeted OS is one of the given OS
+---- Wether the currently targeted OS is one of the given OS
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageis_targetos)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-targetos)
 ---
----@param platform Platform Checked platform
----@param ... Platform Checked platforms
 ---@return boolean
-function Package:is_targetos(platform, ...) end
+function Package:is_targetos() end
 
 ---
----Wether the currently targeted architecture is one of the given architectures
+---- Wether the currently targeted architecture is one of the given architectures
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageis_targetarch)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-targetarch)
 ---
----@param arch Architecture Checked architecture
----@param ... Architecture Checked architectures
 ---@return boolean
-function Package:is_targetarch(arch, ...) end
+function Package:is_targetarch() end
 
 ---
----Get the alias of the package
+---- Get the alias of the package
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagealias)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-alias)
 ---
----@return string
+---@return any
 function Package:alias() end
 
 ---
----Get the URLs of the package
+---- Get the URLs of the package
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageurls)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-urls)
 ---
----@return string[]
+---@return any
 function Package:urls() end
 
 ---
----Get a dependency of the package by name. The name needs to be a dependency of the package.
+---- Get a dependency of the package by name. The name needs to be a dependency of the package.
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagedep)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-dep)
 ---
----@param name string Depending package name
----@return Package
+---@param name string Dependency name
+---@return string
 function Package:dep(name) end
 
 ---
----Get all dependencies of the package
+---- Get all dependencies of the package
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagedeps)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-deps)
 ---
----@return { [string]: Package }
+---@return table
 function Package:deps() end
 
 ---
----Get the sha256 checksum of an URL alias
+---- Get the sha256 checksum of an URL alias
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagesourcehash)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-sourcehash)
 ---
----@return string
+---@return any
 function Package:sourcehash() end
 
 ---
----Get the kind of the package. Can be any of:
+---- Get the kind of the package. Can be any of:
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagekind)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-kind)
 ---
----@return PackageKind
+---@return string
 function Package:kind() end
 
 ---
----Wether the package is of kind binary
+---- Wether the package is of kind binary
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageis_binary)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-binary)
 ---
 ---@return boolean
 function Package:is_binary() end
 
 ---
----Wether the package is of kind toolchain
+---- Wether the package is of kind toolchain
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageis_toolchain)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-toolchain)
 ---
 ---@return boolean
 function Package:is_toolchain() end
 
 ---
----Wether the package is of kind library
+---- Wether the package is of kind library
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageis_library)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-library)
 ---
 ---@return boolean
 function Package:is_library() end
 
 ---
----Wether the package is directly required by the user (e.g. xmake.lua)
+---- Wether the package is directly required by the user (e.g. xmake.lua)
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageis_toplevel)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-toplevel)
 ---
 ---@return boolean
 function Package:is_toplevel() end
 
 ---
----Wether the package is provided by a thirdparty package manager (e.g. brew, conan, vcpkg)
+---- Wether the package is provided by a thirdparty package manager (e.g. brew, conan, vcpkg)
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageis_thirdparty)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-thirdparty)
 ---
 ---@return boolean
 function Package:is_thirdparty() end
 
 ---
----Wether the package is build with debug mode (Same as `package:config("debug")`)
+---- Wether the package is build with debug mode (Same as `package:config("debug")`)
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageis_debug)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-debug)
 ---
 ---@return boolean
 function Package:is_debug() end
 
 ---
----Wether the package is supported by the current platform and architecture
+---- Wether the package is supported by the current platform and architecture
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageis_supported)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-supported)
 ---
 ---@return boolean
 function Package:is_supported() end
 
----@deprecated
----Wether the the package gets built with debug mode (deprecated: use [`package:is_debug`](#packageis_debug) instead)
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagedebug)
+---- Wether the the package gets built with debug mode
 ---
----@return boolean
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-debug)
+---
+---@return any
 function Package:debug() end
 
 ---
----Wether the package is getting cross-compiled
+---- Wether the package is getting cross-compiled
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageis_cross)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-is-cross)
 ---
 ---@return boolean
 function Package:is_cross() end
 
 ---
----Get the cache directory of the package
+---- Get the cache directory of the package
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagecachedir)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-cachedir)
 ---
 ---@return string
 function Package:cachedir() end
 
 ---
----Get the installation directory of the package. Can also be used to get a subdirectory. If the given directory tree does not exist it will be created.
+---- Get the installation directory of the package. Can also be used to get a subdirectory. If the given directory tree does not exist it will be created.
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageinstalldir)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-installdir)
 ---
----@param ... string Directory
 ---@return string
-function Package:installdir(...) end
+function Package:installdir() end
 
 ---
----Get the directory where the xmake.lua of the package lies
+---- Get the directory where the xmake.lua of the package lies
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagescriptdir)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-scriptdir)
 ---
 ---@return string
 function Package:scriptdir() end
 
 ---
----Get the exported environment variables of the package
+---- Get the exported environment variables of the package
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageenvs)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-envs)
 ---
----@return { [string]: string[] }
+---@return any
 function Package:envs() end
 
 ---
----Get the given environment variable
+---- Get the given environment variable
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagegetenv)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-getenv)
 ---
----@param name string Environment name
----@return string[]
-function Package:getenv(name) end
+---@return any
+function Package:getenv() end
 
 ---
----Set the given environment variable. Overwrites the variable
+---- Set the given environment variable. Overwrites the variable
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagesetenv)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-setenv)
 ---
----@param name string Environment name
----@param value string Environment value
----@param ... string Environment value
----@return nil
-function Package:setenv(name, value, ...) end
+---@return any
+function Package:setenv() end
 
 ---
----Add the given values to the environment variable
+---- Add the given values to the environment variable
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageaddenv)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-addenv)
 ---
----@param name string Environment name
----@param value string Environment value
----@param ... string Environment value
----@return nil
-function Package:addenv(name, value, ...) end
+---@return any
+function Package:addenv() end
 
 ---
----Get all version strings of the package. Returns a table containing all versions as strings
+---- Get the scheme instance by name
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageversions)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-scheme)
 ---
----@return string[]
+---@param name string Scheme name
+---@return string
+function Package:scheme(name) end
+
+---
+---- Get the currently selected scheme
+---
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-current-scheme)
+---
+---@return any
+function Package:current_scheme() end
+
+---
+---- Get all version strings of the package. Returns a table containing all versions as strings
+---
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-versions)
+---
+---@return any
 function Package:versions() end
 
 ---
----Get the version of the package
+---- Get the version of the package
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageversion)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-version)
 ---
----@return Version
+---@return string
 function Package:version() end
 
 ---
----Get the version of the package as string
+---- Get the version of the package as string
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageversion_str)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-version-str)
 ---
----@return string
+---@return any
 function Package:version_str() end
 
 ---
----Get the given configuration value of the package
+---- Get the given configuration value of the package
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageconfig)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-config)
 ---
----@param key string Config key
 ---@return any
-function Package:config(key) end
+function Package:config() end
 
 ---
----Set the given configuration value of the package
+---- Set the given configuration value of the package
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageconfig_set)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-config-set)
 ---
----@param key string Config key
----@param value any Config value
----@return nil
-function Package:config_set(key, value) end
+---@return any
+function Package:config_set() end
 
 ---
----Get all configurations of the package
+---- Get all configurations of the package
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packageconfigs)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-configs)
 ---
----@return PackageConfig
+---@return any
 function Package:configs() end
 
 ---
----Get the build hash of the package
+---- Get the build hash of the package
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagebuildhash)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-buildhash)
 ---
----@return string
+---@return any
 function Package:buildhash() end
 
 ---
----Get all patches of the current version
+---- Get all patches of the current version
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagepatches)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-patches)
 ---
----@return PackagePatch[]
+---@return any
 function Package:patches() end
 
 ---
----Wether the package has the given C functions
+---- Wether the package has the given C functions
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagehas_cfuncs)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-has-cfuncs)
 ---
----@param name string Function name
----@param ... string Function names
 ---@return boolean
-function Package:has_cfuncs(name, ...) end
+function Package:has_cfuncs() end
 
 ---
----Wether the package has the given C functions
+---- Wether the package has the given C++ functions
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagehas_cfuncs)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-has-cxxfuncs)
 ---
----@param name string Function name
----@param option? PackageCheckOption Option
+---@param funcs string|table Function name or function name list
 ---@return boolean
-function Package:has_cfuncs(name, option) end
+function Package:has_cxxfuncs(funcs) end
 
 ---
----Wether the package has the given C++ functions
+---- Wether the package has the given C types
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagehas_cxxfuncs)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-has-ctypes)
 ---
----@param name string Function name
----@param ... string Function names
+---@param types string|table Type name or type name list
 ---@return boolean
-function Package:has_cxxfuncs(name, ...) end
+function Package:has_ctypes(types) end
 
 ---
----Wether the package has the given C++ functions
+---- Wether the package has the given C++ types
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagehas_cxxfuncs)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-has-cxxtypes)
 ---
----@param name string Function name
----@param option? PackageCheckOption Option
+---@param types string|table Type name or type name list
 ---@return boolean
-function Package:has_cxxfuncs(name, option) end
+function Package:has_cxxtypes(types) end
 
 ---
----Wether the package has the given C types
+---- Wether the package has the given C header files
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagehas_ctypes)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-has-cincludes)
 ---
----@param type string Type name
----@param ... string Type names
+---@param includes string|table Include file or include file list
 ---@return boolean
-function Package:has_ctypes(type, ...) end
+function Package:has_cincludes(includes) end
 
 ---
----Wether the package has the given C types
+---- Wether the package has the given C++ header files
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagehas_ctypes)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-has-cxxincludes)
 ---
----@param type string Type name
----@param option? PackageCheckOption Option
+---@param includes string|table Include file or include file list
 ---@return boolean
-function Package:has_ctypes(type, option) end
+function Package:has_cxxincludes(includes) end
 
 ---
----Wether the package has the given C++ types
+---- Wether the given C snippet can be compiled and linked
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagehas_cxxtypes)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-check-csnippets)
 ---
----@param type string Type name
----@param ... string Type names
+---@param snippets string|table Code snippet or code snippet list
 ---@return boolean
-function Package:has_cxxtypes(type, ...) end
+function Package:check_csnippets(snippets) end
 
 ---
----Wether the package has the given C++ types
+---- Wether the given C++ snippet can be compiled and linked
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagehas_cxxtypes)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-check-cxxsnippets)
 ---
----@param type string Type name
----@param option? PackageCheckOption Option
+---@param snippets string|table Code snippet or code snippet list
 ---@return boolean
-function Package:has_cxxtypes(type, option) end
+function Package:check_cxxsnippets(snippets) end
 
 ---
----Wether the package has the given C header files
+---- Wether the given Fortran snippet can be compiled and linked
 ---
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagehas_cincludes)
+---[Open in browser](https://xmake.io/api/scripts/package-instance#package-check-fcsnippets)
 ---
----@param file string Include file name
----@param ... string Include file names
 ---@return boolean
-function Package:has_cincludes(file, ...) end
-
----
----Wether the package has the given C++ header files
----
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagehas_cxxincludes)
----
----@param file string Include file name
----@param ... string Include file names
----@return boolean
-function Package:has_cxxincludes(file, ...) end
-
----
----Wether the given C snippet can be compiled and linked
----
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagecheck_csnippets)
----
----@param snippet PackageCheckSnippet Snippet
----@param ... PackageCheckSnippet Snippets
----@return boolean
-function Package:check_csnippets(snippet, ...) end
-
----
----Wether the given C snippet can be compiled and linked
----
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagecheck_csnippets)
----
----@param snippet PackageCheckSnippet Snippet
----@param option? PackageCheckOption Option
----@return boolean
-function Package:check_csnippets(snippet, option) end
-
----
----Wether the given C++ snippet can be compiled and linked
----
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagecheck_cxxsnippets)
----
----@param snippet PackageCheckSnippet Snippet
----@param ... PackageCheckSnippet Snippets
----@return boolean
-function Package:check_cxxsnippets(snippet, ...) end
-
----
----Wether the given C++ snippet can be compiled and linked
----
----[Open in browser](https://xmake.io/#/manual/package_instance?id=packagecheck_cxxsnippets)
----
----@param snippet PackageCheckSnippet Snippet
----@param option? PackageCheckOption Option
----@return boolean
-function Package:check_cxxsnippets(snippet, option) end
+function Package:check_fcsnippets() end

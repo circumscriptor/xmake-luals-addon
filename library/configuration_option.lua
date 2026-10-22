@@ -1,19 +1,19 @@
 ---@meta
----[configuration_option](https://xmake.io/#/manual/configuration_option)
+---[configuration_option](https://xmake.io/api/description/configuration-option)
 
 ---
 ---Defining options
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=option)
+---[Open in browser](https://xmake.io/api/description/configuration-option#option)
 ---
----@param name string Option name
+---@param name string Option name string
 ---@return nil
 function option(name) end
 
 ---
 ---End definition option
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=option_end)
+---[Open in browser](https://xmake.io/api/description/configuration-option#option-end)
 ---
 ---@return nil
 function option_end() end
@@ -23,112 +23,96 @@ function option_end() end
 ---
 ---Adding options depends
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionadd_deps)
+---[Open in browser](https://xmake.io/api/description/configuration-option#add-deps)
 ---
----@param name string Depending option name
----@param ... string Depending option names
+---@param deps string|string[] Dependency option name string or array
+---@param ... any Variable parameters, can pass multiple dependency names
 ---@return nil
-function add_deps(name, ...) end
+function add_deps(deps, ...) end
 
 ---
 ---**Scoped: option**
 ---
----Adding options defines
+---[Open in browser](https://xmake.io/api/description/configuration-option#before-check)
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionadd_defines)
----
----@param name string Macro define name
----@param ... string Macro define names
+---@param script fun(option: any) Before check script function with option parameter
 ---@return nil
-function add_defines(name, ...) end
-
----
----**Scoped: option**
----
----Execute this script before option detection
----
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionbefore_check)
----
----@param func fun(option: Option): nil Function to run before check
----@return nil
-function before_check(func) end
+function before_check(script) end
 
 ---
 ---**Scoped: option**
 ---
 ---Custom Option Detection Script
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionon_check)
+---[Open in browser](https://xmake.io/api/description/configuration-option#on-check)
 ---
----@param func fun(option: Option): nil Function to run for custom check
+---@param script fun(option: any) Check script function with option parameter
 ---@return nil
-function on_check(func) end
+function on_check(script) end
 
 ---
 ---**Scoped: option**
 ---
----Execute this script after option detection
+---[Open in browser](https://xmake.io/api/description/configuration-option#after-check)
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionafter_check)
----
----@param func fun(option: Option): nil Function to run after check
+---@param script fun(option: any) After check script function with option parameter
 ---@return nil
-function after_check(func) end
+function after_check(script) end
 
 ---
 ---**Scoped: option**
 ---
 ---Setting the list of option values
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionset_values)
+---[Open in browser](https://xmake.io/api/description/configuration-option#set-values)
 ---
----@param value string Option value
----@param ... string Option values
+---@param values string|string[] Option value string or array
+---@param ... any Variable parameters, can pass multiple values
 ---@return nil
-function set_values(value, ...) end
+function set_values(values, ...) end
 
 ---
 ---**Scoped: option**
 ---
 ---Setting options defaults
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionset_default)
+---[Open in browser](https://xmake.io/api/description/configuration-option#set-default)
 ---
----@param default boolean|string Default value
+---@param value string|boolean|number Default value (string, boolean, or number)
 ---@return nil
-function set_default(default) end
+function set_default(value) end
 
 ---
 ---**Scoped: option**
 ---
 ---Set whether to enable menu display
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionset_showmenu)
+---[Open in browser](https://xmake.io/api/description/configuration-option#set-showmenu)
 ---
----@param enabled boolean Whether to enable menu
+---@param showmenu boolean Whether to show in menu (boolean)
 ---@return nil
-function set_showmenu(enabled) end
+function set_showmenu(showmenu) end
 
 ---
 ---**Scoped: option**
 ---
 ---Setting option categories, only for menu display
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionset_category)
+---[Open in browser](https://xmake.io/api/description/configuration-option#set-category)
 ---
----@param name string Menu category name
+---@param category string Category name string
 ---@return nil
-function set_category(name) end
+function set_category(category) end
 
 ---
 ---**Scoped: option**
 ---
 ---Setting menu display description
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionset_description)
+---[Open in browser](https://xmake.io/api/description/configuration-option#set-description)
 ---
----@param description string Menu description
----@param ... string Multiple line descriptions
+---@param description string|string[] Description string or array
+---@param ... any Variable parameters, can pass multiple description lines
 ---@return nil
 function set_description(description, ...) end
 
@@ -137,135 +121,131 @@ function set_description(description, ...) end
 ---
 ---Add Link Library Detection
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionadd_links)
+---[Open in browser](https://xmake.io/api/description/configuration-option#add-links)
 ---
----@param link string Link library name
----@param ... string Link library names
+---@param links string|string[] Library name string or array
+---@param ... any Variable parameters, can pass multiple library names
 ---@return nil
-function add_links(link, ...) end
+function add_links(links, ...) end
 
 ---
 ---**Scoped: option**
 ---
 ---Adding the search directory needed for link library detection
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionadd_linkdirs)
+---[Open in browser](https://xmake.io/api/description/configuration-option#add-linkdirs)
 ---
----@param dir string Search link library directory
----@param ... string Search link library directories
+---@param linkdirs string|string[] Link directory path string or array
+---@param ... any Variable parameters, can pass multiple directory paths
 ---@return nil
-function add_linkdirs(dir, ...) end
+function add_linkdirs(linkdirs, ...) end
 
 ---
----**Scoped: optiOn**
+---**Scoped: option**
 ---
 ---Adding a load search directory for a dynamic library at runtime
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optiOnadd_rpathdirs)
+---[Open in browser](https://xmake.io/api/description/configuration-option#add-rpathdirs)
 ---
----@param dir string Load search directory for dynamic library
----@param ... string Load search directories for dynamic library
+---@param rpathdirs string|string[] RPATH directory path string or array
+---@param ... any Variable parameters, can pass multiple directory paths
 ---@return nil
-function add_rpathdirs(dir, ...) end
+function add_rpathdirs(rpathdirs, ...) end
 
 ---
 ---**Scoped: option**
 ---
 ---Add c header file detection
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionadd_cincludes)
+---[Open in browser](https://xmake.io/api/description/configuration-option#add-cincludes)
 ---
----@param name string File name
----@param ... string File names
+---@param includes string|string[] Header file name string or array
+---@param ... any Variable parameters, can pass multiple header file names
 ---@return nil
-function add_cincludes(name, ...) end
+function add_cincludes(includes, ...) end
 
 ---
 ---**Scoped: option**
 ---
 ---Add c++ header file detection
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionadd_cxxincludes)
+---[Open in browser](https://xmake.io/api/description/configuration-option#add-cxxincludes)
 ---
----@param name string File name
----@param ... string File names
+---@param includes string|string[] C++ header file name string or array
+---@param ... any Variable parameters, can pass multiple header file names
 ---@return nil
-function add_cxxincludes(name, ...) end
+function add_cxxincludes(includes, ...) end
 
 ---
 ---**Scoped: option**
 ---
 ---Add c type detection
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionadd_ctypes)
+---[Open in browser](https://xmake.io/api/description/configuration-option#add-ctypes)
 ---
----@param type string C type
----@param ... string C types
+---@param types string|string[] C type name string or array
+---@param ... any Variable parameters, can pass multiple type names
 ---@return nil
-function add_ctypes(type, ...) end
+function add_ctypes(types, ...) end
 
 ---
 ---**Scoped: option**
 ---
 ---Adding c++ type detection
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionadd_cxxtypes)
+---[Open in browser](https://xmake.io/api/description/configuration-option#add-cxxtypes)
 ---
----@param type string C++ type
----@param ... string C++ types
+---@param types string|string[] C++ type name string or array
+---@param ... any Variable parameters, can pass multiple type names
 ---@return nil
-function add_cxxtypes(type, ...) end
+function add_cxxtypes(types, ...) end
 
 ---
 ---**Scoped: option**
----
----TODO: add option type
 ---
 ---Add c code fragment detection
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionadd_csnippets)
+---[Open in browser](https://xmake.io/api/description/configuration-option#add-csnippets)
 ---
----@param name string Snippet name
----@param snippet string C snippet
----@param option? any Option
+---@param name string Code snippet name string
+---@param code string C code fragment string
+---@param opt table? Options (-----------, code, tryrun)
 ---@return nil
-function add_csnippets(name, snippet, option) end
+function add_csnippets(name, code, opt) end
 
 ---
 ---**Scoped: option**
 ---
----TODO: add option type
----
 ---Adding c++ code snippet detection
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionadd_cxxsnippets)
+---[Open in browser](https://xmake.io/api/description/configuration-option#add-cxxsnippets)
 ---
----@param name string Snippet name
----@param snippet string C snippet
----@param option? any Option
+---@param name string Code snippet name string
+---@param code string C++ code fragment string
+---@param opt table? Options (-----------, code, tryrun)
 ---@return nil
-function add_cxxsnippets(name, snippet, option) end
+function add_cxxsnippets(name, code, opt) end
 
 ---
 ---**Scoped: option**
 ---
 ---Add c library function detection
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionadd_cfuncs)
+---[Open in browser](https://xmake.io/api/description/configuration-option#add-cfuncs)
 ---
----@param name string C function name
----@param ... string C function names
+---@param funcs string|string[] C function name string or array
+---@param ... any Variable parameters, can pass multiple function names
 ---@return nil
-function add_cfuncs(name, ...) end
+function add_cfuncs(funcs, ...) end
 
 ---
 ---**Scoped: option**
 ---
 ---Add c++ library function detection
 ---
----[Open in browser](https://xmake.io/#/manual/configuration_option?id=optionadd_cxxfuncs)
+---[Open in browser](https://xmake.io/api/description/configuration-option#add-cxxfuncs)
 ---
----@param name string C++ function name
----@param ... string C++ function names
+---@param funcs string|string[] C++ function name string or array
+---@param ... any Variable parameters, can pass multiple function names
 ---@return nil
-function add_cxxfuncs(name, ...) end
+function add_cxxfuncs(funcs, ...) end

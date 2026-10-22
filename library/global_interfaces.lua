@@ -1,196 +1,239 @@
 ---@meta
----[global_interfaces](https://xmake.io/#/manual/global_interfaces)
+---[global_interfaces](https://xmake.io/api/description/global-interfaces)
 
+---
+---**Scoped: global-interfaces**
 ---
 ---Add sub-project files and directories
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=includes)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#includes)
 ---
----@param dir_or_file string Sub-project directory or file
----@param ... string Sub-project directories or files
+---@param paths string|string[] Sub-project file or directory path, supports pattern matching like "**/xmake.lua"
+---@param ... any Variable parameters, can pass multiple paths
+---@param opt table? Options (-----------, paths, rootdir)
 ---@return nil
-function includes(dir_or_file, ...) end
+function includes(paths, ...) end
 
+---
+---**Scoped: global-interfaces**
 ---
 ---Set project name
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=set_project)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#set-project)
 ---
----@param name string Project name
+---@param name string Project name string
 ---@return nil
 function set_project(name) end
 
 ---
+---**Scoped: global-interfaces**
+---
 ---Set project version
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=set_version)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#set-version)
 ---
----@param version string Project version
----@param extra? { build: string } Build version in datetime format, like "%Y%m%d%H%M"
+---@param version string Project version string, e.g. "1.5.1"
+---@param opt table? Options (-----------, version, build)
 ---@return nil
-function set_version(version, extra) end
+function set_version(version, opt) end
 
+---
+---**Scoped: global-interfaces**
 ---
 ---Set minimal xmake version
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=set_xmakever)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#set-xmakever)
 ---
----@param version string Minimal xmake version
+---@param version string Minimum required xmake version string, e.g. "2.1.0"
 ---@return nil
 function set_xmakever(version) end
 
 ---
+---**Scoped: global-interfaces**
+---
 ---Add module directories
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=add_moduledirs)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#add-moduledirs)
 ---
----@param dir string Module directory
----@param ... string Module directories
+---@param dirs string|string[] Module directory path string or array
+---@param ... any Variable parameters, can pass multiple directory paths
 ---@return nil
-function add_moduledirs(dir, ...) end
+function add_moduledirs(dirs, ...) end
 
+---
+---**Scoped: global-interfaces**
 ---
 ---Add plugin directories
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=add_plugindirs)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#add-plugindirs)
 ---
----@param dir string Plugin directory
----@param ... string Plugin directories
+---@param dirs string|string[] Plugin directory path string or array
+---@param ... any Variable parameters, can pass multiple directory paths
 ---@return nil
-function add_plugindirs(dir, ...) end
+function add_plugindirs(dirs, ...) end
 
+---
+---**Scoped: global-interfaces**
 ---
 ---Get the configuration value
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=get_config)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#get-config)
 ---
----@param key string Config key
----@return string value
-function get_config(key) end
+---@param name string Configuration option name string
+---@return nil
+function get_config(name) end
 
+---
+---**Scoped: global-interfaces**
 ---
 ---Set the default configuration value
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=set_config)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#set-config)
 ---
----@param key string Config key
----@param value string Config value
+---@param name string Configuration option name string
+---@param value string|boolean|number Configuration value, can be string, boolean, or number
 ---@return nil
-function set_config(key, value) end
+function set_config(name, value) end
 
+---
+---**Scoped: global-interfaces**
+---
+---Add the required addons
+---
+---[Open in browser](https://xmake.io/api/description/global-interfaces#add-addons)
+---
+---@param addons string|string[] Addon name string or array, supports semantic version like "esp32-devel 1.0.x"
+---@param ... any Variable parameters, can pass multiple addon names
+---@return nil
+function add_addons(addons, ...) end
+
+---
+---**Scoped: global-interfaces**
 ---
 ---Add the required dependency packages
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=add_requires)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#add-requires)
 ---
----@param name string Required dependency package name
----@param ... string Required dependency package names
+---@param packages string|string[] Package name string or array, supports semantic version like "tbox 1.6.*"
+---@param ... any Other package-specific configuration parameters
+---@param opt table? Options (-----------, packages, optional)
 ---@return nil
-function add_requires(name, ...) end
+function add_requires(packages, ...) end
 
 ---
----Add the required dependency packages
----
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=add_requires)
----
----@param name string Required dependency package name
----@param option? RequiresOption Options
----@return nil
-function add_requires(name, option) end
-
+---**Scoped: global-interfaces**
 ---
 ---Set the configuration of the specified dependent package
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=add_requireconfs)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#add-requireconfs)
 ---
----@param name string Package name
----@param option RequireconfsOption Option
+---@param packages string|string[] Package name string or array, supports pattern matching like "*" or "libpng.zlib"
+---@param ... any Other package-specific configuration parameters
+---@param opt table? Options (-----------, packages, configs)
 ---@return nil
-function add_requireconfs(name, option) end
+function add_requireconfs(packages, ...) end
 
+---
+---**Scoped: global-interfaces**
 ---
 ---Add 3rd package repositories
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=add_repositories)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#add-repositories)
 ---
----@param  repo string Repo name and location
----@param ... string Repo names and repo locations
+---@param repos string|string[] Repository name and URL string or array, format: "name url"
+---@param ... any Variable parameters, can pass multiple repositories
+---@param opt table? Options (-----------, repos, rootdir)
 ---@return nil
-function add_repositories(repo, ...) end
+function add_repositories(repos, ...) end
 
 ---
----Add 3rd package repositories
----
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=add_repositories)
----
----@param repo string Repo name and repo location, separated by " "
----@param option? RepositoriesOption Option
----@return nil
-function add_repositories(repo, option) end
-
+---**Scoped: global-interfaces**
 ---
 ---Set the default compilation platform
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=set_defaultplat)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#set-defaultplat)
 ---
----@param platform Platform Default platform
+---@param platform string Default compilation platform name, e.g. "iphoneos", "windows"
 ---@return nil
 function set_defaultplat(platform) end
 
 ---
+---**Scoped: global-interfaces**
+---
 ---Set the default compilation architecture
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=set_defaultarchs)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#set-defaultarchs)
 ---
----@param arch Architecture Default architecture
----@param ... Architecture Default arthitectures
+---@param archs string|string[] Default compilation architecture string or array, supports platform-specific format like "iphoneos
+---@param ... any Variable parameters, can pass multiple architecture specifications
 ---@return nil
-function set_defaultarchs(arch, ...) end
+function set_defaultarchs(archs, ...) end
 
+---
+---**Scoped: global-interfaces**
 ---
 ---Set the default compilation mode
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=set_defaultmode)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#set-defaultmode)
 ---
----@param mode CompilationMode Default compilation mode
+---@param mode string Default compilation mode name, e.g. "release", "debug", "releasedbg"
 ---@return nil
 function set_defaultmode(mode) end
 
 ---
+---**Scoped: global-interfaces**
+---
 ---Set the list of platforms allowed to compile
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=set_allowedplats)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#set-allowedplats)
 ---
----@param platform Platform Allowed platform
----@param ... string Allowed platforms
+---@param platforms string|string[] Allowed compilation platform name string or array
+---@param ... any Variable parameters, can pass multiple platform names
 ---@return nil
-function set_allowedplats(platform, ...) end
+function set_allowedplats(platforms, ...) end
 
+---
+---**Scoped: global-interfaces**
 ---
 ---Set the platform architecture that allows compilation
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=set_allowedarchs)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#set-allowedarchs)
 ---
----@param arch Architecture Allowed architecture
----@param ... Architecture Allowed architectures
+---@param archs string|string[] Allowed compilation architecture string or array, supports platform-specific format like "windows
+---@param ... any Variable parameters, can pass multiple architecture specifications
 ---@return nil
-function set_allowedarchs(arch, ...) end
+function set_allowedarchs(archs, ...) end
 
+---
+---**Scoped: global-interfaces**
 ---
 ---Set the list of allowed compilation modes
 ---
----[Open in browser](https://xmake.io/#/manual/global_interfaces?id=set_allowedmodes)
+---[Open in browser](https://xmake.io/api/description/global-interfaces#set-allowedmodes)
 ---
----@param mode CompilationMode Allowed mode
----@param ... string Allowed modes
+---@param modes string|string[] Allowed compilation mode name string or array
+---@param ... any Variable parameters, can pass multiple mode names
 ---@return nil
-function set_allowedmodes(mode, ...) end
+function set_allowedmodes(modes, ...) end
 
 ---
----Import is mainly used to import xmake's extension class library and some custom class library modules
+---**Scoped: global-interfaces**
 ---
----[Open in browser](https://xmake.io/#/manual/builtin_modules?id=import)
+---Enter namespace
 ---
----@param extension ExtensionModuleAlias
----@return ExtensionModule
-function import(extension) end
+---[Open in browser](https://xmake.io/api/description/global-interfaces#namespace)
+---
+---@param name string Namespace name string
+---@param script function Namespace script function
+---@return nil
+function namespace(name, script) end
+
+---
+---**Scoped: global-interfaces**
+---
+---End namespace
+---
+---[Open in browser](https://xmake.io/api/description/global-interfaces#namespace-end)
+---
+---@return nil
+function namespace_end() end

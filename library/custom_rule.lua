@@ -1,419 +1,354 @@
 ---@meta
----[custom_rule](https://xmake.io/#/manual/custom_rule)
+---[custom_rule](https://xmake.io/api/description/custom-rule)
 
 ---
----Defining rules
+---[Open in browser](https://xmake.io/api/description/custom-rule#rule)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=rule)
----
----@param name string Rule name
+---@param name string Rule name string
 ---@return nil
 function rule(name) end
 
 ---
 ---**Scoped: rule**
 ---
----Adding rule dependencies
+---[Open in browser](https://xmake.io/api/description/custom-rule#add-deps)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleadd_deps)
----
----@param name string Depending rule name
----@param ... string Depending rule names
+---@param deps string|string[] Dependency rule name string or array
+---@param ... any Variable parameters, can pass multiple dependency names
+---@param opt table? Options (-----------, order)
 ---@return nil
-function add_deps(name, ...) end
+function add_deps(deps, ...) end
 
 ---
 ---**Scoped: rule**
 ---
----Adding rule dependencies
+---[Open in browser](https://xmake.io/api/description/custom-rule#add-imports)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleadd_deps)
----
----@param name string Depending rule name
----@param option { order: boolean } Whether to execute in order
+---@param modules string|string[] Module name string or array
+---@param ... any Variable parameters, can pass multiple module names
 ---@return nil
-function add_deps(name, option) end
+function add_imports(modules, ...) end
 
 ---
 ---**Scoped: rule**
 ---
----Add imported modules for all custom scripts
+---[Open in browser](https://xmake.io/api/description/custom-rule#set-extensions)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleadd_imports)
----
----@param name string Module name
----@param ... string Module names
+---@param extensions string|string[] File extension string or array
+---@param ... any Variable parameters, can pass multiple extensions
 ---@return nil
-function add_imports(name, ...) end
+function set_extensions(extensions, ...) end
 
 ---
 ---**Scoped: rule**
 ---
----Setting the file extension type supported by the rule
+---[Open in browser](https://xmake.io/api/description/custom-rule#on-load)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleset_extensions)
----
----@param ext string Extension type
----@param ... string Extension types
+---@param script fun(target: any) Load script function with target parameter
 ---@return nil
-function set_extensions(ext, ...) end
+function on_load(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom load script
+---[Open in browser](https://xmake.io/api/description/custom-rule#on-config)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleon_load)
----
----@param func TargetHook Function to run for custom load
+---@param script fun(target: any) Configuration script function with target parameter
 ---@return nil
-function on_load(func) end
+function on_config(script) end
 
 ---
 ---**Scoped: rule**
 ---
----custom configuration script
+---[Open in browser](https://xmake.io/api/description/custom-rule#on-link)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleon_config)
----
----@param func TargetHook Function to run for custom config
+---@param script fun(target: any) Link script function with target parameter
 ---@return nil
-function on_config(func) end
+function on_link(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom link script
+---[Open in browser](https://xmake.io/api/description/custom-rule#on-build)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleon_link)
----
----@param func TargetHook Function to run when link
+---@param script fun(target: any) Build script function with target parameter
 ---@return nil
-function on_link(func) end
+function on_build(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom compilation script
+---[Open in browser](https://xmake.io/api/description/custom-rule#on-clean)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleon_build)
----
----@param func TargetHook Function to run for custom build
+---@param script fun(target: any) Clean script function with target parameter
 ---@return nil
-function on_build(func) end
+function on_clean(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom cleanup script
+---[Open in browser](https://xmake.io/api/description/custom-rule#on-package)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleon_clean)
----
----@param func TargetHook Function to run for custom clean
+---@param script fun(target: any) Package script function with target parameter
 ---@return nil
-function on_clean(func) end
+function on_package(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom packaging script
+---[Open in browser](https://xmake.io/api/description/custom-rule#on-install)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleon_package)
----
----@param func TargetHook Function to run for custom packaging process
+---@param script fun(target: any) Install script function with target parameter
 ---@return nil
-function on_package(func) end
+function on_install(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom installation script
+---[Open in browser](https://xmake.io/api/description/custom-rule#on-uninstall)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleon_install)
----
----@param func TargetHook Function to run for custom install
+---@param script fun(target: any) Uninstall script function with target parameter
 ---@return nil
-function on_install(func) end
+function on_uninstall(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom Uninstall Script
+---[Open in browser](https://xmake.io/api/description/custom-rule#on-build-file)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleon_uninstall)
----
----@param func TargetHook Function to run for custom uninstall
+---@param script fun(target: any, sourcefile: string, opt?: table) Build file script function with target, sourcefile and opt parameters
 ---@return nil
-function on_uninstall(func) end
+function on_build_file(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Customizing the build script to process one source file at a time
+---batchcmds:call <Badge type="tip" text="v3.1.0" />
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleon_build_file)
+---[Open in browser](https://xmake.io/api/description/custom-rule#on-buildcmd-file)
 ---
----@param func TargetBuildFileHook Function to run for custom build for single file
+---@param script fun(target: any, batchcmds: any, sourcefile: string, opt?: table) Build command file script function with target, batchcmds, sourcefile and opt parameters
 ---@return nil
-function on_build_file(func) end
+function on_buildcmd_file(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom batch compile script, process one source file at a time
+---[Open in browser](https://xmake.io/api/description/custom-rule#on-build-files)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleon_buildcmd_file)
----
----@param func TargetBuildcmdFileHook Function to run for custom build
+---@param script fun(target: any, sourcebatch: any, opt?: table) Build files script function with target, sourcebatch and opt parameters
 ---@return nil
-function on_buildcmd_file(func) end
+function on_build_files(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Customizing the build script to process multiple source files at once
+---[Open in browser](https://xmake.io/api/description/custom-rule#on-buildcmd-files)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleon_build_files)
----
----@param func TargetBuildFilesHook Function to run for custom build for batch files
+---@param script fun(target: any, batchcmds: any, sourcebatch: any, opt?: table) Build command files script function with target, batchcmds, sourcebatch and opt parameters
 ---@return nil
-function on_build_files(func) end
+function on_buildcmd_files(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Customize batch compiling script, process multiple source files at once
+---[Open in browser](https://xmake.io/api/description/custom-rule#before-config)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleon_buildcmd_files)
----
----@param func TargetBuildcmdFilesHook Function to run for custom build
+---@param script fun(target: any) Before config script function with target parameter
 ---@return nil
-function on_buildcmd_files(func) end
+function before_config(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom pre-link script
+---[Open in browser](https://xmake.io/api/description/custom-rule#before-link)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=rulebefore_link)
----
----@param func TargetHook Function to run before linking target
+---@param script fun(target: any) Before link script function with target parameter
 ---@return nil
-function before_link(func) end
+function before_link(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom pre-compilation script
+---[Open in browser](https://xmake.io/api/description/custom-rule#before-build)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=rulebefore_build)
----
----@param func TargetHook Function to run before building target
+---@param script fun(target: any) Before build script function with target parameter
 ---@return nil
-function before_build(func) end
+function before_build(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom pre-cleanup script
+---[Open in browser](https://xmake.io/api/description/custom-rule#before-clean)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=rulebefore_clean)
----
----@param func TargetHook Function to run before cleaning target
+---@param script fun(target: any) Before clean script function with target parameter
 ---@return nil
-function before_clean(func) end
+function before_clean(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom the pre-package script
+---[Open in browser](https://xmake.io/api/description/custom-rule#before-package)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=rulebefore_package)
----
----@param func TargetHook Function to run before packaging target
+---@param script fun(target: any) Before package script function with target parameter
 ---@return nil
-function before_package(func) end
+function before_package(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom pre-installation script
+---[Open in browser](https://xmake.io/api/description/custom-rule#before-install)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=rulebefore_install)
----
----@param func TargetHook Function to run before installing target
+---@param script fun(target: any) Before install script function with target parameter
 ---@return nil
-function before_install(func) end
+function before_install(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom pre-uninstall script
+---[Open in browser](https://xmake.io/api/description/custom-rule#before-uninstall)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=rulebefore_uninstall)
----
----@param func TargetHook Function to run before uninstalling target
+---@param script fun(target: any) Before uninstall script function with target parameter
 ---@return nil
-function before_uninstall(func) end
+function before_uninstall(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom pre-compilation script to process one source file at a time
+---[Open in browser](https://xmake.io/api/description/custom-rule#before-build-file)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=rulebefore_build_file)
----
----@param func TargetBuildFileHook Function to run before building single file
+---@param script fun(target: any, sourcefile: string, opt?: table) Before build file script function with target, sourcefile and opt parameters
 ---@return nil
-function before_build_file(func) end
+function before_build_file(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Customize the pre-compilation batch script, process one source file at a time
+---[Open in browser](https://xmake.io/api/description/custom-rule#before-buildcmd-file)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=rulebefore_buildcmd_file)
----
----@param func TargetBuildcmdFileHook Function to run before building
+---@param script fun(target: any, batchcmds: any, sourcefile: string, opt?: table) Before build command file script function with target, batchcmds, sourcefile and opt parameters
 ---@return nil
-function before_buildcmd_file(func) end
+function before_buildcmd_file(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Customize pre-compilation scripts to process multiple source files at once
+---[Open in browser](https://xmake.io/api/description/custom-rule#before-build-files)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=rulebefore_build_files)
----
----@param func TargetBuildFilesHook Function to run before building batch files
+---@param script fun(target: any, sourcebatch: any, opt?: table) Before build files script function with target, sourcebatch and opt parameters
 ---@return nil
-function before_build_files(func) end
+function before_build_files(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Customize the pre-compilation batch script to process multiple source files at once
+---[Open in browser](https://xmake.io/api/description/custom-rule#before-buildcmd-files)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=rulebefore_buildcmd_files)
----
----@param func TargetBuildcmdFilesHook Function to run before building
+---@param script fun(target: any, batchcmds: any, sourcebatch: any, opt?: table) Before build command files script function with target, batchcmds, sourcebatch and opt parameters
 ---@return nil
-function before_buildcmd_files(func) end
+function before_buildcmd_files(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom post-linking script
+---[Open in browser](https://xmake.io/api/description/custom-rule#after-config)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleafter_link)
----
----@param func TargetHook Function to run after linking target
+---@param script fun(target: any) After config script function with target parameter
 ---@return nil
-function after_link(func) end
+function after_config(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom post-compilation script
+---[Open in browser](https://xmake.io/api/description/custom-rule#after-link)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleafter_build)
----
----@param func TargetHook Function to run after building target
+---@param script fun(target: any) After link script function with target parameter
 ---@return nil
-function after_build(func) end
+function after_link(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom post-cleaning script
+---[Open in browser](https://xmake.io/api/description/custom-rule#after-build)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleafter_clean)
----
----@param func TargetHook Function to run after cleaning target
+---@param script fun(target: any) After build script function with target parameter
 ---@return nil
-function after_clean(func) end
+function after_build(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom post-packaging script
+---[Open in browser](https://xmake.io/api/description/custom-rule#after-clean)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleafter_package)
----
----@param func TargetHook Function to run after packaging target
+---@param script fun(target: any) After clean script function with target parameter
 ---@return nil
-function after_package(func) end
+function after_clean(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom post-installation script
+---[Open in browser](https://xmake.io/api/description/custom-rule#after-package)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleafter_install)
----
----@param func TargetHook Function to run after installing target
+---@param script fun(target: any) After package script function with target parameter
 ---@return nil
-function after_install(func) end
+function after_package(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom post-uninstallation Script
+---[Open in browser](https://xmake.io/api/description/custom-rule#after-install)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleafter_uninstall)
----
----@param func TargetHook Function to run after uninstalling target
+---@param script fun(target: any) After install script function with target parameter
 ---@return nil
-function after_uninstall(func) end
+function after_install(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Custom post-compilation scripts to process one source file at a time
+---[Open in browser](https://xmake.io/api/description/custom-rule#after-uninstall)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleafter_build_file)
----
----@param func TargetBuildFileHook Function to run after building single file
+---@param script fun(target: any) After uninstall script function with target parameter
 ---@return nil
-function after_build_file(func) end
+function after_uninstall(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Customize the compiled batch script, process one source file at a time
+---[Open in browser](https://xmake.io/api/description/custom-rule#after-build-file)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleafter_buildcmd_file)
----
----@param func TargetBuildcmdFileHook Function to run after building
+---@param script fun(target: any, sourcefile: string, opt?: table) After build file script function with target, sourcefile and opt parameters
 ---@return nil
-function after_buildcmd_file(func) end
+function after_build_file(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Customize the compiled script to process multiple source files at once
+---[Open in browser](https://xmake.io/api/description/custom-rule#after-buildcmd-file)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleafter_build_files)
----
----@param func TargetBuildFilesHook Function to run after building batch files
+---@param script fun(target: any, batchcmds: any, sourcefile: string, opt?: table) After build command file script function with target, batchcmds, sourcefile and opt parameters
 ---@return nil
-function after_build_files(func) end
+function after_buildcmd_file(script) end
 
 ---
 ---**Scoped: rule**
 ---
----Customize the compiled batch script to process multiple source files at once
+---[Open in browser](https://xmake.io/api/description/custom-rule#after-build-files)
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=ruleafter_buildcmd_files)
----
----@param func TargetBuildcmdFilesHook Function to run after building
+---@param script fun(target: any, sourcebatch: any, opt?: table) After build files script function with target, sourcebatch and opt parameters
 ---@return nil
-function after_buildcmd_files(func) end
+function after_build_files(script) end
 
 ---
----End definition rules
+---**Scoped: rule**
 ---
----[Open in browser](https://xmake.io/#/manual/custom_rule?id=rule_end)
+---[Open in browser](https://xmake.io/api/description/custom-rule#after-buildcmd-files)
+---
+---@param script fun(target: any, batchcmds: any, sourcebatch: any, opt?: table) After build command files script function with target, batchcmds, sourcebatch and opt parameters
+---@return nil
+function after_buildcmd_files(script) end
+
+---
+---[Open in browser](https://xmake.io/api/description/custom-rule#rule-end)
 ---
 ---@return nil
 function rule_end() end

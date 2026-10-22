@@ -1,159 +1,281 @@
 ---@meta
----[target_instance](https://xmake.io/#/manual/target_instance)
+---[target_instance](https://xmake.io/api/scripts/target-instance)
 
 ---@class Target
 local Target = {}
 
 ---
----Get the name of the target
+---- Get the name of the target
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetname)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-name)
 ---
 ---@return string
 function Target:name() end
 
 ---
----Get the values of the target by name
+---- Get the values of the target by name
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetget)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-get)
 ---
----@param key string Key
----@return string
+---@param key string Configuration key name
+---@return any
 function Target:get(key) end
 
 ---
----Set the values of the target by name (If you just want to add values use [target:add](#targetadd))
+---- Set the values of the target by name
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetset)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-set)
 ---
----@param key string Key
----@param value any Value
+---@param key string Configuration key name
+---@param value any Configuration value
 ---@return nil
 function Target:set(key, value) end
 
 ---
----Add to the values of the target by name
+---- Add to the values of the target by name
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetadd)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-add)
 ---
----@param key string Key
----@param value any Value
+---@param key string Configuration key name
+---@param value any Value to add
 ---@return nil
 function Target:add(key, value) end
 
 ---
----Get the target program type
+---- Get the target program type
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetkind)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-kind)
 ---
----@return TargetKind
+---@return string
 function Target:kind() end
 
 ---
----Whether the current platform is one of the given platforms
+---- Whether the current platform is one of the given platforms
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetis_plat)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-is-plat)
 ---
----@param platform Platform Platform name
----@param ... Platform Platform names
+---@param plat string Platform name
 ---@return boolean
-function Target:is_plat(platform, ...) end
+function Target:is_plat(plat) end
 
 ---
----Is the current architecture one of the given architectures
+---- Is the current architecture one of the given architectures
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetis_arch)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-is-arch)
 ---
----@param arch Architecture Architecture name
----@param ... Architecture Architecture names
+---@param arch string Architecture name
 ---@return boolean
-function Target:is_arch(arch, ...) end
+function Target:is_arch(arch) end
 
 ---
----Get the target file path
+---- Is the current architecture a 64-bit one
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targettargetfile)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-is-arch64)
+---
+---@return boolean
+function Target:is_arch64() end
+
+---
+---- Get the target file path
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-targetfile)
 ---
 ---@return string
 function Target:targetfile() end
 
 ---
----Get the output directory of the target file
+---- Get the artifact file of the target
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targettargetdir)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-artifactfile)
+---
+---@param kind string Target kind
+---@return string
+function Target:artifactfile(kind) end
+
+---
+---- Get the output directory of the target file
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-targetdir)
 ---
 ---@return string
 function Target:targetdir() end
 
 ---
----Get the base name of the target file
+---- Get the base name of the target file
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetbasename)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-basename)
 ---
 ---@return string
 function Target:basename() end
 
 ---
----Get the target file name
+---- Get the target file name
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetfilename)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-filename)
 ---
 ---@return string
 function Target:filename() end
 
 ---
----Get the installation directory of the target file
+---- Get the symbol file path of the target
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetinstalldir)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-symbolfile)
+---
+---@return string
+function Target:symbolfile() end
+
+---
+---- Get the installation directory of the target file
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-installdir)
 ---
 ---@return string
 function Target:installdir() end
 
 ---
----Get auto-generated catalog
+---- Get auto-generated catalog
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetautogendir)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-autogendir)
 ---
 ---@return string
 function Target:autogendir() end
 
 ---
----Get the object file path
+---- Get the object file path
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetobjectfile)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-objectfile)
 ---
----@param source string Source file name
+---@param sourcefile string Source file path
 ---@return string
-function Target:objectfile(source) end
+function Target:objectfile(sourcefile) end
 
 ---
----Get all source files
+---- Get all source files
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetsourcebatches)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-sourcebatches)
 ---
----@return { [string]: SourceBatch }
+---@return table
 function Target:sourcebatches() end
 
 ---
----Get a list of all object files
+---- Get a list of all object files
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetobjectfiles)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-objectfiles)
 ---
 ---@return string[]
 function Target:objectfiles() end
 
 ---
----Get a list of all header files
+---- Get a list of all header files
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetheaderfiles)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-headerfiles)
 ---
 ---@return string[]
 function Target:headerfiles() end
 
 ---
----Get the xmake.lua directory where the target definition is located
+---- Get the xmake.lua directory where the target definition is located
 ---
----[Open in browser](https://xmake.io/#/manual/target_instance?id=targetscriptdir)
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-scriptdir)
 ---
 ---@return string
 function Target:scriptdir() end
+
+---
+---- Check whether the target compilation configuration can obtain the given C++ function
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-has-cxxfuncs)
+---
+---@param funcs string|table Function name or function name list
+---@return boolean
+function Target:has_cxxfuncs(funcs) end
+
+---
+---- Check whether the target compilation configuration can obtain the given C type
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-has-ctypes)
+---
+---@param types string|table Type name or type name list
+---@return boolean
+function Target:has_ctypes(types) end
+
+---
+---- Check whether the target compilation configuration can get the given C++ type
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-has-cxxtypes)
+---
+---@param types string|table Type name or type name list
+---@return boolean
+function Target:has_cxxtypes(types) end
+
+---
+---- Check whether the target compilation configuration can obtain the given C compilation flags
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-has-cflags)
+---
+---@param flags string|table Compilation flags or flag list
+---@return boolean
+function Target:has_cflags(flags) end
+
+---
+---- Check whether the target compilation configuration can obtain the given C++ compilation flags
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-has-cxxflags)
+---
+---@param flags string|table Compilation flags or flag list
+---@return boolean
+function Target:has_cxxflags(flags) end
+
+---
+---- Check whether the target compilation configuration can obtain the given C header file
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-has-cincludes)
+---
+---@param includes string|table Include file or include file list
+---@return boolean
+function Target:has_cincludes(includes) end
+
+---
+---- Check whether the target compilation configuration can obtain the given C++ header file
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-has-cxxincludes)
+---
+---@param includes string|table Include file or include file list
+---@return boolean
+function Target:has_cxxincludes(includes) end
+
+---
+---- Detect whether a given piece of C code can be compiled and linked
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-check-csnippets)
+---
+---@param snippets string|table Code snippet or code snippet list
+---@return boolean
+function Target:check_csnippets(snippets) end
+
+---
+---- Detect if a given piece of C++ code can be compiled and linked
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-check-cxxsnippets)
+---
+---@param snippets string|table Code snippet or code snippet list
+---@return boolean
+function Target:check_cxxsnippets(snippets) end
+
+---
+---- Detect type size
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-check-sizeof)
+---
+---@param types string|table Type name or type name list
+---@return number|nil
+function Target:check_sizeof(types) end
+
+---
+---- Detect if specified C/C++ compiler feature
+---
+---[Open in browser](https://xmake.io/api/scripts/target-instance#target-has-features)
+---
+---@param features string|table Feature name or feature name list
+---@return boolean
+function Target:has_features(features) end

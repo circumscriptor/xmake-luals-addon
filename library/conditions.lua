@@ -1,108 +1,145 @@
 ---@meta
----[conditions](https://xmake.io/#/manual/conditions)
+---[conditions](https://xmake.io/api/description/conditions)
 
+---
+---**Scoped: conditions**
 ---
 ---Is the current compilation target system
 ---
----[Open in browser](https://xmake.io/#/manual/conditions?id=is_os)
+---[Open in browser](https://xmake.io/api/description/conditions#is-os)
 ---
----@param os OperationSystem Checked operation system
----@return boolean
-function is_os(os) end
+---@param os string Operating system name string
+---@param ... any Variable parameters, can pass multiple OS names
+---@return nil
+function is_os(os, ...) end
 
+---
+---**Scoped: conditions**
 ---
 ---Is the current compilation architecture
 ---
----[Open in browser](https://xmake.io/#/manual/conditions?id=is_arch)
+---[Open in browser](https://xmake.io/api/description/conditions#is-arch)
 ---
----@param arch Architecture Checked architecture
----@param ... Architecture Checked architectures
----@return boolean
+---@param arch string Architecture name string
+---@param ... any Variable parameters, can pass multiple architecture names
+---@return nil
 function is_arch(arch, ...) end
 
 ---
+---**Scoped: conditions**
+---
 ---Is the current compilation platform
 ---
----[Open in browser](https://xmake.io/#/manual/conditions?id=is_plat)
+---[Open in browser](https://xmake.io/api/description/conditions#is-plat)
 ---
----@param platform Platform Checked platform
----@param ... Platform Checked platforms
----@return boolean
-function is_plat(platform, ...) end
+---@param plat string Platform name string
+---@param ... any Variable parameters, can pass multiple platform names
+---@return nil
+function is_plat(plat, ...) end
 
+---
+---**Scoped: conditions**
 ---
 ---Is the current compilation host system
 ---
----[Open in browser](https://xmake.io/#/manual/conditions?id=is_host)
+---[Open in browser](https://xmake.io/api/description/conditions#is-host)
 ---
----@param host Host Checked host
----@return boolean
-function is_host(host) end
+---@param host string Host system name string
+---@param ... any Variable parameters, can pass multiple host names
+---@return nil
+function is_host(host, ...) end
 
+---
+---**Scoped: conditions**
 ---
 ---Determine the subsystem environment of the current host
 ---
----[Open in browser](https://xmake.io/#/manual/conditions?id=is_subhost)
+---[Open in browser](https://xmake.io/api/description/conditions#is-subhost)
 ---
----@param subhost Subhost Checked subhost
----@param ... Subhost Checked subhosts
----@return boolean
+---@param subhost string Subsystem name string
+---@param ... any Variable parameters, can pass multiple subsystem names
+---@return nil
 function is_subhost(subhost, ...) end
 
 ---
+---**Scoped: conditions**
+---
 ---Determine the architecture of the current host subsystem environment
 ---
----[Open in browser](https://xmake.io/#/manual/conditions?id=is_subarch)
+---[Open in browser](https://xmake.io/api/description/conditions#is-subarch)
 ---
----@param subarch Subarchitecture Checked subarch
----@param ... Subarchitecture Checked architectures of current host subsystem environment
----@return boolean
+---@param subarch string Subsystem architecture name string
+---@param ... any Variable parameters, can pass multiple subsystem architecture names
+---@return nil
 function is_subarch(subarch, ...) end
 
 ---
+---**Scoped: conditions**
+---
+---Determines whether the current platform is cross-compiled or not.
+---
+---[Open in browser](https://xmake.io/api/description/conditions#is-cross)
+---
+---@return nil
+function is_cross() end
+
+---
+---**Scoped: conditions**
+---
 ---Is the current compilation mode
 ---
----[Open in browser](https://xmake.io/#/manual/conditions?id=is_mode)
+---[Open in browser](https://xmake.io/api/description/conditions#is-mode)
 ---
----@param mode CompilationMode Checked compilation mode
----@return boolean
-function is_mode(mode) end
+---@param mode string Compilation mode name string
+---@param ... any Variable parameters, can pass multiple mode names
+---@return nil
+function is_mode(mode, ...) end
 
+---
+---**Scoped: conditions**
 ---
 ---Is the current target kind
 ---
----[Open in browser](https://xmake.io/#/manual/conditions?id=is_kind)
+---[Open in browser](https://xmake.io/api/description/conditions#is-kind)
 ---
----@param kind TargetKind Checked target kind
----@return boolean
-function is_kind(kind) end
+---@param kind string Target kind name string
+---@param ... any Variable parameters, can pass multiple kind names
+---@return nil
+function is_kind(kind, ...) end
 
+---
+---**Scoped: conditions**
 ---
 ---Is the given config values?
 ---
----[Open in browser](https://xmake.io/#/manual/conditions?id=is_config)
+---[Open in browser](https://xmake.io/api/description/conditions#is-config)
 ---
----@param key string Checked config key
----@param value string Checked config value
----@param ... string Checked config values
----@return boolean
-function is_config(key, value, ...) end
+---@param name string Configuration option name string
+---@param values string Configuration value string
+---@param ... any Variable parameters, can pass multiple values
+---@return nil
+function is_config(name, values, ...) end
 
+---
+---**Scoped: conditions**
 ---
 ---Is the given configs enabled?
 ---
----[Open in browser](https://xmake.io/#/manual/conditions?id=has_config)
+---[Open in browser](https://xmake.io/api/description/conditions#has-config)
 ---
----@pram key string Checked config key
----@param ... string Checked config keys
----@return boolean
-function has_config(key, ...) end
+---@param configs string Configuration name string
+---@param ... any Variable parameters, can pass multiple configuration names
+---@return nil
+function has_config(configs, ...) end
 
+---
+---**Scoped: conditions**
 ---
 ---Is the given dependent package enabled?
 ---
----[Open in browser](https://xmake.io/#/manual/conditions?id=has_package)
+---[Open in browser](https://xmake.io/api/description/conditions#has-package)
 ---
----@param package string Checked package name
----@return boolean
-function has_package(package) end
+---@param packages string Package name string
+---@param ... any Variable parameters, can pass multiple package names
+---@return nil
+function has_package(packages, ...) end
