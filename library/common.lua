@@ -192,3 +192,5 @@
 
 ---@class PrepareFilesOption
 ---@field jobgraph boolean
+
+---@class Rect

@@ -10,7 +10,7 @@ local Window = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/window#window-new)
 ---
 ---@param name string Required. Window name string
----@param bounds rect Required. Window bounds rectangle
+---@param bounds Rect Required. Window bounds rectangle
 ---@param title? string Optional. Window title string (centered at top)
 ---@param shadow? boolean Optional. Show shadow effect (`true` or `false`, default `false`)
 ---@return Window
@@ -61,7 +61,7 @@ function Window:border() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/window#window-on-event)
 ---
----@param e event Required. Event object
+---@param e Event Required. Event object
 ---@return any
 function Window:on_event(e) end
 

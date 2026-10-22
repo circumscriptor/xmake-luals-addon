@@ -10,7 +10,7 @@ local Choicedialog = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/choicedialog#choicedialog-new)
 ---
 ---@param name string Required. Dialog name string
----@param bounds rect Required. Dialog bounds rectangle
+---@param bounds Rect Required. Dialog bounds rectangle
 ---@param title string Required. Dialog title string
 ---@return Choicedialog
 function Choicedialog:new(name, bounds, title) end
@@ -36,6 +36,6 @@ function Choicedialog:scrollbar_box() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/choicedialog#choicedialog-on-event)
 ---
----@param e event Required. Event object
+---@param e Event Required. Event object
 ---@return any
 function Choicedialog:on_event(e) end

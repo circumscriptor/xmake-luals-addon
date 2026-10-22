@@ -10,7 +10,7 @@ local Statusbar = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/statusbar#statusbar-new)
 ---
 ---@param name string Required. Status bar name string
----@param bounds rect Required. Status bar bounds rectangle
+---@param bounds Rect Required. Status bar bounds rectangle
 ---@return Statusbar
 function Statusbar:new(name, bounds) end
 

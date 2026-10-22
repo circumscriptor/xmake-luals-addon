@@ -1,9 +1,30 @@
 """Rules that map documentation parameter names and types to xmake types."""
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from typing import Final
 
 from .models import DocParam
+
+# Lua/LuaLS primitives must never be shadowed by documentation module names.
+LUA_BUILTIN_TYPES: Final[frozenset[str]] = frozenset(
+    {
+        "any",
+        "boolean",
+        "false",
+        "function",
+        "integer",
+        "never",
+        "nil",
+        "number",
+        "self",
+        "string",
+        "table",
+        "thread",
+        "true",
+        "unknown",
+        "userdata",
+    }
+)
 
 # Parameter name to documented schema type.
 TYPE_MAPPINGS: Final[dict[str, str]] = {
@@ -56,3 +77,24 @@ def map_parameter_types(params: Iterable[DocParam]) -> None:
             )
 
         previous_type = param.type_name
+
+
+def normalise_type_aliases(type_name: str, aliases: Mapping[str, str]) -> str:
+    """Replace documentation type names with their canonical schema classes.
+
+    Documentation refers to instance modules by their lowercase module name
+    (for example ``bytes`` or ``event``), while generated classes use their
+    canonical names (``Bytes`` and ``Event``). Only complete union members are
+    replaced so function signatures such as ``fun(target: any)`` stay intact.
+    """
+    if not type_name or not aliases:
+        return type_name
+
+    members: list[str] = []
+    for member in type_name.split("|"):
+        stripped = member.strip()
+        suffix = "[]" if stripped.endswith("[]") else ""
+        base = stripped[: -len(suffix)] if suffix else stripped
+        canonical = aliases.get(base.casefold())
+        members.append(f"{canonical}{suffix}" if canonical else stripped)
+    return "|".join(members)

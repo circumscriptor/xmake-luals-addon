@@ -189,6 +189,23 @@ def test_scoped_override_uses_the_matching_scope(tmp_path):
     assert rule_function.params[1].type_name == "string|RuleDependencyOption"
 
 
+def test_patcher_normalises_documentation_type_aliases(tmp_path):
+    function = _function(
+        "recv",
+        params=[DocParam("buff", "bytes"), DocParam("event", "event|nil")],
+    )
+
+    DocPatcher(
+        str(tmp_path / "missing.json"),
+        type_aliases={"bytes": "Bytes", "event": "Event"},
+    ).patch_function(function, False)
+
+    assert [param.type_name for param in function.params] == [
+        "Bytes",
+        "Event|nil",
+    ]
+
+
 def test_rejects_unknown_config_type(tmp_path):
     overrides = _write_overrides(
         tmp_path,

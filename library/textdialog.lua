@@ -10,7 +10,7 @@ local Textdialog = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/textdialog#textdialog-new)
 ---
 ---@param name string Required. Dialog name string
----@param bounds rect Required. Dialog bounds rectangle
+---@param bounds Rect Required. Dialog bounds rectangle
 ---@param title? string Optional. Dialog title string
 ---@return Textdialog
 function Textdialog:new(name, bounds, title) end
@@ -46,6 +46,6 @@ function Textdialog:option_set(name, value) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/textdialog#textdialog-on-event)
 ---
----@param e event Required. Event object
+---@param e Event Required. Event object
 ---@return any
 function Textdialog:on_event(e) end

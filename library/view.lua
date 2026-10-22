@@ -10,7 +10,7 @@ local View = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/view#view-new)
 ---
 ---@param name string Required. View name string
----@param bounds rect Required. View bounds rectangle
+---@param bounds Rect Required. View bounds rectangle
 ---@param ... any Variable arguments
 ---@return View
 function View:new(name, bounds, ...) end
@@ -36,7 +36,7 @@ function View:bounds() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/view#view-bounds-set)
 ---
----@param bounds rect Required. New bounds rectangle
+---@param bounds Rect Required. New bounds rectangle
 ---@return any
 function View:bounds_set(bounds) end
 
@@ -226,6 +226,6 @@ function View:on_draw(transparent) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/view#view-on-event)
 ---
----@param e event Required. Event object
+---@param e Event Required. Event object
 ---@return any
 function View:on_event(e) end

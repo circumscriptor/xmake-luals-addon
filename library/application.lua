@@ -45,7 +45,7 @@ function Application:background_set(color) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/application#application-insert)
 ---
----@param view view Required. View to insert
+---@param view View Required. View to insert
 ---@param opt? table Optional. Options table, supports: `{centerx = true, centery = true}`
 ---@return any
 function Application:insert(view, opt) end

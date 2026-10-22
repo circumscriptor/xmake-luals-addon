@@ -319,6 +319,9 @@
             "fields": {
                 "jobgraph": "boolean"
             }
+        },
+        "Rect": {
+            "fields": {}
         }
     }
 }

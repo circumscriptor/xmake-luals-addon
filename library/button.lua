@@ -10,7 +10,7 @@ local Button = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/button#button-new)
 ---
 ---@param name string Required. Button name string
----@param bounds rect Required. Button bounds rectangle
+---@param bounds Rect Required. Button bounds rectangle
 ---@param text string Required. Button text to display
 ---@param on_action? fun(target: any, ...: any) Optional. Function to call when button is activated
 ---@return Button
@@ -65,7 +65,7 @@ function Button:action_set(action_type, handler) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/button#button-on-event)
 ---
----@param e event Required. Event object
+---@param e Event Required. Event object
 ---@return any
 function Button:on_event(e) end
 

@@ -16,6 +16,7 @@ from .parser import MarkdownParser
 from .patch import DocPatcher
 from .repo import RepoManager
 from .schema import SchemaManager
+from .type_mapping import LUA_BUILTIN_TYPES
 from .xmake import XmakeInspector
 
 logger = logging.getLogger(__name__)
@@ -50,19 +51,27 @@ class GenerationPipeline:
     def run(self) -> GenerationStats:
         """Run all generation steps and return a summary."""
         common_lua_path, schema_manager = self._generate_schema()
-        patcher = DocPatcher(
-            self.options.overrides_file,
-            known_types=schema_manager.class_names,
-        )
         repo_root, doc_files = self._prepare_docs()
 
         parser = MarkdownParser()
+        documents = [
+            (file_path, parser.parse_file(file_path, repo_root))
+            for file_path in doc_files
+        ]
+        type_aliases = self._build_type_aliases(
+            documents,
+            schema_manager.class_names,
+        )
+        patcher = DocPatcher(
+            self.options.overrides_file,
+            known_types=schema_manager.class_names,
+            type_aliases=type_aliases,
+        )
         generator = LuaLSGenerator(self.options.output_dir)
 
         total_functions = 0
         module_count = 0
-        for file_path in doc_files:
-            doc_file = parser.parse_file(file_path, repo_root)
+        for _, doc_file in documents:
             if not doc_file.has_functions:
                 self._remove_stale_output(generator, doc_file)
                 continue
@@ -79,6 +88,33 @@ class GenerationPipeline:
             functions=total_functions,
             common_lua_path=common_lua_path,
         )
+
+    @staticmethod
+    def _build_type_aliases(
+        documents: list[tuple[str, DocFile]],
+        class_names: set[str],
+    ) -> dict[str, str]:
+        """Map lowercase documentation module types to generated classes."""
+        aliases = {
+            name.casefold(): name
+            for name in class_names
+            if name.casefold() not in LUA_BUILTIN_TYPES
+        }
+        for _, doc_file in documents:
+            if not doc_file.is_instance or not doc_file.class_name:
+                continue
+
+            class_name = doc_file.class_name
+            candidates = [class_name, doc_file.file_base]
+            for suffix in ("_instance", "-instance"):
+                if doc_file.file_base.endswith(suffix):
+                    candidates.append(doc_file.file_base[: -len(suffix)])
+
+            for candidate in candidates:
+                alias = candidate.casefold()
+                if alias not in LUA_BUILTIN_TYPES:
+                    aliases[alias] = class_name
+        return aliases
 
     @staticmethod
     def _remove_stale_output(generator: LuaLSGenerator, doc_file: DocFile) -> None:

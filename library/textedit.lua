@@ -10,7 +10,7 @@ local Textedit = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/textedit#textedit-new)
 ---
 ---@param name string Required. Text editor name string
----@param bounds rect Required. Text editor bounds rectangle
+---@param bounds Rect Required. Text editor bounds rectangle
 ---@param text? string Optional. Initial text content
 ---@return Textedit
 function Textedit:new(name, bounds, text) end
@@ -29,6 +29,6 @@ function Textedit:text_set(text) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/textedit#textedit-on-event)
 ---
----@param e event Required. Event object
+---@param e Event Required. Event object
 ---@return any
 function Textedit:on_event(e) end

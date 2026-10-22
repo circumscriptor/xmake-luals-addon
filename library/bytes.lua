@@ -12,7 +12,7 @@ local Bytes = {}
 ---@param size number Required. Size of the slice
 ---@param initval number|string Optional. Initial value for buffer (number or character)
 ---@param str string Required. String to convert to bytes object
----@param buffer bytes Required. Source bytes buffer for slice
+---@param buffer Bytes Required. Source bytes buffer for slice
 ---@param offset number Required. Offset position in source buffer
 ---@return Bytes
 function bytes(size, initval, str, buffer, offset) end
@@ -58,7 +58,7 @@ function Bytes:clone() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/bytes#bytes-copy)
 ---
----@param src string|bytes Source data, can be string or bytes object
+---@param src string|Bytes Source data, can be string or bytes object
 ---@param start number Source data start position (optional, default 1)
 ---@param last number Source data end position (optional, default source data size)
 ---@return any
@@ -70,7 +70,7 @@ function Bytes:copy(src, start, last) end
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/bytes#bytes-copy2)
 ---
 ---@param pos number Target position
----@param src string|bytes Source data, can be string or bytes object
+---@param src string|Bytes Source data, can be string or bytes object
 ---@param start number Source data start position (optional)
 ---@param last number Source data end position (optional)
 ---@return any

@@ -10,7 +10,7 @@ local Dialog = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/dialog#dialog-new)
 ---
 ---@param name string Required. Dialog name string
----@param bounds rect Required. Dialog bounds rectangle
+---@param bounds Rect Required. Dialog bounds rectangle
 ---@param title string Required. Dialog title string
 ---@return Dialog
 function Dialog:new(name, bounds, title) end
@@ -75,7 +75,7 @@ function Dialog:quit() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/dialog#dialog-on-event)
 ---
----@param e event Required. Event object
+---@param e Event Required. Event object
 ---@return any
 function Dialog:on_event(e) end
 

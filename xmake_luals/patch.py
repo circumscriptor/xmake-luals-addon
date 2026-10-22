@@ -6,7 +6,7 @@ from typing import Any
 
 from .models import DocFile, DocFunction, DocParam
 from .return_inference import infer_instance_return
-from .type_mapping import map_parameter_types
+from .type_mapping import map_parameter_types, normalise_type_aliases
 
 
 class DocPatcher:
@@ -16,9 +16,11 @@ class DocPatcher:
         self,
         overrides_path: str = "overrides.json",
         known_types: set[str] | None = None,
+        type_aliases: dict[str, str] | None = None,
     ):
         self.overrides = self._load_overrides(overrides_path)
         self.known_types = known_types
+        self.type_aliases = type_aliases or {}
 
     @staticmethod
     def _load_overrides(path: str) -> dict[str, Any]:
@@ -53,6 +55,19 @@ class DocPatcher:
             infer_instance_return(function.api_id) if is_instance else "nil"
         )
         self._apply_override(function, scope)
+        self._normalise_type_aliases(function)
+
+    def _normalise_type_aliases(self, function: DocFunction) -> None:
+        """Replace lowercase documentation type names with schema classes."""
+        if not self.type_aliases:
+            return
+        for param in function.params:
+            param.type_name = normalise_type_aliases(
+                param.type_name, self.type_aliases
+            )
+        function.return_type = normalise_type_aliases(
+            function.return_type, self.type_aliases
+        )
 
     def _apply_override(
         self,

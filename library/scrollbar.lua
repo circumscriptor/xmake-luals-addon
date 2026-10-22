@@ -10,7 +10,7 @@ local Scrollbar = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/scrollbar#scrollbar-new)
 ---
 ---@param name string Required. Scrollbar name string
----@param bounds rect Required. Scrollbar bounds rectangle
+---@param bounds Rect Required. Scrollbar bounds rectangle
 ---@param vertical? boolean Optional. Whether it's a vertical scrollbar, defaults to `true`
 ---@return Scrollbar
 function Scrollbar:new(name, bounds, vertical) end
@@ -114,6 +114,6 @@ function Scrollbar:scroll(steps) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/scrollbar#scrollbar-on-event)
 ---
----@param e event Required. Event object
+---@param e Event Required. Event object
 ---@return any
 function Scrollbar:on_event(e) end

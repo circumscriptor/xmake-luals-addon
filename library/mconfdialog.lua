@@ -10,7 +10,7 @@ local Mconfdialog = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/mconfdialog#mconfdialog-new)
 ---
 ---@param name string Required. Dialog name string
----@param bounds rect Required. Dialog bounds rectangle
+---@param bounds Rect Required. Dialog bounds rectangle
 ---@param title string Required. Dialog title string
 ---@return Mconfdialog
 function Mconfdialog:new(name, bounds, title) end
@@ -70,6 +70,6 @@ function Mconfdialog:show_exit(message) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/mconfdialog#mconfdialog-on-event)
 ---
----@param e event Required. Event object
+---@param e Event Required. Event object
 ---@return any
 function Mconfdialog:on_event(e) end

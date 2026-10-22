@@ -10,7 +10,7 @@ local Boxdialog = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/boxdialog#boxdialog-new)
 ---
 ---@param name string Required. Dialog name string
----@param bounds rect Required. Dialog bounds rectangle
+---@param bounds Rect Required. Dialog bounds rectangle
 ---@param title string Required. Dialog title string
 ---@return Boxdialog
 function Boxdialog:new(name, bounds, title) end

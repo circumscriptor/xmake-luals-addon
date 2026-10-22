@@ -10,7 +10,7 @@ local Choicebox = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/choicebox#choicebox-new)
 ---
 ---@param name string Required. List box name string
----@param bounds rect Required. List box bounds rectangle
+---@param bounds Rect Required. List box bounds rectangle
 ---@return Choicebox
 function Choicebox:new(name, bounds) end
 
@@ -46,7 +46,7 @@ function Choicebox:scroll(count) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/choicebox#choicebox-on-event)
 ---
----@param e event Required. Event object
+---@param e Event Required. Event object
 ---@return any
 function Choicebox:on_event(e) end
 

@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from xmake_luals.models import DocFile
 from xmake_luals.pipeline import GenerationOptions, GenerationPipeline
 
 
@@ -48,6 +49,37 @@ def test_pipeline_generates_definitions_from_docs(
     assert "---@class Bytes\nlocal Bytes = {}" in bytes_page
     assert "function bytes(size, initval, str) end" in bytes_page
     assert "function Bytes:size() end" in bytes_page
+
+
+def test_type_alias_builder_does_not_shadow_lua_builtins():
+    documents = [
+        (
+            "string.md",
+            DocFile(
+                file_base="string",
+                doc_link="https://xmake.io/api/scripts/string",
+                is_instance=True,
+                class_name="String",
+                functions=[],
+            ),
+        ),
+        (
+            "bytes.md",
+            DocFile(
+                file_base="bytes",
+                doc_link="https://xmake.io/api/scripts/bytes",
+                is_instance=True,
+                class_name="Bytes",
+                functions=[],
+            ),
+        ),
+    ]
+
+    aliases = GenerationPipeline._build_type_aliases(documents, {"String", "Rect"})
+
+    assert aliases["bytes"] == "Bytes"
+    assert aliases["rect"] == "Rect"
+    assert "string" not in aliases
 
 
 def test_pipeline_removes_stale_output_for_pages_without_apis(
@@ -136,3 +168,20 @@ def test_cached_docs_match_committed_library(
     custom_rule = generated["custom_rule.lua"].read_text(encoding="utf-8")
     assert "---@param ... string|RuleDependencyOption" in custom_rule
     assert "function add_deps(deps, ...) end" in custom_rule
+
+    bytes_module = generated["bytes.lua"].read_text(encoding="utf-8")
+    assert "---@param buffer Bytes" in bytes_module
+    assert "---@param buffer bytes" not in bytes_module
+
+    dialog = generated["dialog.lua"].read_text(encoding="utf-8")
+    assert "---@param bounds Rect" in dialog
+    assert "---@param e Event" in dialog
+
+    application = generated["application.lua"].read_text(encoding="utf-8")
+    assert "---@param view View" in application
+
+    tools = generated["tools.lua"].read_text(encoding="utf-8")
+    assert "---@param package Package" in tools
+
+    common = (output_dir / "common.lua").read_text(encoding="utf-8")
+    assert "---@class Rect" in common

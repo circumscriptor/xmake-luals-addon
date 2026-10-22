@@ -10,7 +10,7 @@ local Menubar = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/menubar#menubar-new)
 ---
 ---@param name string Required. Menu bar name string
----@param bounds rect Required. Menu bar bounds rectangle
+---@param bounds Rect Required. Menu bar bounds rectangle
 ---@return Menubar
 function Menubar:new(name, bounds) end
 

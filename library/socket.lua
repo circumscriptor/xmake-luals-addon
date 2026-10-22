@@ -48,7 +48,7 @@ function Socket:connect(addr, port, opt) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/socket#socket-send)
 ---
----@param data string|bytes Required. Data to send, can be string or bytes object
+---@param data string|Bytes Required. Data to send, can be string or bytes object
 ---@param opt table Optional. Option parameters
 ---@return any
 function Socket:send(data, opt) end
@@ -58,7 +58,7 @@ function Socket:send(data, opt) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/socket#socket-recv)
 ---
----@param buff bytes Required. bytes buffer object
+---@param buff Bytes Required. bytes buffer object
 ---@param size number Required. Number of bytes to receive
 ---@param opt table Optional. Option parameters
 ---@return any
@@ -69,7 +69,7 @@ function Socket:recv(buff, size, opt) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/socket#socket-sendto)
 ---
----@param data string|bytes Required. Data to send, can be string or bytes object
+---@param data string|Bytes Required. Data to send, can be string or bytes object
 ---@param addr string Required. Target IP address
 ---@param port number Required. Target port number
 ---@param opt table Optional. Option parameters
@@ -81,7 +81,7 @@ function Socket:sendto(data, addr, port, opt) end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/socket#socket-recvfrom)
 ---
----@param buff bytes Required. bytes buffer object
+---@param buff Bytes Required. bytes buffer object
 ---@param size number Required. Number of bytes to receive
 ---@param opt table Optional. Option parameters
 ---@return any

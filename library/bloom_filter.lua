@@ -35,7 +35,7 @@ function Bloom_filter:data() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/bloom_filter#filter-data-set)
 ---
----@param data bytes Required. Bytes object containing the filter data
+---@param data Bytes Required. Bytes object containing the filter data
 ---@return any
 function Bloom_filter:data_set(data) end
 

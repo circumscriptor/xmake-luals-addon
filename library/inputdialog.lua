@@ -10,7 +10,7 @@ local Inputdialog = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/inputdialog#inputdialog-new)
 ---
 ---@param name string Required. Input dialog name string
----@param bounds rect Required. Input dialog bounds rectangle
+---@param bounds Rect Required. Input dialog bounds rectangle
 ---@param title string Required. Input dialog title string
 ---@return Inputdialog
 function Inputdialog:new(name, bounds, title) end
