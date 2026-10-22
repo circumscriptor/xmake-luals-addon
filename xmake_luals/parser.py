@@ -85,6 +85,13 @@ class MarkdownParser:
                 args.append(val)
         return args
 
+    @staticmethod
+    def _extract_base_type(type_str: str) -> str:
+        """Extract scalar element type from arrays or unions (e.g. string|string[] -> string)."""
+        t = type_str.replace("<", "").replace(">", "").rstrip("?").strip()
+        parts = [p.replace("[]", "").strip() for p in t.split("|")]
+        return parts[0] if parts else "string"
+
     def parse_file(self, file_path: str, repo_root: str) -> DocFile | None:
         with open(file_path, "r", encoding="utf-8") as f:
             lines = f.read().splitlines()
@@ -96,7 +103,7 @@ class MarkdownParser:
 
         is_instance = "api/scripts" in rel_path or "instance" in rel_path
 
-        # Issue 3: Replace '-' with '_' in filename for backward compatibility
+        # Convert hyphens to underscores for file output compatibility
         raw_base = os.path.basename(rel_path)
         file_base = raw_base.replace("-", "_")
 
@@ -222,21 +229,87 @@ class MarkdownParser:
                 if m and m.group(1).strip():
                     raw_args = self._split_args(m.group(1).strip())
 
-                    # Check beforehand if prototype contains vararg ...
-                    has_vararg = any(a.strip() == "..." for a in raw_args)
+                    # Check position of '...'
+                    vararg_idx = None
+                    for idx, a in enumerate(raw_args):
+                        if a.strip() == "...":
+                            vararg_idx = idx
+                            break
 
-                    for arg in raw_args:
-                        arg_clean = arg.strip()
-                        if arg_clean == "...":
-                            desc = table_params.get(
-                                "...", "Variable parameters or configuration options"
-                            )
-                            params.append(DocParam("...", "any", desc))
-                            fn_args.append("...")
-                        elif arg_clean.startswith("{") or "=" in arg_clean:
-                            # Issue 2: If the function has '...', options are passed via '...'.
-                            # Only add 'opt' to signature and params if there is NO vararg!
-                            if not has_vararg:
+                    if vararg_idx is not None:
+                        # Process positional args preceding '...'
+                        prev_base_type = "string"
+                        for arg in raw_args[:vararg_idx]:
+                            if ":" in arg:
+                                name_part, type_part = [
+                                    part.strip() for part in arg.split(":", 1)
+                                ]
+                                clean_name = name_part.rstrip("?").strip()
+                                is_opt = name_part.endswith("?") or type_part.endswith(
+                                    "?"
+                                )
+                                desc = table_params.get(
+                                    clean_name, f"{clean_name} parameter"
+                                )
+                                params.append(
+                                    DocParam(
+                                        clean_name,
+                                        type_part.rstrip("?"),
+                                        desc,
+                                        is_optional=is_opt,
+                                    )
+                                )
+                                fn_args.append(clean_name)
+                                prev_base_type = self._extract_base_type(type_part)
+                            else:
+                                clean_name = arg.rstrip("?").strip()
+                                desc = table_params.get(
+                                    clean_name, f"{clean_name} parameter"
+                                )
+                                params.append(DocParam(clean_name, "any", desc))
+                                fn_args.append(clean_name)
+                                prev_base_type = "any"
+
+                        # Merge types from arguments after '...' into '...' using '|'
+                        remaining_types = []
+                        remaining_descs = []
+                        for rem in raw_args[vararg_idx + 1 :]:
+                            rem = rem.strip()
+                            if rem.startswith("{") or "=" in rem:
+                                remaining_types.append("table")
+                                opt_desc = table_params.get(
+                                    "public|interface|private",
+                                    "configuration options table",
+                                )
+                                remaining_descs.append(opt_desc)
+                            elif ":" in rem:
+                                _, r_type = [part.strip() for part in rem.split(":", 1)]
+                                remaining_types.append(self._extract_base_type(r_type))
+                            elif "function" in rem:
+                                remaining_types.append("fun(...): any")
+                            else:
+                                remaining_types.append("table")
+
+                        # Union preceding type and trailing types
+                        union_types_list = [prev_base_type]
+                        for rt in remaining_types:
+                            if rt not in union_types_list:
+                                union_types_list.append(rt)
+
+                        merged_vararg_type = "|".join(union_types_list)
+                        vararg_desc = table_params.get("...", "Variable parameters")
+                        if remaining_descs:
+                            vararg_desc += " or " + ", ".join(remaining_descs)
+
+                        # Add ... as the final parameter
+                        params.append(DocParam("...", merged_vararg_type, vararg_desc))
+                        fn_args.append("...")
+
+                    else:
+                        # No vararg; standard positional parameters
+                        for arg in raw_args:
+                            arg_clean = arg.strip()
+                            if arg_clean.startswith("{") or "=" in arg_clean:
                                 desc = table_params.get(
                                     "public|interface|private", "Configuration options"
                                 )
@@ -244,32 +317,32 @@ class MarkdownParser:
                                     DocParam("opt", "table", desc, is_optional=True)
                                 )
                                 fn_args.append("opt")
-                        elif ":" in arg_clean:
-                            name_part, type_part = [
-                                part.strip() for part in arg_clean.split(":", 1)
-                            ]
-                            is_opt = name_part.endswith("?") or type_part.endswith("?")
-                            clean_name = name_part.rstrip("?").strip()
-                            desc = table_params.get(
-                                clean_name, f"{clean_name} parameter"
-                            )
-                            params.append(
-                                DocParam(
-                                    clean_name,
-                                    type_part.rstrip("?"),
-                                    desc,
-                                    is_optional=is_opt,
+                            elif ":" in arg_clean:
+                                name_part, type_part = [
+                                    part.strip() for part in arg_clean.split(":", 1)
+                                ]
+                                is_opt = name_part.endswith("?") or type_part.endswith(
+                                    "?"
                                 )
-                            )
-                            if not has_vararg or clean_name not in fn_args:
+                                clean_name = name_part.rstrip("?").strip()
+                                desc = table_params.get(
+                                    clean_name, f"{clean_name} parameter"
+                                )
+                                params.append(
+                                    DocParam(
+                                        clean_name,
+                                        type_part.rstrip("?"),
+                                        desc,
+                                        is_optional=is_opt,
+                                    )
+                                )
                                 fn_args.append(clean_name)
-                        else:
-                            clean_name = arg_clean.rstrip("?").strip()
-                            desc = table_params.get(
-                                clean_name, f"{clean_name} parameter"
-                            )
-                            params.append(DocParam(clean_name, "any", desc))
-                            if not has_vararg or clean_name not in fn_args:
+                            else:
+                                clean_name = arg_clean.rstrip("?").strip()
+                                desc = table_params.get(
+                                    clean_name, f"{clean_name} parameter"
+                                )
+                                params.append(DocParam(clean_name, "any", desc))
                                 fn_args.append(clean_name)
 
             anchor = api_id.replace(":", "-").replace("_", "-")

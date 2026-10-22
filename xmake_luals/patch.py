@@ -41,24 +41,39 @@ class DocPatcher:
 
     def _patch_function(self, fn: DocFunction, is_instance: bool) -> None:
         # 1. Map parameter types
+        prev_param_type = "string"
         for p in fn.params:
             clean_pname = p.clean_name
-            if clean_pname in self.TYPE_MAPPINGS:
+
+            if clean_pname == "...":
+                # If vararg type has 'string|table', upgrade 'string' to schema type if previous parameter was mapped
+                if "string" in p.type_name and prev_param_type not in (
+                    "string",
+                    "string|string[]",
+                ):
+                    p.type_name = p.type_name.replace("string", prev_param_type)
+            elif clean_pname in self.TYPE_MAPPINGS:
                 p.type_name = self.TYPE_MAPPINGS[clean_pname]
+                prev_param_type = p.type_name
             elif "<string|array>" in p.type_name:
                 p.type_name = "string|string[]"
+                prev_param_type = "string"
             elif "<boolean>" in p.type_name:
                 p.type_name = "boolean"
+                prev_param_type = "boolean"
             elif "<number>" in p.type_name:
                 p.type_name = "number"
+                prev_param_type = "number"
             elif p.type_name.startswith("<function"):
                 p.type_name = "fun(target: any, ...: any)"
+                prev_param_type = "fun(target: any, ...: any)"
             else:
                 p.type_name = (
                     p.type_name.replace("<", "").replace(">", "").rstrip("?") or "any"
                 )
+                prev_param_type = p.type_name
 
-        # Ensure fn_args are clean Lua identifiers (no '?')
+        # Ensure fn_args are clean identifiers (no '?')
         fn.fn_args = [arg.rstrip("?").strip() for arg in fn.fn_args]
 
         # 2. Infer return types

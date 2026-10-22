@@ -55,19 +55,27 @@ class LuaLSGenerator:
         )
         desc_doc = f"---{fn.description}\n---\n" if fn.description else ""
 
-        # Issue 1: Ensure function arguments strictly contain clean identifiers (no '?')
-        clean_fn_args = [arg.rstrip("?").strip() for arg in fn.fn_args]
+        # Strictly clean function arguments (no '?')
+        clean_fn_args = []
+        for arg in fn.fn_args:
+            cleaned = arg.rstrip("?").strip()
+            if cleaned and cleaned not in clean_fn_args:
+                clean_fn_args.append(cleaned)
+
+        # Ensure '...' is placed last in argument list if present
+        if "..." in clean_fn_args:
+            clean_fn_args.remove("...")
+            clean_fn_args.append("...")
 
         params_doc = ""
         for p in fn.params:
             clean_name = p.clean_name
 
-            # Issue 2: Guarantee no unused @param warning in LuaLS:
-            # Only emit @param if parameter exists in function signature or is '...'
+            # Guard against unused @param: only emit if in fn_args or is '...'
             if clean_name not in clean_fn_args and clean_name != "...":
                 continue
 
-            # Issue 1: '?' is placed in the @param tag, NOT in the function argument
+            # Place '?' in the @param tag, NOT in the function signature
             param_tag = (
                 f"{clean_name}?"
                 if p.is_optional and clean_name != "..."
