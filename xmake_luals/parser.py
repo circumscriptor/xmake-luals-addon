@@ -103,7 +103,6 @@ class MarkdownParser:
 
         is_instance = "api/scripts" in rel_path or "instance" in rel_path
 
-        # Convert hyphens to underscores for file output compatibility
         raw_base = os.path.basename(rel_path)
         file_base = raw_base.replace("-", "_")
 
@@ -134,7 +133,6 @@ class MarkdownParser:
             class_name=class_name,
         )
 
-        # Split markdown by sections (## headings)
         sections: list[list[str]] = []
         current_section: list[str] = []
         for line in lines:
@@ -169,8 +167,8 @@ class MarkdownParser:
                 description = line_s.lstrip("#").strip()
                 break
 
-            # 2. Prototype
-            prototype_str = ""
+            # 2. Prototype - collect each line independently to support overloads
+            prototype_lines: list[str] = []
             in_proto = False
             for line in section:
                 line_s = line.strip()
@@ -179,15 +177,15 @@ class MarkdownParser:
                     continue
                 if in_proto:
                     if line_s.startswith("```"):
-                        if prototype_str:
+                        if prototype_lines:
                             break
                         continue
                     if line_s.startswith(":::"):
                         continue
                     if line_s:
-                        prototype_str += (" " if prototype_str else "") + line_s
+                        prototype_lines.append(line_s)
 
-            # 3. Parameter table
+            # 3. Parameter table & text detection
             table_params: dict[str, str] = {}
             in_params = False
             for line in section:
@@ -202,6 +200,10 @@ class MarkdownParser:
                         or "Return Value" in line_s
                     ):
                         break
+                    # Detect prose "no parameters"
+                    if "no parameters" in line_s.lower():
+                        table_params["__no_params__"] = "true"
+                        continue
                     if line_s.startswith("|"):
                         parts = [p.strip() for p in line_s.split("|")]
                         if len(parts) >= 3:
@@ -220,96 +222,27 @@ class MarkdownParser:
                                 continue
                             table_params[p_name] = p_desc
 
-            # 4. Parse parameters and function arguments
+            # 4. Parse parameters and function arguments across prototype lines
             params: list[DocParam] = []
             fn_args: list[str] = []
 
-            if not table_params.get("__no_params__") and prototype_str:
-                m = re.search(r"\((.*)\)", prototype_str, re.DOTALL)
-                if m and m.group(1).strip():
+            if not table_params.get("__no_params__") and prototype_lines:
+                seen_args = set()
+                for proto_line in prototype_lines:
+                    # Non-greedy match per single line
+                    m = re.search(r"\((.*?)\)", proto_line)
+                    if not m or not m.group(1).strip():
+                        continue
+
                     raw_args = self._split_args(m.group(1).strip())
+                    for arg in raw_args:
+                        arg_clean = arg.strip()
+                        if not arg_clean:
+                            continue
 
-                    # Check position of '...'
-                    vararg_idx = None
-                    for idx, a in enumerate(raw_args):
-                        if a.strip() == "...":
-                            vararg_idx = idx
-                            break
-
-                    if vararg_idx is not None:
-                        # Process positional args preceding '...'
-                        prev_base_type = "string"
-                        for arg in raw_args[:vararg_idx]:
-                            if ":" in arg:
-                                name_part, type_part = [
-                                    part.strip() for part in arg.split(":", 1)
-                                ]
-                                clean_name = name_part.rstrip("?").strip()
-                                is_opt = name_part.endswith("?") or type_part.endswith(
-                                    "?"
-                                )
-                                desc = table_params.get(
-                                    clean_name, f"{clean_name} parameter"
-                                )
-                                params.append(
-                                    DocParam(
-                                        clean_name,
-                                        type_part.rstrip("?"),
-                                        desc,
-                                        is_optional=is_opt,
-                                    )
-                                )
-                                fn_args.append(clean_name)
-                                prev_base_type = self._extract_base_type(type_part)
-                            else:
-                                clean_name = arg.rstrip("?").strip()
-                                desc = table_params.get(
-                                    clean_name, f"{clean_name} parameter"
-                                )
-                                params.append(DocParam(clean_name, "any", desc))
-                                fn_args.append(clean_name)
-                                prev_base_type = "any"
-
-                        # Merge types from arguments after '...' into '...' using '|'
-                        remaining_types = []
-                        remaining_descs = []
-                        for rem in raw_args[vararg_idx + 1 :]:
-                            rem = rem.strip()
-                            if rem.startswith("{") or "=" in rem:
-                                remaining_types.append("table")
-                                opt_desc = table_params.get(
-                                    "public|interface|private",
-                                    "configuration options table",
-                                )
-                                remaining_descs.append(opt_desc)
-                            elif ":" in rem:
-                                _, r_type = [part.strip() for part in rem.split(":", 1)]
-                                remaining_types.append(self._extract_base_type(r_type))
-                            elif "function" in rem:
-                                remaining_types.append("fun(...): any")
-                            else:
-                                remaining_types.append("table")
-
-                        # Union preceding type and trailing types
-                        union_types_list = [prev_base_type]
-                        for rt in remaining_types:
-                            if rt not in union_types_list:
-                                union_types_list.append(rt)
-
-                        merged_vararg_type = "|".join(union_types_list)
-                        vararg_desc = table_params.get("...", "Variable parameters")
-                        if remaining_descs:
-                            vararg_desc += " or " + ", ".join(remaining_descs)
-
-                        # Add ... as the final parameter
-                        params.append(DocParam("...", merged_vararg_type, vararg_desc))
-                        fn_args.append("...")
-
-                    else:
-                        # No vararg; standard positional parameters
-                        for arg in raw_args:
-                            arg_clean = arg.strip()
-                            if arg_clean.startswith("{") or "=" in arg_clean:
+                        if arg_clean.startswith("{") or "=" in arg_clean:
+                            clean_name = "opt"
+                            if clean_name not in seen_args:
                                 desc = table_params.get(
                                     "public|interface|private", "Configuration options"
                                 )
@@ -317,14 +250,16 @@ class MarkdownParser:
                                     DocParam("opt", "table", desc, is_optional=True)
                                 )
                                 fn_args.append("opt")
-                            elif ":" in arg_clean:
-                                name_part, type_part = [
-                                    part.strip() for part in arg_clean.split(":", 1)
-                                ]
+                                seen_args.add("opt")
+                        elif ":" in arg_clean:
+                            name_part, type_part = [
+                                p.strip() for p in arg_clean.split(":", 1)
+                            ]
+                            clean_name = name_part.rstrip("?").strip()
+                            if clean_name not in seen_args:
                                 is_opt = name_part.endswith("?") or type_part.endswith(
                                     "?"
                                 )
-                                clean_name = name_part.rstrip("?").strip()
                                 desc = table_params.get(
                                     clean_name, f"{clean_name} parameter"
                                 )
@@ -337,24 +272,28 @@ class MarkdownParser:
                                     )
                                 )
                                 fn_args.append(clean_name)
-                            else:
-                                clean_name = arg_clean.rstrip("?").strip()
+                                seen_args.add(clean_name)
+                        else:
+                            clean_name = arg_clean.rstrip("?").strip()
+                            if clean_name not in seen_args:
                                 desc = table_params.get(
                                     clean_name, f"{clean_name} parameter"
                                 )
                                 params.append(DocParam(clean_name, "any", desc))
                                 fn_args.append(clean_name)
+                                seen_args.add(clean_name)
 
             anchor = api_id.replace(":", "-").replace("_", "-")
             link = f"{doc_link}#{anchor}"
 
+            # 5. Correctly handle scope for constructor / bare module names
             is_scoped = False
             scope = None
             if not is_instance:
                 if ":" in api_id:
                     scope = api_id.split(":", 1)[0]
                     is_scoped = True
-                elif api_id != default_scope and api_id != f"{default_scope}_end":
+                else:
                     scope = default_scope
                     is_scoped = True
 

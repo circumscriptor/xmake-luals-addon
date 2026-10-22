@@ -1,0 +1,32 @@
+{
+    "add_cflags": {
+        "return_type": "nil",
+        "params": [
+            {
+                "name": "...",
+                "type": "string|CompilationFlagAttr",
+                "desc": "Compilation flags or attributes"
+            }
+        ]
+    },
+    "add_cxflags": {
+        "return_type": "nil",
+        "params": [
+            {
+                "name": "...",
+                "type": "string|CompilationFlagAttr",
+                "desc": "Compilation flags or attributes"
+            }
+        ]
+    },
+    "add_cxxflags": {
+        "return_type": "nil",
+        "params": [
+            {
+                "name": "...",
+                "type": "string|CompilationFlagAttr",
+                "desc": "Compilation flags or attributes"
+            }
+        ]
+    }
+}
