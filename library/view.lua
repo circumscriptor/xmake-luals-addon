@@ -12,7 +12,7 @@ local View = {}
 ---@param name string Required. View name string
 ---@param bounds rect Required. View bounds rectangle
 ---@param ... any Variable arguments
----@return any
+---@return View
 function View:new(name, bounds, ...) end
 
 ---

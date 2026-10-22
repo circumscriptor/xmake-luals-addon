@@ -9,7 +9,7 @@ local Application = {}
 ---
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/application#application-new)
 ---
----@return any
+---@return Application
 function Application:new() end
 
 ---

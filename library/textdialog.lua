@@ -12,7 +12,7 @@ local Textdialog = {}
 ---@param name string Required. Dialog name string
 ---@param bounds rect Required. Dialog bounds rectangle
 ---@param title? string Optional. Dialog title string
----@return any
+---@return Textdialog
 function Textdialog:new(name, bounds, title) end
 
 ---

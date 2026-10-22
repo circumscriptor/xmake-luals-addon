@@ -12,7 +12,7 @@ local Inputdialog = {}
 ---@param name string Required. Input dialog name string
 ---@param bounds rect Required. Input dialog bounds rectangle
 ---@param title string Required. Input dialog title string
----@return any
+---@return Inputdialog
 function Inputdialog:new(name, bounds, title) end
 
 ---

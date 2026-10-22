@@ -86,9 +86,32 @@ class LuaLSGenerator:
                 f"---@param {param_tag} {clean_type} {p.description}".rstrip() + "\n"
             )
 
+        return_type = fn.return_type
+
+        # Determine signature based on identifier syntax
+        is_method = ":" in fn.api_id
+        is_static = "." in fn.api_id
+
         if is_instance and class_name:
-            m_name = fn.api_id.split(":")[-1]
-            func_sig = f"{class_name}:{m_name}({', '.join(clean_fn_args)})"
+            if is_method:
+                m_name = fn.api_id.split(":")[-1]
+                func_sig = f"{class_name}:{m_name}({', '.join(clean_fn_args)})"
+                if return_type in ("any", "nil", "") and m_name == "new":
+                    return_type = class_name
+            elif is_static:
+                m_name = fn.api_id.split(".")[-1]
+                func_sig = f"{class_name}.{m_name}({', '.join(clean_fn_args)})"
+                if return_type in ("any", "nil", "") and m_name == "new":
+                    return_type = class_name
+            else:
+                # Free-standing function (e.g. bytes(...))
+                func_sig = f"{fn.api_id}({', '.join(clean_fn_args)})"
+                # If this free-standing function is a constructor for the class, annotate its return type
+                if (
+                    return_type in ("any", "nil", "")
+                    and fn.api_id.lower() == class_name.lower()
+                ):
+                    return_type = class_name
         else:
             func_name = fn.api_id.split(":")[-1] if ":" in fn.api_id else fn.api_id
             func_sig = f"{func_name}({', '.join(clean_fn_args)})"
@@ -98,6 +121,6 @@ class LuaLSGenerator:
             description_doc=desc_doc,
             link=fn.link,
             params_doc=params_doc,
-            return_type=fn.return_type,
+            return_type=return_type,
             function_signature=func_sig,
         ).strip()

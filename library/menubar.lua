@@ -11,7 +11,7 @@ local Menubar = {}
 ---
 ---@param name string Required. Menu bar name string
 ---@param bounds rect Required. Menu bar bounds rectangle
----@return any
+---@return Menubar
 function Menubar:new(name, bounds) end
 
 ---

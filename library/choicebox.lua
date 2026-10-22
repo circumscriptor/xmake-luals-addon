@@ -11,7 +11,7 @@ local Choicebox = {}
 ---
 ---@param name string Required. List box name string
 ---@param bounds rect Required. List box bounds rectangle
----@return any
+---@return Choicebox
 function Choicebox:new(name, bounds) end
 
 ---

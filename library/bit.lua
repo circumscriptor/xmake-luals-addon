@@ -10,4 +10,4 @@ local Bit = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/base/bit#Overview)
 ---
 ---@return any
-function Bit:Overview() end
+function Overview() end

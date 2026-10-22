@@ -12,7 +12,7 @@ local Choicedialog = {}
 ---@param name string Required. Dialog name string
 ---@param bounds rect Required. Dialog bounds rectangle
 ---@param title string Required. Dialog title string
----@return any
+---@return Choicedialog
 function Choicedialog:new(name, bounds, title) end
 
 ---

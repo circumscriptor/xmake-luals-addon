@@ -12,5 +12,5 @@ local Runjobs = {}
 ---@param name string name parameter
 ---@param jobs fun(target: any, ...: any) jobs parameter
 ---@param options? table options parameter
----@return any
-function Runjobs:runjobs(name, jobs, options) end
+---@return Runjobs
+function runjobs(name, jobs, options) end

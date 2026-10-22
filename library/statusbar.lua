@@ -11,7 +11,7 @@ local Statusbar = {}
 ---
 ---@param name string Required. Status bar name string
 ---@param bounds rect Required. Status bar bounds rectangle
----@return any
+---@return Statusbar
 function Statusbar:new(name, bounds) end
 
 ---

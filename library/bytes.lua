@@ -14,8 +14,8 @@ local Bytes = {}
 ---@param str string Required. String to convert to bytes object
 ---@param buffer bytes Required. Source bytes buffer for slice
 ---@param offset number Required. Offset position in source buffer
----@return any
-function Bytes:bytes(size, initval, str, buffer, offset) end
+---@return Bytes
+function bytes(size, initval, str, buffer, offset) end
 
 ---
 ---- Get buffer size

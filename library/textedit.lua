@@ -12,7 +12,7 @@ local Textedit = {}
 ---@param name string Required. Text editor name string
 ---@param bounds rect Required. Text editor bounds rectangle
 ---@param text? string Optional. Initial text content
----@return any
+---@return Textedit
 function Textedit:new(name, bounds, text) end
 
 ---

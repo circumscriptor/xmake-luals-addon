@@ -12,7 +12,7 @@ local Boxdialog = {}
 ---@param name string Required. Dialog name string
 ---@param bounds rect Required. Dialog bounds rectangle
 ---@param title string Required. Dialog title string
----@return any
+---@return Boxdialog
 function Boxdialog:new(name, bounds, title) end
 
 ---

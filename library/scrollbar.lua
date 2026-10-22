@@ -12,7 +12,7 @@ local Scrollbar = {}
 ---@param name string Required. Scrollbar name string
 ---@param bounds rect Required. Scrollbar bounds rectangle
 ---@param vertical? boolean Optional. Whether it's a vertical scrollbar, defaults to `true`
----@return any
+---@return Scrollbar
 function Scrollbar:new(name, bounds, vertical) end
 
 ---

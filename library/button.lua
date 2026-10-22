@@ -13,7 +13,7 @@ local Button = {}
 ---@param bounds rect Required. Button bounds rectangle
 ---@param text string Required. Button text to display
 ---@param on_action? fun(target: any, ...: any) Optional. Function to call when button is activated
----@return any
+---@return Button
 function Button:new(name, bounds, text, on_action) end
 
 ---

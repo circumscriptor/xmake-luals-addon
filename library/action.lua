@@ -10,7 +10,7 @@ local Action = {}
 ---[Open in browser](https://xmake.io/api/scripts/extension-modules/core/ui/action#Usage)
 ---
 ---@return any
-function Action:Usage() end
+function Usage() end
 
 ---
 ---- Register custom action types

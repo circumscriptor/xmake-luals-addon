@@ -13,7 +13,7 @@ local Window = {}
 ---@param bounds rect Required. Window bounds rectangle
 ---@param title? string Optional. Window title string (centered at top)
 ---@param shadow? boolean Optional. Show shadow effect (`true` or `false`, default `false`)
----@return any
+---@return Window
 function Window:new(name, bounds, title, shadow) end
 
 ---

@@ -12,7 +12,7 @@ local Label = {}
 ---@param name string Required. Label name string
 ---@param bounds rect Required. Label bounds rectangle
 ---@param text string Required. Text content to display
----@return any
+---@return Label
 function Label:new(name, bounds, text) end
 
 ---

@@ -11,5 +11,5 @@ local Ping = {}
 ---
 ---@param hosts any Required. Host address string or array of host addresses
 ---@param opt any Optional. Option parameter table, supports:<br>- `force` - Whether to force refresh cache (default: false)
----@return any
-function Ping:ping(hosts, opt) end
+---@return Ping
+function ping(hosts, opt) end
