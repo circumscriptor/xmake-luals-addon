@@ -47,6 +47,9 @@ Useful variants:
 # Skip the optional xmake CLI inspection.
 python3 main.py --skip-xmake
 
+# Regenerate the sample fixture that calls every generated API.
+python3 main.py --sample-file sample/xmake.lua
+
 # Show all available path and generation options.
 python3 main.py --help
 ```
@@ -89,8 +92,20 @@ git diff --check
 
 ## Optional LuaLS validation
 
-To check generated annotations against a real project, create a LuaLS config
-that points at this repository's `library/` directory:
+The `sample/` directory contains a generated `xmake.lua` that calls every API in
+`library/`, plus a `.luarc.json` that loads the library directly:
+
+```bash
+lua-language-server \
+    --check=sample \
+    --configpath=sample/.luarc.json \
+    --checklevel=Warning \
+    --check_format=pretty \
+    --logpath=/tmp/xmake-luals-log
+```
+
+To check a different project, create a LuaLS config that points at this
+repository's `library/` directory:
 
 ```bash
 cat > /tmp/xmake-luals.luarc.json <<EOF
@@ -118,7 +133,8 @@ lua-language-server \
 ## Development workflow
 
 1. Change the parser, patcher, generator, schema, or overrides as needed.
-2. Regenerate the library with `python3 main.py`.
+2. Regenerate the library and sample with
+   `python3 main.py --sample-file sample/xmake.lua`.
 3. Run `python3 -m pytest -q`.
 4. Run `ruff check .` and `git diff --check`.
 5. Commit the source changes, the regenerated `library/` files, and the updated
@@ -131,5 +147,6 @@ lua-language-server \
 - `schema.json`: shared type aliases and configuration classes.
 - `overrides.json`: manual annotation corrections.
 - `library/`: generated LuaLS definitions and the source docs commit hash.
+- `sample/`: generated fixture that calls every API and checks it with LuaLS.
 - `tests/`: unit, integration, CLI, schema, and generation tests.
 - `.cache/xmake-docs`: local xmake documentation checkout.

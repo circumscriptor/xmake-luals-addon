@@ -40,6 +40,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="Path to overrides.json",
     )
     parser.add_argument(
+        "--sample-file",
+        default=None,
+        help="Optional path for a generated xmake.lua that exercises every API",
+    )
+    parser.add_argument(
         "--skip-xmake",
         action="store_true",
         help="Skip querying local xmake CLI",
@@ -55,6 +60,7 @@ def parse_options(argv: list[str] | None = None) -> GenerationOptions:
         output_dir=args.output_dir,
         schema_file=args.schema_file,
         overrides_file=args.overrides_file,
+        sample_file=args.sample_file,
         skip_xmake=args.skip_xmake,
     )
 

@@ -16,6 +16,7 @@ from .models import DocFile
 from .parser import MarkdownParser
 from .patch import DocPatcher
 from .repo import RepoManager
+from .sample import SampleGenerator
 from .schema import SchemaManager
 from .type_mapping import LUA_BUILTIN_TYPES
 from .xmake import XmakeInspector
@@ -31,6 +32,7 @@ class GenerationOptions:
     output_dir: str = DEFAULT_OUTPUT_DIR
     schema_file: str = DEFAULT_SCHEMA_FILE
     overrides_file: str = DEFAULT_OVERRIDES_FILE
+    sample_file: str | None = None
     skip_xmake: bool = False
 
 
@@ -86,6 +88,14 @@ class GenerationPipeline:
             logger.info("Generated %-35s (%d APIs)", output_path, function_count)
 
         self._write_docs_commit(docs_commit)
+
+        if self.options.sample_file:
+            sample_path = SampleGenerator(
+                self.options.output_dir,
+                self.options.sample_file,
+                self.options.schema_file,
+            ).generate()
+            logger.info("Generated sample: %s", sample_path)
 
         return GenerationStats(
             modules=module_count,

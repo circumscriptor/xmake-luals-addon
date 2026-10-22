@@ -36,6 +36,8 @@ def test_argument_parser_overrides_defaults(tmp_path: Path):
             str(tmp_path / "schema.json"),
             "--overrides-file",
             str(tmp_path / "overrides.json"),
+            "--sample-file",
+            str(tmp_path / "sample" / "xmake.lua"),
             "--skip-xmake",
         ]
     )
@@ -44,6 +46,7 @@ def test_argument_parser_overrides_defaults(tmp_path: Path):
     assert options.output_dir == str(tmp_path / "out")
     assert options.schema_file == str(tmp_path / "schema.json")
     assert options.overrides_file == str(tmp_path / "overrides.json")
+    assert options.sample_file == str(tmp_path / "sample" / "xmake.lua")
     assert options.skip_xmake is True
 
 
@@ -59,6 +62,7 @@ def test_main_generates_files(
     caplog,
 ):
     output_dir = tmp_path / "library"
+    sample_file = tmp_path / "sample" / "xmake.lua"
 
     with caplog.at_level(logging.INFO):
         exit_code = main(
@@ -71,12 +75,16 @@ def test_main_generates_files(
                 str(schema_file),
                 "--overrides-file",
                 str(overrides_file),
+                "--sample-file",
+                str(sample_file),
                 "--skip-xmake",
             ]
         )
 
     assert exit_code == 0
     assert (output_dir / "bytes.lua").is_file()
+    assert sample_file.is_file()
+    assert "-- @api bytes.bytes" in sample_file.read_text(encoding="utf-8")
     assert "Skipping local xmake CLI inspection." in caplog.text
     assert "Generated 3 API definitions across 2 modules." in caplog.text
 

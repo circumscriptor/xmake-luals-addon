@@ -24,6 +24,8 @@ Lua. It provides type annotations for the xmake `xmake.lua` API.
 - `overrides.json` contains manual corrections for annotations that cannot be
   inferred from the documentation.
 - `xmake_luals/` contains the generator.
+- `sample/` contains a generated `xmake.lua` fixture that calls every API in
+  `library/` for language-server testing.
 - `tests/` contains the test suite.
 
 Do not edit files in `library/` by hand. Change the schema, overrides, or
@@ -59,6 +61,12 @@ python3 main.py
 
 After an editable install, the same command is available as `xmake-luals`.
 
+Regenerate the sample fixture together with the library:
+
+```bash
+python3 main.py --sample-file sample/xmake.lua
+```
+
 The generator reads the xmake documentation from `.cache/xmake-docs` and fetches
 it when the directory is empty. The default output directory is `library/`. Use
 `python3 main.py --help` to list the available path and generation options.
@@ -73,6 +81,7 @@ The generator is split into small modules:
   the documentation heuristics.
 - `xmake_luals/patch.py` applies those heuristics and the manual overrides.
 - `xmake_luals/generator.py` and `xmake_luals/schema.py` render the Lua files.
+- `xmake_luals/sample.py` renders the `sample/xmake.lua` annotation fixture.
 - `xmake_luals/xmake.py` queries the local xmake CLI.
 
 Run the tests:
