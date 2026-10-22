@@ -9,8 +9,9 @@
 ---[Open in browser](https://xmake.io/api/description/plugin-and-task#task)
 ---
 ---@param name string Task name string
+---@param opt? TaskAttr|fun() Configuration options
 ---@return nil
-function task(name) end
+function task(name, opt) end
 
 ---
 ---**Scoped: plugin-and-task**

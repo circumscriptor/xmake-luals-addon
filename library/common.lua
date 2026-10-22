@@ -110,8 +110,95 @@
 
 ---@class TargetAttr
 ---@field kind TargetKind
+---@field plat Platform
+---@field arch Architecture
+---@field strip StripMode
+---@field rules string|string[]
+---@field group string
+---@field filegroups table
+---@field version string
+---@field license string
+---@field enabled boolean
+---@field default boolean
+---@field options string|string[]
+---@field symbols string
+---@field filename string
+---@field basename string
+---@field extension string
+---@field prefixname string
+---@field suffixname string
+---@field warnings WarningLevel
+---@field fpmodels FloatPointModel|FloatPointModel[]
+---@field optimize OptimizationLevel
+---@field runtimes Runtime|Runtime[]
+---@field languages LanguageStandard|LanguageStandard[]
+---@field toolchains string|string[]
+---@field runargs string|string[]
+---@field exceptions ExceptionType|ExceptionType[]
+---@field encodings string|string[]
+---@field prefixdir string
+---@field deps string|string[]
+---@field packages string|string[]
+---@field imports string|string[]
+---@field vectorexts string|string[]
+---@field tests string|string[]
+---@field values table
+---@field configvar table
+---@field runenv table
+---@field toolset table
+---@field policy table
+---@field runenvs table
+---@field targetdir string
+---@field objectdir string
+---@field dependir string
+---@field autogendir string
+---@field configdir string
+---@field installdir string
+---@field rundir string
 ---@field files string|string[]
+---@field cleanfiles string|string[]
+---@field configfiles string|string[]
+---@field installfiles string|string[]
+---@field extrafiles string|string[]
+---@field headerfiles string|string[]
+---@field links string|string[]
+---@field syslinks string|string[]
+---@field linkorders string|string[]
+---@field linkgroups string|string[]
+---@field linkdirs string|string[]
+---@field rpathdirs string|string[]
 ---@field includedirs string|string[]
+---@field sysincludedirs string|string[]
+---@field embeddirs string|string[]
+---@field defines string|string[]
+---@field undefines string|string[]
+---@field frameworks string|string[]
+---@field frameworkdirs string|string[]
+---@field forceincludes string|string[]
+---@field pcheader string
+---@field pcxxheader string
+---@field pmheader string
+---@field pmxxheader string
+---@field cflags string|string[]
+---@field cxflags string|string[]
+---@field cxxflags string|string[]
+---@field mflags string|string[]
+---@field mxflags string|string[]
+---@field mxxflags string|string[]
+---@field scflags string|string[]
+---@field asflags string|string[]
+---@field gcflags string|string[]
+---@field dcflags string|string[]
+---@field rcflags string|string[]
+---@field fcflags string|string[]
+---@field zcflags string|string[]
+---@field cuflags string|string[]
+---@field culdflags string|string[]
+---@field cugencodes string|string[]
+---@field ascnpuarchs string|string[]
+---@field ldflags string|string[]
+---@field arflags string|string[]
+---@field shflags string|string[]
 
 ---@class SourceBatch
 ---@field sourcekind string
@@ -194,3 +281,90 @@
 ---@field jobgraph boolean
 
 ---@class Rect
+
+---@class OptionAttr
+---@field values string|string[]
+---@field default string|boolean|number
+---@field showmenu boolean
+---@field category string
+---@field warnings WarningLevel
+---@field optimize OptimizationLevel
+---@field languages LanguageStandard|LanguageStandard[]
+---@field description string
+---@field deps string|string[]
+---@field imports string|string[]
+---@field vectorexts string|string[]
+---@field features string|string[]
+---@field configvar table
+---@field links string|string[]
+---@field linkdirs string|string[]
+---@field rpathdirs string|string[]
+---@field cincludes string|string[]
+---@field cxxincludes string|string[]
+---@field ctypes string|string[]
+---@field cxxtypes string|string[]
+---@field csnippets table
+---@field cxxsnippets table
+---@field cfuncs string|string[]
+---@field cxxfuncs string|string[]
+
+---@class PackageAttr
+---@field urls string|string[]
+---@field kind string
+---@field plat Platform
+---@field arch Architecture
+---@field base string
+---@field license string
+---@field installtips string
+---@field homepage string
+---@field description string
+---@field parallelize boolean
+---@field sourcedir string
+---@field cachedir string
+---@field installdir string
+---@field bindirs string|string[]
+---@field schemes string|string[]
+---@field deps string|string[]
+---@field imports string|string[]
+---@field configs table
+---@field extsources string|string[]
+---@field components string|string[]
+---@field versions table<string, string>
+---@field versionfiles string|string[]
+---@field patches table
+---@field resources table
+---@field links string|string[]
+---@field syslinks string|string[]
+---@field linkorders string|string[]
+---@field linkgroups string|string[]
+---@field frameworks string|string[]
+---@field linkdirs string|string[]
+---@field includedirs string|string[]
+---@field defines string|string[]
+---@field configvar table
+---@field policy table
+
+---@class RuleAttr
+---@field extensions string|string[]
+---@field sourcekinds string|string[]
+---@field kind string
+---@field deps string|string[]
+---@field imports string|string[]
+---@field orders string|string[]
+
+---@class ToolchainAttr
+---@field kind string
+---@field cross string
+---@field bindir string
+---@field sdkdir string
+---@field archs string|string[]
+---@field runtimes Runtime|Runtime[]
+---@field homepage string
+---@field description string
+---@field formats table
+---@field toolset table
+---@field runenvs table
+
+---@class TaskAttr
+---@field menu table
+---@field category string

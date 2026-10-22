@@ -111,6 +111,55 @@ def test_config_type_merges_into_variadic_parameter(tmp_path):
     assert function.params[1].type_name == "string|CompilationFlagAttr"
 
 
+def test_callback_extends_config_type_with_function(tmp_path):
+    overrides = _write_overrides(
+        tmp_path,
+        {
+            "target.target": {
+                "config_type": "TargetAttr",
+                "callback": True,
+            }
+        },
+    )
+    function = _function(
+        "target",
+        params=[
+            DocParam("name", "string"),
+            DocParam("opt", "table", is_optional=True, is_config=True),
+        ],
+        fn_args=["name", "opt"],
+    )
+
+    DocPatcher(str(overrides)).patch_function(function, False, scope="target")
+
+    assert function.fn_args == ["name", "opt"]
+    assert function.params[1].type_name == "TargetAttr|fun()"
+    assert function.params[1].is_optional
+
+
+def test_callback_adds_optional_configuration_parameter(tmp_path):
+    overrides = _write_overrides(
+        tmp_path,
+        {"option.option": {"callback": True}},
+    )
+    function = _function(
+        "option",
+        params=[DocParam("name", "string")],
+        fn_args=["name"],
+    )
+
+    DocPatcher(str(overrides)).patch_function(function, False, scope="option")
+
+    assert function.fn_args == ["name", "opt"]
+    assert function.params[-1] == DocParam(
+        "opt",
+        "fun()",
+        "Configuration options",
+        is_optional=True,
+        is_config=True,
+    )
+
+
 def test_config_type_uses_schema_type_for_table_parameter(tmp_path):
     overrides = _write_overrides(
         tmp_path,

@@ -9,8 +9,9 @@
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#package)
 ---
 ---@param name string Package name string
+---@param opt? PackageAttr|fun() Configuration options
 ---@return nil
-function package(name) end
+function package(name, opt) end
 
 ---
 ---**Scoped: package**

@@ -88,6 +88,37 @@ class DocPatcher:
             function.fn_args = [param.clean_name for param in function.params]
         if "config_type" in override:
             self._apply_config_type(function, str(override["config_type"]))
+        if override.get("callback"):
+            self._apply_callback(function, override["callback"])
+
+    def _apply_callback(self, function: DocFunction, callback: Any) -> None:
+        """Allow the configuration argument to also be a callback function."""
+        callback_type = callback.strip() if isinstance(callback, str) else "fun()"
+        if not callback_type:
+            callback_type = "fun()"
+
+        config_params = function.config_params
+        if config_params:
+            for param in config_params:
+                param.type_name = self._merge_union(param.type_name, callback_type)
+            return
+
+        vararg = function.vararg_param
+        if vararg is not None:
+            vararg.type_name = self._merge_union(vararg.type_name, callback_type)
+            return
+
+        function.params.append(
+            DocParam(
+                "opt",
+                callback_type,
+                "Configuration options",
+                is_optional=True,
+                is_config=True,
+            )
+        )
+        if "opt" not in function.fn_args:
+            function.fn_args.append("opt")
 
     def _find_override(
         self,

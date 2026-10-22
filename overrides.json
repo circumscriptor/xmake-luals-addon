@@ -195,7 +195,8 @@
         "config_type": "AccessSpecifier"
     },
     "target.target": {
-        "config_type": "TargetAttr"
+        "config_type": "TargetAttr",
+        "callback": true
     },
     "xpack-component-interfaces.add_installfiles": {
         "config_type": "InstallFilesOption"
@@ -208,5 +209,39 @@
     },
     "xpack-interfaces.add_sourcefiles": {
         "config_type": "InstallFilesOption"
+    },
+    "global-interfaces.namespace": {
+        "params": [
+            {
+                "name": "name",
+                "type": "string",
+                "desc": "Namespace name string"
+            },
+            {
+                "name": "script?",
+                "type": "fun()",
+                "desc": "Namespace script function"
+            }
+        ]
+    },
+    "option.option": {
+        "config_type": "OptionAttr",
+        "callback": true
+    },
+    "package.package": {
+        "config_type": "PackageAttr",
+        "callback": true
+    },
+    "plugin-and-task.task": {
+        "config_type": "TaskAttr",
+        "callback": true
+    },
+    "rule.rule": {
+        "config_type": "RuleAttr",
+        "callback": true
+    },
+    "toolchain.toolchain": {
+        "config_type": "ToolchainAttr",
+        "callback": true
     }
 }

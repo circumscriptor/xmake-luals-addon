@@ -9,8 +9,9 @@
 ---[Open in browser](https://xmake.io/api/description/custom-rule#rule)
 ---
 ---@param name string Rule name string
+---@param opt? RuleAttr|fun() Configuration options
 ---@return nil
-function rule(name) end
+function rule(name, opt) end
 
 ---
 ---**Scoped: rule**

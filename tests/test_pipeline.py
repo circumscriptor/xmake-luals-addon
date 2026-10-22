@@ -158,7 +158,7 @@ def test_cached_docs_match_committed_library(
     assert stats.functions > 0
 
     project_target = generated["project_target.lua"].read_text(encoding="utf-8")
-    assert "---@param opt? TargetAttr Configuration options" in project_target
+    assert "---@param opt? TargetAttr|fun() Configuration options" in project_target
     assert "function target(name, opt) end" in project_target
     assert "---@param cflags string|string[]" in project_target
     assert "---@param ... string|CompilationFlagAttr" in project_target
@@ -166,8 +166,40 @@ def test_cached_docs_match_committed_library(
     assert "---@param ... string|DependencyAttr" in project_target
 
     custom_rule = generated["custom_rule.lua"].read_text(encoding="utf-8")
+    assert "---@param opt? RuleAttr|fun() Configuration options" in custom_rule
+    assert "function rule(name, opt) end" in custom_rule
     assert "---@param ... string|RuleDependencyOption" in custom_rule
     assert "function add_deps(deps, ...) end" in custom_rule
+
+    configuration_option = generated["configuration_option.lua"].read_text(
+        encoding="utf-8"
+    )
+    assert "---@param opt? OptionAttr|fun() Configuration options" in (
+        configuration_option
+    )
+    assert "function option(name, opt) end" in configuration_option
+
+    package_dependencies = generated["package_dependencies.lua"].read_text(
+        encoding="utf-8"
+    )
+    assert "---@param opt? PackageAttr|fun() Configuration options" in (
+        package_dependencies
+    )
+    assert "function package(name, opt) end" in package_dependencies
+
+    custom_toolchain = generated["custom_toolchain.lua"].read_text(encoding="utf-8")
+    assert "---@param opt? ToolchainAttr|fun() Configuration options" in (
+        custom_toolchain
+    )
+    assert "function toolchain(name, opt) end" in custom_toolchain
+
+    plugin_and_task = generated["plugin_and_task.lua"].read_text(encoding="utf-8")
+    assert "---@param opt? TaskAttr|fun() Configuration options" in plugin_and_task
+    assert "function task(name, opt) end" in plugin_and_task
+
+    global_interfaces = generated["global_interfaces.lua"].read_text(encoding="utf-8")
+    assert "---@param script? fun() Namespace script function" in global_interfaces
+    assert "function namespace(name, script) end" in global_interfaces
 
     bytes_module = generated["bytes.lua"].read_text(encoding="utf-8")
     assert "---@param buffer Bytes" in bytes_module
@@ -185,3 +217,12 @@ def test_cached_docs_match_committed_library(
 
     common = (output_dir / "common.lua").read_text(encoding="utf-8")
     assert "---@class Rect" in common
+    assert "---@class TargetAttr" in common
+    assert "---@field defines string|string[]" in common
+    assert "---@field deps string|string[]" in common
+    assert "---@field links string|string[]" in common
+    assert "---@class OptionAttr" in common
+    assert "---@class PackageAttr" in common
+    assert "---@class RuleAttr" in common
+    assert "---@class ToolchainAttr" in common
+    assert "---@class TaskAttr" in common

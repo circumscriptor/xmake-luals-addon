@@ -9,7 +9,7 @@
 ---[Open in browser](https://xmake.io/api/description/project-target#target)
 ---
 ---@param name string Target name string, used to identify the project target
----@param opt? TargetAttr Configuration options
+---@param opt? TargetAttr|fun() Configuration options
 ---@return nil
 function target(name, opt) end
 

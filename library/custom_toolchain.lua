@@ -9,8 +9,9 @@
 ---[Open in browser](https://xmake.io/api/description/custom-toolchain#toolchain)
 ---
 ---@param name string Toolchain name string
+---@param opt? ToolchainAttr|fun() Configuration options
 ---@return nil
-function toolchain(name) end
+function toolchain(name, opt) end
 
 ---
 ---**Scoped: toolchain**

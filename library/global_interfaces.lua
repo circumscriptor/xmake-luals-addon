@@ -220,7 +220,7 @@ function set_allowedmodes(modes, ...) end
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#namespace)
 ---
 ---@param name string Namespace name string
----@param script fun(target: any, ...: any) Namespace script function
+---@param script? fun() Namespace script function
 ---@return nil
 function namespace(name, script) end
 

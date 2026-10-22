@@ -9,8 +9,9 @@
 ---[Open in browser](https://xmake.io/api/description/configuration-option#option)
 ---
 ---@param name string Option name string
+---@param opt? OptionAttr|fun() Configuration options
 ---@return nil
-function option(name) end
+function option(name, opt) end
 
 ---
 ---**Scoped: option**

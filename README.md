@@ -112,6 +112,10 @@ name exists in multiple scopes:
         "return_type": "nil",
         "config_type": "CompilationFlagAttr"
     },
+    "target.target": {
+        "config_type": "TargetAttr",
+        "callback": true
+    },
     "rule.add_deps": {
         "config_type": "RuleDependencyOption"
     }
@@ -121,7 +125,13 @@ name exists in multiple scopes:
 `config_type` must name a class from `schema.json`. For functions with `...`,
 the configuration table is merged into the variadic argument because Lua does
 not allow parameters after `...`. Functions without `...` receive the schema
-class as their optional `opt` parameter. `return_type` and a complete manual
+class as their optional `opt` parameter.
+
+Setting `callback` to `true` allows the same optional argument to also be a
+callback function, producing types such as `TargetAttr|fun()`. This is used by
+the scoped APIs (`target`, `option`, `package`, `rule`, `toolchain`, and
+`task`) that support both a configuration table and a closure, for example
+`target("foo", function() ... end)`. `return_type` and a complete manual
 `params` list remain available as escape hatches.
 
 Install the test dependencies and run the suite with:
