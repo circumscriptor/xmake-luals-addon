@@ -1,126 +1,159 @@
 """LuaLS annotation file generator."""
 
-import os
+from pathlib import Path
 
-from .constants import (
-    LUA_CLASS_HEADER_TEMPLATE,
-    LUA_FILE_HEADER_TEMPLATE,
-    LUA_FUNCTION_TEMPLATE,
-)
-from .parser import DocFile, DocFunction
+from .models import DocFile, DocFunction
+
+FILE_HEADER_TEMPLATE = """---@meta
+---[{file_base}]({doc_link})"""
+
+CLASS_HEADER_TEMPLATE = """---@class {class_name}
+local {class_name} = {{}}"""
+
+FUNCTION_TEMPLATE = """
+---
+{scope_doc}{description_doc}---[Open in browser]({link})
+---
+{params_doc}---@return {return_type}
+function {function_signature} end
+"""
+
+EMPTY_RETURN_TYPES = frozenset({"any", "nil", ""})
 
 
 class LuaLSGenerator:
-    """Generates Lua annotation code from domain objects."""
+    """Render domain objects as LuaLS annotation files."""
 
-    def __init__(self, output_dir: str):
-        self.output_dir = output_dir
+    def __init__(self, output_dir: str | Path):
+        self.output_dir = Path(output_dir)
 
     def generate(self, doc_file: DocFile) -> str:
-        """Write out Lua definition file and return output path."""
-        target_path = os.path.join(self.output_dir, f"{doc_file.file_base}.lua")
-        os.makedirs(os.path.dirname(target_path), exist_ok=True)
+        """Write the definition file for ``doc_file`` and return its path."""
+        target_path = self.output_dir / f"{doc_file.file_base}.lua"
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        target_path.write_text(self.render(doc_file), encoding="utf-8")
+        return str(target_path)
 
-        content = []
-        content.append(
-            LUA_FILE_HEADER_TEMPLATE.format(
+    def render(self, doc_file: DocFile) -> str:
+        """Render a :class:`DocFile` into LuaLS annotation source."""
+        parts = [
+            FILE_HEADER_TEMPLATE.format(
                 file_base=doc_file.file_base,
                 doc_link=doc_file.doc_link,
-            ).strip()
-        )
+            )
+        ]
 
         if doc_file.is_instance and doc_file.class_name:
-            content.append(
-                LUA_CLASS_HEADER_TEMPLATE.format(
-                    class_name=doc_file.class_name,
-                ).strip()
-            )
+            parts.append(CLASS_HEADER_TEMPLATE.format(class_name=doc_file.class_name))
 
-        for fn in doc_file.functions:
-            content.append(
-                self._render_function(fn, doc_file.is_instance, doc_file.class_name)
-            )
-
-        with open(target_path, "w", encoding="utf-8") as f:
-            f.write("\n\n".join(content).strip() + "\n")
-
-        return target_path
-
-    @staticmethod
-    def _render_function(
-        fn: DocFunction, is_instance: bool, class_name: str | None
-    ) -> str:
-        scope_doc = (
-            f"---**Scoped: {fn.scope}**\n---\n" if fn.is_scoped and fn.scope else ""
+        parts.extend(
+            self._render_function(function, doc_file) for function in doc_file.functions
         )
-        desc_doc = f"---{fn.description}\n---\n" if fn.description else ""
+        return "\n\n".join(parts).strip() + "\n"
 
-        # Strictly clean function arguments (no '?')
-        clean_fn_args = []
-        for arg in fn.fn_args:
-            cleaned = arg.rstrip("?").strip()
-            if cleaned and cleaned not in clean_fn_args:
-                clean_fn_args.append(cleaned)
+    @classmethod
+    def _render_function(cls, function: DocFunction, doc_file: DocFile) -> str:
+        args = cls._clean_arguments(function)
+        signature, return_type = cls._build_signature(function, doc_file, args)
+        params_doc = cls._render_parameters(function, args)
 
-        # Ensure '...' is placed last in argument list if present
-        if "..." in clean_fn_args:
-            clean_fn_args.remove("...")
-            clean_fn_args.append("...")
-
-        params_doc = ""
-        for p in fn.params:
-            clean_name = p.clean_name
-
-            # Guard against unused @param: only emit if in fn_args or is '...'
-            if clean_name not in clean_fn_args and clean_name != "...":
-                continue
-
-            # Place '?' in the @param tag, NOT in the function signature
-            param_tag = (
-                f"{clean_name}?"
-                if p.is_optional and clean_name != "..."
-                else clean_name
-            )
-            clean_type = p.type_name.rstrip("?")
-            params_doc += (
-                f"---@param {param_tag} {clean_type} {p.description}".rstrip() + "\n"
-            )
-
-        return_type = fn.return_type
-
-        # Determine signature based on identifier syntax
-        is_method = ":" in fn.api_id
-        is_static = "." in fn.api_id
-
-        if is_instance and class_name:
-            if is_method:
-                m_name = fn.api_id.split(":")[-1]
-                func_sig = f"{class_name}:{m_name}({', '.join(clean_fn_args)})"
-                if return_type in ("any", "nil", "") and m_name == "new":
-                    return_type = class_name
-            elif is_static:
-                m_name = fn.api_id.split(".")[-1]
-                func_sig = f"{class_name}.{m_name}({', '.join(clean_fn_args)})"
-                if return_type in ("any", "nil", "") and m_name == "new":
-                    return_type = class_name
-            else:
-                # Free-standing function (e.g. bytes(...))
-                func_sig = f"{fn.api_id}({', '.join(clean_fn_args)})"
-                # If this free-standing function is a constructor for the class, annotate its return type
-                if (
-                    return_type in ("any", "nil", "")
-                    and fn.api_id.lower() == class_name.lower()
-                ):
-                    return_type = class_name
-        else:
-            func_name = fn.api_id.split(":")[-1] if ":" in fn.api_id else fn.api_id
-            func_sig = f"{func_name}({', '.join(clean_fn_args)})"
-
-        return LUA_FUNCTION_TEMPLATE.format(
-            scope_doc=scope_doc,
-            description_doc=desc_doc,
-            link=fn.link,
+        return FUNCTION_TEMPLATE.format(
+            scope_doc=cls._render_scope(function),
+            description_doc=cls._render_description(function),
+            link=function.link,
             params_doc=params_doc,
             return_type=return_type,
-            function_signature=func_sig,
+            function_signature=signature,
         ).strip()
+
+    @staticmethod
+    def _clean_arguments(function: DocFunction) -> list[str]:
+        """Return unique, valid argument names with the vararg last."""
+        arguments: list[str] = []
+        for argument in function.fn_args:
+            cleaned = argument.rstrip("?").strip()
+            if cleaned and cleaned not in arguments:
+                arguments.append(cleaned)
+
+        if "..." in arguments:
+            arguments.remove("...")
+            arguments.append("...")
+        return arguments
+
+    @classmethod
+    def _build_signature(
+        cls,
+        function: DocFunction,
+        doc_file: DocFile,
+        arguments: list[str],
+    ) -> tuple[str, str]:
+        """Build the Lua function signature and resolve its return type."""
+        argument_list = ", ".join(arguments)
+
+        if doc_file.is_instance and doc_file.class_name:
+            return cls._build_instance_signature(
+                function,
+                doc_file.class_name,
+                argument_list,
+            )
+
+        return f"{function.short_name}({argument_list})", function.return_type
+
+    @classmethod
+    def _build_instance_signature(
+        cls,
+        function: DocFunction,
+        class_name: str,
+        argument_list: str,
+    ) -> tuple[str, str]:
+        """Build a signature for a class method, static method, or constructor."""
+        return_type = function.return_type
+
+        if function.is_method:
+            name = function.method_name
+            if name == "new" and return_type in EMPTY_RETURN_TYPES:
+                return_type = class_name
+            return f"{class_name}:{name}({argument_list})", return_type
+
+        if function.is_static:
+            name = function.static_name
+            if name == "new" and return_type in EMPTY_RETURN_TYPES:
+                return_type = class_name
+            return f"{class_name}.{name}({argument_list})", return_type
+
+        # Free-standing module function (e.g. ``bytes(...)``).
+        if (
+            return_type in EMPTY_RETURN_TYPES
+            and function.api_id.lower() == class_name.lower()
+        ):
+            return_type = class_name
+        return f"{function.api_id}({argument_list})", return_type
+
+    @staticmethod
+    def _render_parameters(function: DocFunction, arguments: list[str]) -> str:
+        """Render ``---@param`` tags, skipping parameters absent from the signature."""
+        allowed = set(arguments)
+        lines: list[str] = []
+
+        for param in function.params:
+            name = param.clean_name
+            if name not in allowed and not param.is_vararg:
+                continue
+
+            tag = f"{name}?" if param.is_optional and not param.is_vararg else name
+            type_name = param.type_name.rstrip("?")
+            lines.append(f"---@param {tag} {type_name} {param.description}".rstrip())
+
+        return "".join(f"{line}\n" for line in lines)
+
+    @staticmethod
+    def _render_scope(function: DocFunction) -> str:
+        if function.is_scoped and function.scope:
+            return f"---**Scoped: {function.scope}**\n---\n"
+        return ""
+
+    @staticmethod
+    def _render_description(function: DocFunction) -> str:
+        if function.description:
+            return f"---{function.description}\n---\n"
+        return ""

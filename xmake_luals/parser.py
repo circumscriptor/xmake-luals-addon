@@ -1,312 +1,264 @@
-"""Parser for VitePress documentation files."""
+"""Parser for VitePress-style xmake documentation files."""
 
 import os
 import re
-from dataclasses import dataclass, field
+from collections.abc import Sequence
 
-from .constants import (
-    REGEX_CUSTOM_ANCHOR,
-    REGEX_HTML_TAGS,
-    REGEX_IDENTIFIER,
-    REGEX_STOP_SECTIONS,
+from .constants import DOCS_SITE_BASE_URL
+from .markdown import clean_heading, section_heading, split_arguments, split_sections
+from .models import DocFile, DocFunction, DocParam
+
+IDENTIFIER_RE = re.compile(r"^([a-zA-Z_][a-zA-Z0-9_]*(?::[a-zA-Z_][a-zA-Z0-9_]*)?)$")
+STOP_SECTIONS_RE = re.compile(
+    r"^#+\s+(Function Prototype|Parameter Description|Usage|Return Value|Example)",
+    re.IGNORECASE,
 )
 
+SCOPE_PREFIXES = (
+    "project-",
+    "project_",
+    "configuration-",
+    "configuration_",
+    "custom-",
+    "custom_",
+)
 
-@dataclass
-class DocParam:
-    name: str
-    type_name: str
-    description: str
-    is_optional: bool = False
-
-    @property
-    def clean_name(self) -> str:
-        """Name guaranteed to be valid Lua syntax (no trailing ?)."""
-        return self.name.rstrip("?").strip()
-
-
-@dataclass
-class DocFunction:
-    api_id: str
-    description: str
-    link: str
-    params: list[DocParam] = field(default_factory=list)
-    return_type: str = "nil"
-    is_scoped: bool = False
-    scope: str | None = None
-    class_name: str | None = None
-    fn_args: list[str] = field(default_factory=list)
-
-
-@dataclass
-class DocFile:
-    file_base: str
-    doc_link: str
-    is_instance: bool
-    class_name: str | None
-    functions: list[DocFunction] = field(default_factory=list)
+NO_PARAMS_MARKER = "__no_params__"
 
 
 class MarkdownParser:
-    """Parses markdown into structured DocFile representations."""
+    """Parse markdown pages into structured :class:`DocFile` objects."""
+
+    def parse_file(self, file_path: str, repo_root: str) -> DocFile:
+        """Parse a single documentation file relative to ``repo_root``."""
+        with open(file_path, "r", encoding="utf-8") as handle:
+            lines = handle.read().splitlines()
+
+        doc_file, default_scope = self._build_doc_file(file_path, repo_root)
+
+        for section in split_sections(lines):
+            function = self._parse_section(
+                section,
+                doc_file=doc_file,
+                default_scope=default_scope,
+            )
+            if function is not None:
+                doc_file.functions.append(function)
+
+        return doc_file
 
     @staticmethod
-    def _clean_heading(heading: str) -> str:
-        heading = REGEX_CUSTOM_ANCHOR.sub("", heading)
-        return REGEX_HTML_TAGS.sub("", heading).strip()
-
-    @staticmethod
-    def _split_args(arg_str: str) -> list[str]:
-        args, current = [], []
-        depth_brace, depth_paren, depth_angle = 0, 0, 0
-        for ch in arg_str:
-            if ch in ("{", "["):
-                depth_brace += 1
-            elif ch in ("}", "]"):
-                depth_brace -= 1
-            elif ch == "(":
-                depth_paren += 1
-            elif ch == ")":
-                depth_paren -= 1
-            elif ch == "<":
-                depth_angle += 1
-            elif ch == ">":
-                depth_angle -= 1
-            elif (
-                ch == "," and depth_brace == 0 and depth_paren == 0 and depth_angle == 0
-            ):
-                args.append("".join(current).strip())
-                current = []
-                continue
-            current.append(ch)
-        if current:
-            val = "".join(current).strip()
-            if val:
-                args.append(val)
-        return args
-
-    @staticmethod
-    def _extract_base_type(type_str: str) -> str:
-        """Extract scalar element type from arrays or unions (e.g. string|string[] -> string)."""
-        t = type_str.replace("<", "").replace(">", "").rstrip("?").strip()
-        parts = [p.replace("[]", "").strip() for p in t.split("|")]
-        return parts[0] if parts else "string"
-
-    def parse_file(self, file_path: str, repo_root: str) -> DocFile | None:
-        with open(file_path, "r", encoding="utf-8") as f:
-            lines = f.read().splitlines()
-
+    def _build_doc_file(file_path: str, repo_root: str) -> tuple[DocFile, str]:
+        """Derive file-level metadata and the default scope from its path."""
         rel_path = (
             os.path.relpath(file_path, repo_root).replace("\\", "/").replace(".md", "")
         )
         rel_path = rel_path.removeprefix("docs/")
 
         is_instance = "api/scripts" in rel_path or "instance" in rel_path
-
         raw_base = os.path.basename(rel_path)
-        file_base = raw_base.replace("-", "_")
-
-        scope_candidate = raw_base
-        for pfx in [
-            "project-",
-            "project_",
-            "configuration-",
-            "configuration_",
-            "custom-",
-            "custom_",
-        ]:
-            scope_candidate = scope_candidate.removeprefix(pfx)
-        default_scope = scope_candidate.replace("-dependencies", "").replace(
-            "_dependencies", ""
-        )
+        default_scope = MarkdownParser._default_scope(raw_base)
         class_name = (
             default_scope.replace("-instance", "").replace("_instance", "").capitalize()
             if is_instance
             else None
         )
 
-        doc_link = f"https://xmake.io/{rel_path}"
         doc_file = DocFile(
-            file_base=file_base,
-            doc_link=doc_link,
+            file_base=raw_base.replace("-", "_"),
+            doc_link=f"{DOCS_SITE_BASE_URL}/{rel_path}",
             is_instance=is_instance,
             class_name=class_name,
         )
+        return doc_file, default_scope
 
-        sections: list[list[str]] = []
-        current_section: list[str] = []
-        for line in lines:
-            if line.strip().startswith("## "):
-                if current_section:
-                    sections.append(current_section)
-                current_section = [line]
-            elif current_section:
-                current_section.append(line)
-        if current_section:
-            sections.append(current_section)
+    @staticmethod
+    def _default_scope(raw_base: str) -> str:
+        """Infer the implicit scope (e.g. ``target``) from a page filename."""
+        scope = raw_base
+        for prefix in SCOPE_PREFIXES:
+            scope = scope.removeprefix(prefix)
+        return scope.replace("-dependencies", "").replace("_dependencies", "")
 
-        for section in sections:
-            raw_heading = section[0][len("## ") :].strip()
-            clean_heading = self._clean_heading(raw_heading)
-            match = REGEX_IDENTIFIER.match(clean_heading)
-            if not match:
+    def _parse_section(
+        self,
+        section: Sequence[str],
+        doc_file: DocFile,
+        default_scope: str,
+    ) -> DocFunction | None:
+        """Parse one level-two section into a function definition."""
+        api_id = IDENTIFIER_RE.match(clean_heading(section_heading(section)))
+        if api_id is None:
+            return None
+
+        api_id_value = api_id.group(1)
+        parameter_table = self._parse_parameter_table(section)
+        params, fn_args = self._parse_arguments(
+            self._parse_prototype_lines(section),
+            parameter_table,
+        )
+        is_scoped, scope = self._resolve_scope(
+            api_id_value, doc_file.is_instance, default_scope
+        )
+
+        return DocFunction(
+            api_id=api_id_value,
+            description=self._parse_description(section),
+            link=f"{doc_file.doc_link}#{self._anchor(api_id_value)}",
+            params=params,
+            is_scoped=is_scoped,
+            scope=scope,
+            class_name=doc_file.class_name,
+            fn_args=fn_args,
+        )
+
+    @staticmethod
+    def _parse_description(section: Sequence[str]) -> str:
+        """Read the short description that precedes the API details."""
+        for raw_line in section[1:]:
+            line = raw_line.strip()
+            if not line:
                 continue
+            if STOP_SECTIONS_RE.match(line) or line.startswith((":::", "```")):
+                break
+            return line.lstrip("#").strip()
+        return ""
 
-            api_id = match.group(1)
+    @staticmethod
+    def _parse_prototype_lines(section: Sequence[str]) -> list[str]:
+        """Collect the lines inside the ``Function Prototype`` code block."""
+        prototype_lines: list[str] = []
+        in_prototype = False
 
-            # 1. Description
-            description = ""
-            for line in section[1:]:
-                line_s = line.strip()
-                if not line_s:
-                    continue
-                if REGEX_STOP_SECTIONS.match(line_s) or line_s.startswith(
-                    (":::", "```")
-                ):
+        for raw_line in section:
+            line = raw_line.strip()
+            if "Function Prototype" in line and line.startswith("#"):
+                in_prototype = True
+                continue
+            if not in_prototype:
+                continue
+            if line.startswith("```"):
+                if prototype_lines:
                     break
-                description = line_s.lstrip("#").strip()
+                continue
+            if line.startswith(":::"):
+                continue
+            if line:
+                prototype_lines.append(line)
+
+        return prototype_lines
+
+    @staticmethod
+    def _parse_parameter_table(section: Sequence[str]) -> dict[str, str]:
+        """Parse the ``Parameter Description`` markdown table."""
+        parameters: dict[str, str] = {}
+        in_parameters = False
+
+        for raw_line in section:
+            line = raw_line.strip()
+            if "Parameter Description" in line and line.startswith("#"):
+                in_parameters = True
+                continue
+            if not in_parameters:
+                continue
+            if line.startswith("##") or "Usage" in line or "Return Value" in line:
                 break
 
-            # 2. Prototype - collect each line independently to support overloads
-            prototype_lines: list[str] = []
-            in_proto = False
-            for line in section:
-                line_s = line.strip()
-                if "Function Prototype" in line_s and line_s.startswith("#"):
-                    in_proto = True
+            if "no parameters" in line.lower():
+                parameters[NO_PARAMS_MARKER] = "true"
+                continue
+            if not line.startswith("|"):
+                continue
+
+            parts = [part.strip() for part in line.split("|")]
+            if len(parts) < 3:
+                continue
+
+            name = parts[1].replace("`", "")
+            description = parts[2]
+            if name.lower() in ("parameter", "---", ":---", ":---:", "---:"):
+                continue
+            if name.lower() == "no parameters":
+                parameters[NO_PARAMS_MARKER] = "true"
+                continue
+            parameters[name] = description
+
+        return parameters
+
+    @staticmethod
+    def _parse_arguments(
+        prototype_lines: Sequence[str],
+        parameter_table: dict[str, str],
+    ) -> tuple[list[DocParam], list[str]]:
+        """Turn prototype arguments and table descriptions into parameters."""
+        if parameter_table.get(NO_PARAMS_MARKER) or not prototype_lines:
+            return [], []
+
+        params: list[DocParam] = []
+        fn_args: list[str] = []
+        seen_args: set[str] = set()
+
+        for prototype_line in prototype_lines:
+            match = re.search(r"\((.*?)\)", prototype_line)
+            if match is None or not match.group(1).strip():
+                continue
+
+            for argument in split_arguments(match.group(1).strip()):
+                param, name = MarkdownParser._parse_argument(argument, parameter_table)
+                if param is None or name in seen_args:
                     continue
-                if in_proto:
-                    if line_s.startswith("```"):
-                        if prototype_lines:
-                            break
-                        continue
-                    if line_s.startswith(":::"):
-                        continue
-                    if line_s:
-                        prototype_lines.append(line_s)
+                params.append(param)
+                fn_args.append(name)
+                seen_args.add(name)
 
-            # 3. Parameter table & text detection
-            table_params: dict[str, str] = {}
-            in_params = False
-            for line in section:
-                line_s = line.strip()
-                if "Parameter Description" in line_s and line_s.startswith("#"):
-                    in_params = True
-                    continue
-                if in_params:
-                    if (
-                        line_s.startswith("##")
-                        or "Usage" in line_s
-                        or "Return Value" in line_s
-                    ):
-                        break
-                    # Detect prose "no parameters"
-                    if "no parameters" in line_s.lower():
-                        table_params["__no_params__"] = "true"
-                        continue
-                    if line_s.startswith("|"):
-                        parts = [p.strip() for p in line_s.split("|")]
-                        if len(parts) >= 3:
-                            p_name = parts[1].replace("`", "")
-                            p_desc = parts[2]
-                            if p_name.lower() in (
-                                "parameter",
-                                "---",
-                                ":---",
-                                ":---:",
-                                "---:",
-                            ):
-                                continue
-                            if p_name.lower() == "no parameters":
-                                table_params["__no_params__"] = "true"
-                                continue
-                            table_params[p_name] = p_desc
+        return params, fn_args
 
-            # 4. Parse parameters and function arguments across prototype lines
-            params: list[DocParam] = []
-            fn_args: list[str] = []
+    @staticmethod
+    def _parse_argument(
+        argument: str, parameter_table: dict[str, str]
+    ) -> tuple[DocParam | None, str]:
+        """Parse one prototype argument such as ``name: <string>``."""
+        argument = argument.strip()
+        if not argument:
+            return None, ""
 
-            if not table_params.get("__no_params__") and prototype_lines:
-                seen_args = set()
-                for proto_line in prototype_lines:
-                    # Non-greedy match per single line
-                    m = re.search(r"\((.*?)\)", proto_line)
-                    if not m or not m.group(1).strip():
-                        continue
-
-                    raw_args = self._split_args(m.group(1).strip())
-                    for arg in raw_args:
-                        arg_clean = arg.strip()
-                        if not arg_clean:
-                            continue
-
-                        if arg_clean.startswith("{") or "=" in arg_clean:
-                            clean_name = "opt"
-                            if clean_name not in seen_args:
-                                desc = table_params.get(
-                                    "public|interface|private", "Configuration options"
-                                )
-                                params.append(
-                                    DocParam("opt", "table", desc, is_optional=True)
-                                )
-                                fn_args.append("opt")
-                                seen_args.add("opt")
-                        elif ":" in arg_clean:
-                            name_part, type_part = [
-                                p.strip() for p in arg_clean.split(":", 1)
-                            ]
-                            clean_name = name_part.rstrip("?").strip()
-                            if clean_name not in seen_args:
-                                is_opt = name_part.endswith("?") or type_part.endswith(
-                                    "?"
-                                )
-                                desc = table_params.get(
-                                    clean_name, f"{clean_name} parameter"
-                                )
-                                params.append(
-                                    DocParam(
-                                        clean_name,
-                                        type_part.rstrip("?"),
-                                        desc,
-                                        is_optional=is_opt,
-                                    )
-                                )
-                                fn_args.append(clean_name)
-                                seen_args.add(clean_name)
-                        else:
-                            clean_name = arg_clean.rstrip("?").strip()
-                            if clean_name not in seen_args:
-                                desc = table_params.get(
-                                    clean_name, f"{clean_name} parameter"
-                                )
-                                params.append(DocParam(clean_name, "any", desc))
-                                fn_args.append(clean_name)
-                                seen_args.add(clean_name)
-
-            anchor = api_id.replace(":", "-").replace("_", "-")
-            link = f"{doc_link}#{anchor}"
-
-            # 5. Correctly handle scope for constructor / bare module names
-            is_scoped = False
-            scope = None
-            if not is_instance:
-                if ":" in api_id:
-                    scope = api_id.split(":", 1)[0]
-                    is_scoped = True
-                else:
-                    scope = default_scope
-                    is_scoped = True
-
-            doc_fn = DocFunction(
-                api_id=api_id,
-                description=description,
-                link=link,
-                params=params,
-                is_scoped=is_scoped,
-                scope=scope,
-                class_name=class_name,
-                fn_args=fn_args,
+        if argument.startswith("{") or "=" in argument:
+            description = parameter_table.get(
+                "public|interface|private", "Configuration options"
             )
-            doc_file.functions.append(doc_fn)
+            return DocParam("opt", "table", description, is_optional=True), "opt"
 
-        return doc_file
+        if ":" in argument:
+            name_part, type_part = (part.strip() for part in argument.split(":", 1))
+            clean_name = name_part.rstrip("?").strip()
+            is_optional = name_part.endswith("?") or type_part.endswith("?")
+            description = parameter_table.get(clean_name, f"{clean_name} parameter")
+            return (
+                DocParam(
+                    clean_name,
+                    type_part.rstrip("?"),
+                    description,
+                    is_optional=is_optional,
+                ),
+                clean_name,
+            )
+
+        clean_name = argument.rstrip("?").strip()
+        description = parameter_table.get(clean_name, f"{clean_name} parameter")
+        return DocParam(clean_name, "any", description), clean_name
+
+    @staticmethod
+    def _resolve_scope(
+        api_id: str, is_instance: bool, default_scope: str
+    ) -> tuple[bool, str | None]:
+        """Determine the annotation scope for a function."""
+        if is_instance:
+            return False, None
+        if ":" in api_id:
+            return True, api_id.split(":", 1)[0]
+        return True, default_scope
+
+    @staticmethod
+    def _anchor(api_id: str) -> str:
+        """Convert an API id into the corresponding markdown anchor."""
+        return api_id.replace(":", "-").replace("_", "-")

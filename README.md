@@ -76,7 +76,33 @@ xmake create -P "hello"
 
 
     
-## Authors
+## Development
+
+The generator is split into small modules:
+
+- `xmake_luals/pipeline.py` coordinates the full generation run.
+- `xmake_luals/cli.py` parses command-line options and configures logging.
+- `xmake_luals/repo.py` fetches and filters the xmake documentation.
+- `xmake_luals/parser.py` and `xmake_luals/markdown.py` parse the markdown pages.
+- `xmake_luals/type_mapping.py` and `xmake_luals/return_inference.py` contain
+  the documentation heuristics.
+- `xmake_luals/patch.py` applies those heuristics and the manual overrides.
+- `xmake_luals/generator.py` and `xmake_luals/schema.py` render the Lua files.
+- `xmake_luals/xmake.py` queries the local xmake CLI.
+
+Install the test dependencies and run the suite with:
+
+```bash
+python3 -m pip install -e ".[test]"
+python3 -m pytest
+```
+
+The integration tests use the documentation checkout in `.cache/xmake-docs`
+when it is available, and verify that the generated definitions match the
+committed `library/` output. They are skipped automatically when the cache has
+not been populated yet. To populate it, run `python3 main.py` once.
+
+
 
 - [@LelouchHe](https://github.com/LelouchHe)
 - [@mccakit](https://github.com/mccakit)

@@ -2,128 +2,82 @@
 
 import json
 import os
-from typing import Any, ClassVar
+from typing import Any
 
-from .parser import DocFile, DocFunction, DocParam
+from .models import DocFile, DocFunction, DocParam
+from .return_inference import infer_instance_return
+from .type_mapping import map_parameter_types
 
 
 class DocPatcher:
-    """Applies schema mappings and custom manual patches."""
-
-    # Parameter name to schema type mapping
-    TYPE_MAPPINGS: ClassVar[dict[str, str]] = {
-        "kind": "TargetKind",
-        "plat": "Platform",
-        "platform": "Platform",
-        "arch": "Architecture",
-        "mode": "StripMode",
-        "level": "WarningLevel",
-        "optimize": "OptimizationLevel",
-        "runtime": "Runtime",
-        "languages": "LanguageStandard",
-        "fpmodels": "FloatPointModel",
-        "policy": "BuildPolicy",
-    }
+    """Enrich parsed documentation and apply user-provided overrides."""
 
     def __init__(self, overrides_path: str = "overrides.json"):
         self.overrides = self._load_overrides(overrides_path)
 
-    def _load_overrides(self, path: str) -> dict[str, Any]:
-        if os.path.isfile(path):
-            with open(path, "r", encoding="utf-8") as f:
-                return json.load(f)
-        return {}
+    @staticmethod
+    def _load_overrides(path: str) -> dict[str, Any]:
+        """Load the optional overrides file, ignoring a missing file."""
+        if not os.path.isfile(path):
+            return {}
+        with open(path, "r", encoding="utf-8") as handle:
+            data = json.load(handle)
+        if not isinstance(data, dict):
+            raise TypeError(f"Overrides file must contain a JSON object: {path}")
+        return data
 
     def patch_file(self, doc_file: DocFile) -> None:
-        """Enrich and patch all functions inside a DocFile."""
-        for fn in doc_file.functions:
-            self._patch_function(fn, doc_file.is_instance)
+        """Enrich and patch every function in ``doc_file``."""
+        for function in doc_file.functions:
+            self.patch_function(function, doc_file.is_instance)
 
-    def _patch_function(self, fn: DocFunction, is_instance: bool) -> None:
-        # 1. Map parameter types
-        prev_param_type = "string"
-        for p in fn.params:
-            clean_pname = p.clean_name
+    def patch_function(self, function: DocFunction, is_instance: bool) -> None:
+        """Apply all transformations to a single function."""
+        map_parameter_types(function.params)
+        function.fn_args = [arg.rstrip("?").strip() for arg in function.fn_args]
+        function.return_type = (
+            infer_instance_return(function.api_id) if is_instance else "nil"
+        )
+        self._apply_override(function)
 
-            if clean_pname == "...":
-                # If vararg type has 'string|table', upgrade 'string' to schema type if previous parameter was mapped
-                if "string" in p.type_name and prev_param_type not in (
-                    "string",
-                    "string|string[]",
-                ):
-                    p.type_name = p.type_name.replace("string", prev_param_type)
-            elif clean_pname in self.TYPE_MAPPINGS:
-                p.type_name = self.TYPE_MAPPINGS[clean_pname]
-                prev_param_type = p.type_name
-            elif "<string|array>" in p.type_name:
-                p.type_name = "string|string[]"
-                prev_param_type = "string"
-            elif "<boolean>" in p.type_name:
-                p.type_name = "boolean"
-                prev_param_type = "boolean"
-            elif "<number>" in p.type_name:
-                p.type_name = "number"
-                prev_param_type = "number"
-            elif p.type_name.startswith("<function"):
-                p.type_name = "fun(target: any, ...: any)"
-                prev_param_type = "fun(target: any, ...: any)"
-            else:
-                p.type_name = (
-                    p.type_name.replace("<", "").replace(">", "").rstrip("?") or "any"
-                )
-                prev_param_type = p.type_name
+    def _apply_override(self, function: DocFunction) -> None:
+        """Apply a manual override, if one exists for the API id."""
+        override = self.overrides.get(function.api_id)
+        if not isinstance(override, dict):
+            return
 
-        # Ensure fn_args are clean identifiers (no '?')
-        fn.fn_args = [arg.rstrip("?").strip() for arg in fn.fn_args]
-
-        # 2. Infer return types
-        if not is_instance:
-            fn.return_type = "nil"
-        else:
-            fn.return_type = self._infer_instance_return(fn.api_id, fn.description)
-
-        # 3. Apply manual overrides
-        override_entry = self.overrides.get(fn.api_id)
-        if override_entry:
-            if "return_type" in override_entry:
-                fn.return_type = override_entry["return_type"]
-            if "params" in override_entry:
-                fn.params = [
-                    DocParam(
-                        p["name"].rstrip("?"),
-                        p["type"],
-                        p.get("desc", ""),
-                        is_optional=p["name"].endswith("?") or p.get("optional", False),
-                    )
-                    for p in override_entry["params"]
-                ]
-                fn.fn_args = [p.clean_name for p in fn.params]
+        if "return_type" in override:
+            function.return_type = str(override["return_type"])
+        if "params" in override:
+            function.params = self._parse_override_params(
+                function.api_id, override["params"]
+            )
+            function.fn_args = [param.clean_name for param in function.params]
 
     @staticmethod
-    def _infer_instance_return(api_id: str, desc: str) -> str:
-        m_name = api_id.split(":")[-1].lower()
-        if m_name in ("set", "add", "del", "remove") or m_name.startswith(
-            ("set_", "add_", "remove_")
-        ):
-            return "nil"
-        if m_name.startswith(("is_", "has_")):
-            return "boolean"
-        if m_name.startswith("check_"):
-            return "number|nil" if m_name == "check_sizeof" else "boolean"
-        if m_name in (
-            "name",
-            "kind",
-            "basename",
-            "filename",
-            "version",
-            "plat",
-            "arch",
-        ) or m_name.endswith(("file", "dir")):
-            return "string"
-        if m_name.endswith(("files", "dirs")):
-            return "string[]"
-        if m_name.endswith("batches") or m_name in ("sourcebatches", "deps"):
-            return "table"
-        if m_name in ("get", "values"):
-            return "any"
-        return "any"
+    def _parse_override_params(api_id: str, entries: Any) -> list[DocParam]:
+        """Convert override JSON entries into :class:`DocParam` objects."""
+        if not isinstance(entries, list):
+            raise TypeError(f"Override 'params' must be a list for API id: {api_id}")
+
+        params: list[DocParam] = []
+        for entry in entries:
+            if (
+                not isinstance(entry, dict)
+                or "name" not in entry
+                or "type" not in entry
+            ):
+                raise ValueError(
+                    f"Override parameters require 'name' and 'type': {api_id}"
+                )
+            name = str(entry["name"])
+            params.append(
+                DocParam(
+                    name=name.rstrip("?"),
+                    type_name=str(entry["type"]),
+                    description=str(entry.get("desc", "")),
+                    is_optional=name.endswith("?")
+                    or bool(entry.get("optional", False)),
+                )
+            )
+        return params
