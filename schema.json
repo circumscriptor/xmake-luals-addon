@@ -1,0 +1,211 @@
+{
+    "aliases": {
+        "OperatingSystem": [
+            "windows",
+            "linux",
+            "android",
+            "macosx",
+            "ios",
+            "freebsd",
+            "bsd"
+        ],
+        "Host": [
+            "windows",
+            "linux",
+            "macosx"
+        ],
+        "Subhost": [
+            "msys",
+            "cygwin"
+        ],
+        "TargetKind": [
+            "phony",
+            "binary",
+            "static",
+            "shared",
+            "object",
+            "headeronly"
+        ],
+        "Runtime": [
+            "MT",
+            "MD",
+            "MTd",
+            "MDd",
+            "c++_static",
+            "c++_shared",
+            "stdc++_static",
+            "stdc++_shared"
+        ],
+        "StripMode": [
+            "debug",
+            "all"
+        ],
+        "SymbolInfo": [
+            "debug",
+            "debug,edit",
+            "debug,embed",
+            "hidden"
+        ],
+        "WarningLevel": [
+            "none",
+            "less",
+            "more",
+            "extra",
+            "pedantic",
+            "all",
+            "allextra",
+            "everything",
+            "error"
+        ],
+        "OptimizationLevel": [
+            "none",
+            "fast",
+            "faster",
+            "fastest",
+            "smallest",
+            "aggressive"
+        ],
+        "FloatPointModel": [
+            "fast",
+            "strict",
+            "except",
+            "precise"
+        ],
+        "ToolType": [
+            "cc",
+            "cxx",
+            "mm",
+            "mxx",
+            "gc",
+            "as",
+            "sc",
+            "rc",
+            "dc",
+            "fc",
+            "rust",
+            "strip",
+            "ld",
+            "sh",
+            "ar",
+            "dcld",
+            "dcsh"
+        ],
+        "ExceptionType": [
+            "cxx",
+            "no-cxx",
+            "objc",
+            "no-objc"
+        ],
+        "LanguageStandard": [
+            "ansi",
+            "c89",
+            "gnu89",
+            "c90",
+            "gnu90",
+            "c99",
+            "gnu99",
+            "c11",
+            "c17",
+            "clatest",
+            "cxx98",
+            "gnuxx98",
+            "cxx03",
+            "gnuxx03",
+            "cxx11",
+            "gnuxx11",
+            "cxx14",
+            "gnuxx14",
+            "cxx1z",
+            "gnuxx1z",
+            "cxx17",
+            "gnuxx17",
+            "cxx20",
+            "gnuxx20",
+            "cxx2a",
+            "gnuxx2a",
+            "cxx23",
+            "gnuxx23",
+            "cxx2b",
+            "gnuxx2b",
+            "cxxlatest",
+            "gnuxxlatest"
+        ]
+    },
+    "classes": {
+        "AccessSpecifier": {
+            "fields": {
+                "public": "boolean",
+                "private": "boolean",
+                "interface": "boolean",
+                "inherit": "boolean"
+            }
+        },
+        "CompilationOption": {
+            "fields": {
+                "rule": "string",
+                "force": "CompilationOption",
+                "defines": "string",
+                "languages": "LanguageStandard",
+                "includedirs": "string",
+                "cflags": "string"
+            }
+        },
+        "CompilationFlagAttr": {
+            "fields": {
+                "force": "boolean",
+                "tools": "string|string[]"
+            }
+        },
+        "ToolchainOption": {
+            "fields": {
+                "plat": "Platform",
+                "arch": "Architecture",
+                "vs": "string"
+            }
+        },
+        "InstallFilesOption": {
+            "fields": {
+                "prefixdir": "string",
+                "install": "boolean"
+            }
+        },
+        "ConfigvarOption": {
+            "fields": {
+                "quote": "boolean",
+                "escape": "boolean"
+            }
+        },
+        "ConfigfilesOption": {
+            "fields": {
+                "filename": "string",
+                "prefixdir": "string",
+                "onlycopy": "boolean",
+                "pattern": "string",
+                "variables": "table<string, any>"
+            }
+        },
+        "FilegroupsOption": {
+            "fields": {
+                "rootdir": "string",
+                "files": "string[]",
+                "mode": "string|\"plain\"|\"tree\""
+            }
+        },
+        "TargetAttr": {
+            "fields": {
+                "kind": "TargetKind",
+                "files": "string|string[]",
+                "includedirs": "string|string[]"
+            }
+        },
+        "SourceBatch": {
+            "fields": {
+                "sourcekind": "string",
+                "rulename": "string",
+                "sourcefiles": "string[]",
+                "objectfiles": "string[]",
+                "dependfiles": "string[]"
+            }
+        }
+    }
+}
