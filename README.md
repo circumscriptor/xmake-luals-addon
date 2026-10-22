@@ -35,6 +35,9 @@ hashes can be compared with
 
 ## Development
 
+See [HACKING.md](HACKING.md) for the complete setup, build, test, and
+validation workflow.
+
 Requirements:
 
 - Python 3.10 or newer.
