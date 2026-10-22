@@ -35,6 +35,11 @@ class SchemaManager:
             )
         return data
 
+    @property
+    def class_names(self) -> set[str]:
+        """Return the names of all classes declared in the schema."""
+        return set(self.data.get("classes", {}))
+
     def enrich_from_cli(self) -> None:
         """Merge live values from ``xmake show -l ... --json`` into aliases."""
         if not self.inspector.is_available:

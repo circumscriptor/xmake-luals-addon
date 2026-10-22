@@ -265,8 +265,10 @@ function set_iconfile(iconfile) end
 ---
 ---[Open in browser](https://xmake.io/api/description/xpack-interfaces#add-sourcefiles)
 ---
+---@param files string|string[] Source file pattern string or array
+---@param ... string|InstallFilesOption Variable parameters, can pass multiple file patterns
 ---@return nil
-function add_sourcefiles() end
+function add_sourcefiles(files, ...) end
 
 ---
 ---**Scoped: xpack-interfaces**
@@ -275,8 +277,10 @@ function add_sourcefiles() end
 ---
 ---[Open in browser](https://xmake.io/api/description/xpack-interfaces#add-installfiles)
 ---
+---@param files string|string[] Install file pattern string or array
+---@param ... string|InstallFilesOption Variable parameters, can pass multiple file patterns
 ---@return nil
-function add_installfiles() end
+function add_installfiles(files, ...) end
 
 ---
 ---**Scoped: xpack-interfaces**

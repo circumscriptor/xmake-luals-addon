@@ -100,6 +100,30 @@ The generator is split into small modules:
 - `xmake_luals/generator.py` and `xmake_luals/schema.py` render the Lua files.
 - `xmake_luals/xmake.py` queries the local xmake CLI.
 
+### Overrides
+
+`overrides.json` can correct annotations that cannot be inferred from the
+documentation. Entries are keyed by API name, or by `scope.api` when the same
+name exists in multiple scopes:
+
+```json
+{
+    "target.add_cflags": {
+        "return_type": "nil",
+        "config_type": "CompilationFlagAttr"
+    },
+    "rule.add_deps": {
+        "config_type": "RuleDependencyOption"
+    }
+}
+```
+
+`config_type` must name a class from `schema.json`. For functions with `...`,
+the configuration table is merged into the variadic argument because Lua does
+not allow parameters after `...`. Functions without `...` receive the schema
+class as their optional `opt` parameter. `return_type` and a complete manual
+`params` list remain available as escape hatches.
+
 Install the test dependencies and run the suite with:
 
 ```bash

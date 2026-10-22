@@ -41,8 +41,10 @@ function set_description(description) end
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#set-kind)
 ---
+---@param kind TargetKind Package type: "library", "binary", "toolchain"
+---@param opt? PackageKindOption Configuration options
 ---@return nil
-function set_kind() end
+function set_kind(kind, opt) end
 
 ---
 ---**Scoped: package**
@@ -51,8 +53,10 @@ function set_kind() end
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#set-urls)
 ---
+---@param urls string|string[] Package source URL string or array
+---@param ... string|UrlOption Variable parameters, can pass multiple URLs
 ---@return nil
-function set_urls() end
+function set_urls(urls, ...) end
 
 ---
 ---**Scoped: package**
@@ -61,8 +65,10 @@ function set_urls() end
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-urls)
 ---
+---@param urls string|string[] Package source URL string or array
+---@param ... string|UrlOption Variable parameters, can pass multiple URLs
 ---@return nil
-function add_urls() end
+function add_urls(urls, ...) end
 
 ---
 ---**Scoped: package**
@@ -154,8 +160,10 @@ function add_linkorders(orders, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-linkgroups)
 ---
+---@param groups string|string[] Link group name string or array
+---@param ... string|LinkGroupOption Variable parameters, can pass multiple group names
 ---@return nil
-function add_linkgroups() end
+function add_linkgroups(groups, ...) end
 
 ---
 ---**Scoped: package**
@@ -236,8 +244,10 @@ function add_schemes(schemes, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-configs)
 ---
+---@param name string Configuration parameter name
+---@param opt? ConfigOption Configuration options
 ---@return nil
-function add_configs() end
+function add_configs(name, opt) end
 
 ---
 ---**Scoped: package**
@@ -270,8 +280,10 @@ function add_deps(deps, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/package-dependencies#add-components)
 ---
+---@param components string|string[] Component name string or array
+---@param ... string|ComponentOption Variable parameters, can pass multiple component names
 ---@return nil
-function add_components() end
+function add_components(components, ...) end
 
 ---
 ---**Scoped: package**

@@ -75,3 +75,59 @@ def split_arguments(arguments: str) -> list[str]:
         if value:
             result.append(value)
     return result
+
+
+def split_prototypes(lines: Sequence[str]) -> list[str]:
+    """Group prototype lines into complete function call expressions.
+
+    Documentation prototypes may span multiple lines, for example when they
+    describe a trailing configuration table. Overloads remain separate entries.
+    """
+    prototypes: list[str] = []
+    current: list[str] = []
+    depth = 0
+
+    for raw_line in lines:
+        line = raw_line.strip()
+        if not line:
+            continue
+
+        if not current:
+            if "(" not in line:
+                continue
+            current = [line]
+            depth = _parenthesis_delta(line)
+        else:
+            current.append(line)
+            depth += _parenthesis_delta(line)
+
+        if depth <= 0:
+            prototypes.append(" ".join(current))
+            current = []
+            depth = 0
+
+    if current:
+        prototypes.append(" ".join(current))
+    return prototypes
+
+
+def extract_arguments(prototype: str) -> str | None:
+    """Return the text between the outermost parentheses of ``prototype``."""
+    start = prototype.find("(")
+    if start == -1:
+        return None
+
+    depth = 0
+    for index in range(start, len(prototype)):
+        char = prototype[index]
+        if char == "(":
+            depth += 1
+        elif char == ")":
+            depth -= 1
+            if depth == 0:
+                return prototype[start + 1 : index]
+    return None
+
+
+def _parenthesis_delta(text: str) -> int:
+    return text.count("(") - text.count(")")

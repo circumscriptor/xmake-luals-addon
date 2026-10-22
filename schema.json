@@ -152,20 +152,29 @@
         },
         "CompilationFlagAttr": {
             "fields": {
+                "public": "boolean",
+                "private": "boolean",
+                "interface": "boolean",
                 "force": "boolean",
                 "tools": "string|string[]"
             }
         },
         "ToolchainOption": {
             "fields": {
+                "vs": "string",
                 "plat": "Platform",
                 "arch": "Architecture",
-                "vs": "string"
+                "clang": "boolean",
+                "gcc": "boolean",
+                "vs_sdkver": "string",
+                "vs_toolset": "string"
             }
         },
         "InstallFilesOption": {
             "fields": {
                 "prefixdir": "string",
+                "rootdir": "string",
+                "filename": "string",
                 "install": "boolean"
             }
         },
@@ -179,6 +188,7 @@
             "fields": {
                 "filename": "string",
                 "prefixdir": "string",
+                "rootdir": "string",
                 "onlycopy": "boolean",
                 "pattern": "string",
                 "variables": "table<string, any>"
@@ -205,6 +215,109 @@
                 "sourcefiles": "string[]",
                 "objectfiles": "string[]",
                 "dependfiles": "string[]"
+            }
+        },
+        "SnippetOption": {
+            "fields": {
+                "tryrun": "boolean",
+                "output": "boolean",
+                "number": "boolean"
+            }
+        },
+        "RuleDependencyOption": {
+            "fields": {
+                "order": "boolean"
+            }
+        },
+        "RootDirOption": {
+            "fields": {
+                "rootdir": "string"
+            }
+        },
+        "VersionOption": {
+            "fields": {
+                "build": "string",
+                "soname": "string|boolean"
+            }
+        },
+        "PackageRequireOption": {
+            "fields": {
+                "optional": "boolean",
+                "system": "boolean",
+                "verify": "boolean",
+                "debug": "boolean",
+                "private": "boolean",
+                "configs": "table<string, any>",
+                "alias": "string"
+            }
+        },
+        "RequireConfOption": {
+            "fields": {
+                "configs": "table<string, any>",
+                "override": "boolean",
+                "version": "string",
+                "debug": "boolean"
+            }
+        },
+        "PackageKindOption": {
+            "fields": {
+                "headeronly": "boolean"
+            }
+        },
+        "UrlOption": {
+            "fields": {
+                "alias": "string",
+                "excludes": "string[]",
+                "version": "fun()",
+                "http_headers": "table<string, string>"
+            }
+        },
+        "LinkGroupOption": {
+            "fields": {
+                "name": "string",
+                "group": "boolean"
+            }
+        },
+        "ConfigOption": {
+            "fields": {
+                "description": "string",
+                "default": "string|boolean|number",
+                "values": "string[]",
+                "type": "string",
+                "readonly": "boolean"
+            }
+        },
+        "ComponentOption": {
+            "fields": {
+                "deps": "string|string[]"
+            }
+        },
+        "DependencyAttr": {
+            "fields": {
+                "inherit": "boolean"
+            }
+        },
+        "FileAttr": {
+            "fields": {
+                "defines": "string|string[]",
+                "languages": "string|string[]",
+                "includedirs": "string|string[]",
+                "rules": "string|string[]",
+                "force": "boolean|CompilationFlagAttr",
+                "sourcekind": "string",
+                "flags": "string|string[]"
+            }
+        },
+        "TestOption": {
+            "fields": {
+                "runargs": "string|string[]",
+                "runenvs": "table<string, string>",
+                "timeout": "number"
+            }
+        },
+        "PrepareFilesOption": {
+            "fields": {
+                "jobgraph": "boolean"
             }
         }
     }

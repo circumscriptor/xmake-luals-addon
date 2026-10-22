@@ -5,7 +5,14 @@ import re
 from collections.abc import Sequence
 
 from .constants import DOCS_SITE_BASE_URL
-from .markdown import clean_heading, section_heading, split_arguments, split_sections
+from .markdown import (
+    clean_heading,
+    extract_arguments,
+    section_heading,
+    split_arguments,
+    split_prototypes,
+    split_sections,
+)
 from .models import DocFile, DocFunction, DocParam
 
 IDENTIFIER_RE = re.compile(r"^([a-zA-Z_][a-zA-Z0-9_]*(?::[a-zA-Z_][a-zA-Z0-9_]*)?)$")
@@ -233,18 +240,23 @@ class MarkdownParser:
         fn_args: list[str] = []
         seen_args: set[str] = set()
 
-        for prototype_line in prototype_lines:
-            match = re.search(r"\((.*?)\)", prototype_line)
-            if match is None or not match.group(1).strip():
+        for prototype in split_prototypes(prototype_lines):
+            arguments = extract_arguments(prototype)
+            if arguments is None or not arguments.strip():
                 continue
 
-            for argument in split_arguments(match.group(1).strip()):
+            for argument in split_arguments(arguments):
                 param, name = MarkdownParser._parse_argument(argument, parameter_table)
                 if param is None or name in seen_args:
                     continue
                 params.append(param)
-                fn_args.append(name)
                 seen_args.add(name)
+
+                # Lua does not allow anything after a variadic argument, so a
+                # trailing config table is kept in ``params`` for type
+                # information but must not become a positional argument.
+                if not param.is_config or "..." not in fn_args:
+                    fn_args.append(name)
 
         return params, fn_args
 
@@ -261,7 +273,16 @@ class MarkdownParser:
             description = parameter_table.get(
                 "public|interface|private", "Configuration options"
             )
-            return DocParam("opt", "table", description, is_optional=True), "opt"
+            return (
+                DocParam(
+                    "opt",
+                    "table",
+                    description,
+                    is_optional=True,
+                    is_config=True,
+                ),
+                "opt",
+            )
 
         if ":" in argument:
             name_part, type_part = (part.strip() for part in argument.split(":", 1))

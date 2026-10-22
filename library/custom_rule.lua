@@ -19,8 +19,10 @@ function rule(name) end
 ---
 ---[Open in browser](https://xmake.io/api/description/custom-rule#add-deps)
 ---
+---@param deps string|string[] Dependency rule name string or array
+---@param ... string|RuleDependencyOption Variable parameters, can pass multiple dependency names
 ---@return nil
-function add_deps() end
+function add_deps(deps, ...) end
 
 ---
 ---**Scoped: rule**

@@ -215,8 +215,11 @@ function add_cxxtypes(types, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/configuration-option#add-csnippets)
 ---
+---@param name string Code snippet name string
+---@param code string C code fragment string
+---@param opt? SnippetOption Configuration options
 ---@return nil
-function add_csnippets() end
+function add_csnippets(name, code, opt) end
 
 ---
 ---**Scoped: option**
@@ -225,8 +228,11 @@ function add_csnippets() end
 ---
 ---[Open in browser](https://xmake.io/api/description/configuration-option#add-cxxsnippets)
 ---
+---@param name string Code snippet name string
+---@param code string C++ code fragment string
+---@param opt? SnippetOption Configuration options
 ---@return nil
-function add_cxxsnippets() end
+function add_cxxsnippets(name, code, opt) end
 
 ---
 ---**Scoped: option**

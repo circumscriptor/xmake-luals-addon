@@ -49,8 +49,11 @@ class GenerationPipeline:
 
     def run(self) -> GenerationStats:
         """Run all generation steps and return a summary."""
-        patcher = DocPatcher(self.options.overrides_file)
-        common_lua_path = self._generate_schema()
+        common_lua_path, schema_manager = self._generate_schema()
+        patcher = DocPatcher(
+            self.options.overrides_file,
+            known_types=schema_manager.class_names,
+        )
         repo_root, doc_files = self._prepare_docs()
 
         parser = MarkdownParser()
@@ -87,7 +90,7 @@ class GenerationPipeline:
             return
         logger.info("Removed stale output: %s", stale_path)
 
-    def _generate_schema(self) -> str:
+    def _generate_schema(self) -> tuple[str, SchemaManager]:
         inspector = XmakeInspector(enabled=not self.options.skip_xmake)
         self._log_inspector_status(inspector)
 
@@ -96,7 +99,7 @@ class GenerationPipeline:
         output_path = os.path.join(self.options.output_dir, "common.lua")
         common_lua_path = schema_manager.generate_common_lua(output_path)
         logger.info("Generated: %s", common_lua_path)
-        return common_lua_path
+        return common_lua_path, schema_manager
 
     def _prepare_docs(self) -> tuple[str, list[str]]:
         repo_manager = RepoManager(self.options.repo_dir)

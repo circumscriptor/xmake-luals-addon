@@ -70,16 +70,25 @@
 ---@field cflags string
 
 ---@class CompilationFlagAttr
+---@field public boolean
+---@field private boolean
+---@field interface boolean
 ---@field force boolean
 ---@field tools string|string[]
 
 ---@class ToolchainOption
+---@field vs string
 ---@field plat Platform
 ---@field arch Architecture
----@field vs string
+---@field clang boolean
+---@field gcc boolean
+---@field vs_sdkver string
+---@field vs_toolset string
 
 ---@class InstallFilesOption
 ---@field prefixdir string
+---@field rootdir string
+---@field filename string
 ---@field install boolean
 
 ---@class ConfigvarOption
@@ -89,6 +98,7 @@
 ---@class ConfigfilesOption
 ---@field filename string
 ---@field prefixdir string
+---@field rootdir string
 ---@field onlycopy boolean
 ---@field pattern string
 ---@field variables table<string, any>
@@ -109,3 +119,76 @@
 ---@field sourcefiles string[]
 ---@field objectfiles string[]
 ---@field dependfiles string[]
+
+---@class SnippetOption
+---@field tryrun boolean
+---@field output boolean
+---@field number boolean
+
+---@class RuleDependencyOption
+---@field order boolean
+
+---@class RootDirOption
+---@field rootdir string
+
+---@class VersionOption
+---@field build string
+---@field soname string|boolean
+
+---@class PackageRequireOption
+---@field optional boolean
+---@field system boolean
+---@field verify boolean
+---@field debug boolean
+---@field private boolean
+---@field configs table<string, any>
+---@field alias string
+
+---@class RequireConfOption
+---@field configs table<string, any>
+---@field override boolean
+---@field version string
+---@field debug boolean
+
+---@class PackageKindOption
+---@field headeronly boolean
+
+---@class UrlOption
+---@field alias string
+---@field excludes string[]
+---@field version fun()
+---@field http_headers table<string, string>
+
+---@class LinkGroupOption
+---@field name string
+---@field group boolean
+
+---@class ConfigOption
+---@field description string
+---@field default string|boolean|number
+---@field values string[]
+---@field type string
+---@field readonly boolean
+
+---@class ComponentOption
+---@field deps string|string[]
+
+---@class DependencyAttr
+---@field inherit boolean
+
+---@class FileAttr
+---@field defines string|string[]
+---@field languages string|string[]
+---@field includedirs string|string[]
+---@field rules string|string[]
+---@field force boolean|CompilationFlagAttr
+---@field sourcekind string
+---@field flags string|string[]
+
+---@class TestOption
+---@field runargs string|string[]
+---@field runenvs table<string, string>
+---@field timeout number
+
+---@class PrepareFilesOption
+---@field jobgraph boolean

@@ -11,6 +11,7 @@ class DocParam:
     type_name: str
     description: str = ""
     is_optional: bool = False
+    is_config: bool = False
 
     @property
     def clean_name(self) -> str:
@@ -61,6 +62,16 @@ class DocFunction:
     def short_name(self) -> str:
         """The function name without any namespace prefix."""
         return self.method_name if self.is_method else self.api_id
+
+    @property
+    def vararg_param(self) -> DocParam | None:
+        """Return the variadic parameter, if the function has one."""
+        return next((param for param in self.params if param.is_vararg), None)
+
+    @property
+    def config_params(self) -> list[DocParam]:
+        """Return parameters that represent configuration tables."""
+        return [param for param in self.params if param.is_config]
 
 
 @dataclass

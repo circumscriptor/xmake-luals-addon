@@ -8,8 +8,10 @@
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#target)
 ---
+---@param name string Target name string, used to identify the project target
+---@param opt? TargetAttr Configuration options
 ---@return nil
-function target() end
+function target(name, opt) end
 
 ---
 ---**Scoped: target**
@@ -84,8 +86,10 @@ function set_options(options, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-symbols)
 ---
+---@param symbols string Symbol mode string, optional values: debug, hidden, none
+---@param opt? AccessSpecifier Configuration options
 ---@return nil
-function set_symbols() end
+function set_symbols(symbols, opt) end
 
 ---
 ---**Scoped: target**
@@ -149,8 +153,10 @@ function set_extension(extension) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-warnings)
 ---
+---@param warnings string Warning level string, optional values: none, less, more, all, error
+---@param opt? AccessSpecifier Configuration options
 ---@return nil
-function set_warnings() end
+function set_warnings(warnings, opt) end
 
 ---
 ---**Scoped: target**
@@ -170,8 +176,10 @@ function set_optimize(optimize) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-languages)
 ---
+---@param languages LanguageStandard Language standard string or array, supports wildcard matching patterns
+---@param ... LanguageStandard|AccessSpecifier Variable parameters, can pass multiple language standard strings
 ---@return nil
-function set_languages() end
+function set_languages(languages, ...) end
 
 ---
 ---**Scoped: target**
@@ -180,8 +188,10 @@ function set_languages() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-fpmodels)
 ---
+---@param fpmodels FloatPointModel Float-point mode string or array, optional values: fast, strict, except, precise
+---@param ... FloatPointModel|AccessSpecifier Variable parameters, can pass multiple float-point mode strings
 ---@return nil
-function set_fpmodels() end
+function set_fpmodels(fpmodels, ...) end
 
 ---
 ---**Scoped: target**
@@ -230,8 +240,10 @@ function add_imports() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-rules)
 ---
+---@param rules string|string[] Rule name string or array, such as "markdown"
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple rule name strings
 ---@return nil
-function add_rules() end
+function add_rules(rules, ...) end
 
 ---
 ---**Scoped: target**
@@ -285,8 +297,9 @@ function on_prepare_file(script) end
 ---[Open in browser](https://xmake.io/api/description/project-target#on-prepare-files)
 ---
 ---@param script fun(target: any, ...: any) Batch file processing script function, receives target, jobgraph, sourcebatch, opt parameters
+---@param opt? PrepareFilesOption Configuration options
 ---@return nil
-function on_prepare_files(script) end
+function on_prepare_files(script, opt) end
 
 ---
 ---**Scoped: target**
@@ -702,8 +715,10 @@ function set_pmxxheader(header) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-deps)
 ---
+---@param deps string|string[] Dependency target name string or array, supports wildcard matching patterns
+---@param ... string|DependencyAttr Variable parameters, can pass multiple dependency target name strings
 ---@return nil
-function add_deps() end
+function add_deps(deps, ...) end
 
 ---
 ---**Scoped: target**
@@ -712,8 +727,10 @@ function add_deps() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-links)
 ---
+---@param links string|string[] Link library name string or array, supports wildcard matching patterns
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple link library name strings
 ---@return nil
-function add_links() end
+function add_links(links, ...) end
 
 ---
 ---**Scoped: target**
@@ -722,8 +739,10 @@ function add_links() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-syslinks)
 ---
+---@param syslinks string|string[] System link library name string or array, supports wildcard matching patterns
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple system link library name strings
 ---@return nil
-function add_syslinks() end
+function add_syslinks(syslinks, ...) end
 
 ---
 ---**Scoped: target**
@@ -744,8 +763,10 @@ function add_linkorders(linkorders, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-linkgroups)
 ---
+---@param linkgroups string|string[] Link group name string or array, such as "group1", "group2"
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple link group name strings
 ---@return nil
-function add_linkgroups() end
+function add_linkgroups(linkgroups, ...) end
 
 ---
 ---**Scoped: target**
@@ -754,8 +775,10 @@ function add_linkgroups() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-files)
 ---
+---@param files string|string[] File path string or file path array, supports wildcard matching patterns
+---@param ... string|FileAttr Variable parameters, can pass multiple file path strings
 ---@return nil
-function add_files() end
+function add_files(files, ...) end
 
 ---
 ---**Scoped: target**
@@ -788,8 +811,10 @@ function remove_headerfiles(headerfiles, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-linkdirs)
 ---
+---@param linkdirs string|string[] Link library search directory string or array, supports wildcard matching patterns
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple link library search directory strings
 ---@return nil
-function add_linkdirs() end
+function add_linkdirs(linkdirs, ...) end
 
 ---
 ---**Scoped: target**
@@ -798,8 +823,10 @@ function add_linkdirs() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-rpathdirs)
 ---
+---@param rpathdirs string|string[] Runtime library search directory string or array, supports wildcard matching patterns
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple runtime library search directory strings
 ---@return nil
-function add_rpathdirs() end
+function add_rpathdirs(rpathdirs, ...) end
 
 ---
 ---**Scoped: target**
@@ -808,8 +835,10 @@ function add_rpathdirs() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-includedirs)
 ---
+---@param includedirs string|string[] Header file search directory string or array, supports wildcard matching patterns
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple header file search directory strings
 ---@return nil
-function add_includedirs() end
+function add_includedirs(includedirs, ...) end
 
 ---
 ---**Scoped: target**
@@ -818,8 +847,10 @@ function add_includedirs() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-sysincludedirs)
 ---
+---@param includedirs string|string[] System header file search directory string or array, supports wildcard matching patterns
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple system header file search directory strings
 ---@return nil
-function add_sysincludedirs() end
+function add_sysincludedirs(includedirs, ...) end
 
 ---
 ---**Scoped: target**
@@ -828,8 +859,10 @@ function add_sysincludedirs() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-embeddirs)
 ---
+---@param embeddirs string|string[] #embed search directory string or array, supports wildcard matching patterns
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple #embed search directory strings
 ---@return nil
-function add_embeddirs() end
+function add_embeddirs(embeddirs, ...) end
 
 ---
 ---**Scoped: target**
@@ -838,8 +871,10 @@ function add_embeddirs() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-defines)
 ---
+---@param defines string|string[] Macro definition string or array, supports wildcard matching patterns
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple macro definition strings
 ---@return nil
-function add_defines() end
+function add_defines(defines, ...) end
 
 ---
 ---**Scoped: target**
@@ -848,8 +883,10 @@ function add_defines() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-undefines)
 ---
+---@param undefines string|string[] Macro definition name string or array, such as "DEBUG"
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple macro definition name strings
 ---@return nil
-function add_undefines() end
+function add_undefines(undefines, ...) end
 
 ---
 ---**Scoped: target**
@@ -858,9 +895,10 @@ function add_undefines() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-cflags)
 ---
----@param ... string|CompilationFlagAttr Compilation flags or attributes
+---@param cflags string|string[] C compilation option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple C compilation option strings
 ---@return nil
-function add_cflags(...) end
+function add_cflags(cflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -880,9 +918,10 @@ function add_cxflags(...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-cxxflags)
 ---
----@param ... string|CompilationFlagAttr Compilation flags or attributes
+---@param cxxflags string|string[] C++ compilation option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple C++ compilation option strings
 ---@return nil
-function add_cxxflags(...) end
+function add_cxxflags(cxxflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -891,8 +930,10 @@ function add_cxxflags(...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-mflags)
 ---
+---@param mflags string|string[] ObjC compilation option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple ObjC compilation option strings
 ---@return nil
-function add_mflags() end
+function add_mflags(mflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -901,8 +942,10 @@ function add_mflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-mxflags)
 ---
+---@param mxflags string|string[] ObjC/ObjC++ compilation option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple ObjC/ObjC++ compilation option strings
 ---@return nil
-function add_mxflags() end
+function add_mxflags(mxflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -911,8 +954,10 @@ function add_mxflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-mxxflags)
 ---
+---@param mxxflags string|string[] ObjC++ compilation option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple ObjC++ compilation option strings
 ---@return nil
-function add_mxxflags() end
+function add_mxxflags(mxxflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -921,8 +966,10 @@ function add_mxxflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-scflags)
 ---
+---@param scflags string|string[] Swift compilation option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple Swift compilation option strings
 ---@return nil
-function add_scflags() end
+function add_scflags(scflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -931,8 +978,10 @@ function add_scflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-asflags)
 ---
+---@param asflags string|string[] Assembly compilation option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple assembly compilation option strings
 ---@return nil
-function add_asflags() end
+function add_asflags(asflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -941,8 +990,10 @@ function add_asflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-gcflags)
 ---
+---@param gcflags string|string[] Go compilation option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple Go compilation option strings
 ---@return nil
-function add_gcflags() end
+function add_gcflags(gcflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -951,8 +1002,10 @@ function add_gcflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-dcflags)
 ---
+---@param dcflags string|string[] D language compilation option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple D language compilation option strings
 ---@return nil
-function add_dcflags() end
+function add_dcflags(dcflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -961,8 +1014,10 @@ function add_dcflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-rcflags)
 ---
+---@param rcflags string|string[] Rust compilation option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple Rust compilation option strings
 ---@return nil
-function add_rcflags() end
+function add_rcflags(rcflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -971,8 +1026,10 @@ function add_rcflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-fcflags)
 ---
+---@param fcflags string|string[] Fortran compilation option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple Fortran compilation option strings
 ---@return nil
-function add_fcflags() end
+function add_fcflags(fcflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -981,8 +1038,10 @@ function add_fcflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-zcflags)
 ---
+---@param zcflags string|string[] Zig compilation option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple Zig compilation option strings
 ---@return nil
-function add_zcflags() end
+function add_zcflags(zcflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -991,8 +1050,10 @@ function add_zcflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-cuflags)
 ---
+---@param cuflags string|string[] CUDA compilation option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple CUDA compilation option strings
 ---@return nil
-function add_cuflags() end
+function add_cuflags(cuflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -1001,8 +1062,10 @@ function add_cuflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-culdflags)
 ---
+---@param culdflags string|string[] CUDA device link option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple CUDA device link option strings
 ---@return nil
-function add_culdflags() end
+function add_culdflags(culdflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -1011,8 +1074,10 @@ function add_culdflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-cugencodes)
 ---
+---@param cugencodes string|string[] CUDA device gencode setting string or array, such as "sm_30", "sm_50"
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple CUDA device gencode setting strings
 ---@return nil
-function add_cugencodes() end
+function add_cugencodes(cugencodes, ...) end
 
 ---
 ---**Scoped: target**
@@ -1033,8 +1098,10 @@ function add_ascnpuarchs(archs, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-ldflags)
 ---
+---@param ldflags string|string[] Link option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple link option strings
 ---@return nil
-function add_ldflags() end
+function add_ldflags(ldflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -1043,8 +1110,10 @@ function add_ldflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-arflags)
 ---
+---@param arflags string|string[] Static library archive option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple static library archive option strings
 ---@return nil
-function add_arflags() end
+function add_arflags(arflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -1053,8 +1122,10 @@ function add_arflags() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-shflags)
 ---
+---@param shflags string|string[] Dynamic library link option string or array, supports wildcard matching patterns
+---@param ... string|CompilationFlagAttr Variable parameters, can pass multiple dynamic library link option strings
 ---@return nil
-function add_shflags() end
+function add_shflags(shflags, ...) end
 
 ---
 ---**Scoped: target**
@@ -1073,8 +1144,10 @@ function add_options() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-packages)
 ---
+---@param packages string|string[] Package name string or array, supports wildcard matching patterns
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple package name strings
 ---@return nil
-function add_packages() end
+function add_packages(packages, ...) end
 
 ---
 ---**Scoped: target**
@@ -1083,8 +1156,10 @@ function add_packages() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-languages)
 ---
+---@param languages LanguageStandard Language standard string or array, supports wildcard matching patterns
+---@param ... LanguageStandard|AccessSpecifier Variable parameters, can pass multiple language standard strings
 ---@return nil
-function add_languages() end
+function add_languages(languages, ...) end
 
 ---
 ---**Scoped: target**
@@ -1093,8 +1168,10 @@ function add_languages() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-vectorexts)
 ---
+---@param vectorexts string|string[] Vector extension instruction string or array, such as "mmx", "neon", "avx"
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple vector extension instruction strings
 ---@return nil
-function add_vectorexts() end
+function add_vectorexts(vectorexts, ...) end
 
 ---
 ---**Scoped: target**
@@ -1103,8 +1180,10 @@ function add_vectorexts() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-frameworks)
 ---
+---@param frameworks string|string[] Framework name string or array, supports wildcard matching patterns
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple framework name strings
 ---@return nil
-function add_frameworks() end
+function add_frameworks(frameworks, ...) end
 
 ---
 ---**Scoped: target**
@@ -1113,8 +1192,10 @@ function add_frameworks() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-frameworkdirs)
 ---
+---@param frameworkdirs string|string[] Framework search directory string or array, supports wildcard matching patterns
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple framework search directory strings
 ---@return nil
-function add_frameworkdirs() end
+function add_frameworkdirs(frameworkdirs, ...) end
 
 ---
 ---**Scoped: target**
@@ -1135,8 +1216,10 @@ function set_toolset(toolname, tool) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#set-toolchains)
 ---
+---@param toolchains string|string[] Toolchain name string or array, such as "gcc", "clang", "msvc", "ndk[gcc]", "mingw[clang]@llvm-mingw", "msvc[vs=2025]"
+---@param ... string|ToolchainOption Variable parameters, can pass multiple toolchain name strings
 ---@return nil
-function set_toolchains() end
+function set_toolchains(toolchains, ...) end
 
 ---
 ---**Scoped: target**
@@ -1263,8 +1346,10 @@ function set_prefixdir(prefixdir) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-installfiles)
 ---
+---@param installfiles string|string[] Installation file path string or array, supports wildcard matching patterns
+---@param ... string|InstallFilesOption Variable parameters, can pass multiple installation file path strings
 ---@return nil
-function add_installfiles() end
+function add_installfiles(installfiles, ...) end
 
 ---
 ---**Scoped: target**
@@ -1273,8 +1358,10 @@ function add_installfiles() end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-headerfiles)
 ---
+---@param headerfiles string|string[] Header file path string or array, supports wildcard matching patterns
+---@param ... string|InstallFilesOption Variable parameters, can pass multiple header file path strings
 ---@return nil
-function add_headerfiles() end
+function add_headerfiles(headerfiles, ...) end
 
 ---
 ---**Scoped: target**
@@ -1306,8 +1393,10 @@ function set_configvar(name, value) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-configfiles)
 ---
+---@param configfiles string|string[] Configuration file path string or array, supports wildcard matching patterns
+---@param ... string|ConfigfilesOption Variable parameters, can pass multiple configuration file path strings
 ---@return nil
-function add_configfiles() end
+function add_configfiles(configfiles, ...) end
 
 ---
 ---**Scoped: target**
@@ -1388,8 +1477,10 @@ function set_encodings(encodings, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-forceincludes)
 ---
+---@param includes string|string[] Header file path string or array, such as "config.h"
+---@param ... string|AccessSpecifier Variable parameters, can pass multiple header file path strings
 ---@return nil
-function add_forceincludes() end
+function add_forceincludes(includes, ...) end
 
 ---
 ---**Scoped: target**
@@ -1410,5 +1501,7 @@ function add_extrafiles(extrafiles, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/project-target#add-tests)
 ---
+---@param tests string|string[] Test case name string or array, such as "test1", "test2"
+---@param ... string|TestOption Other test configuration parameters, optional
 ---@return nil
-function add_tests() end
+function add_tests(tests, ...) end

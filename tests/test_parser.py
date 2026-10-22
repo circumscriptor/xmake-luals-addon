@@ -155,6 +155,109 @@ demo({ public = true, private = false })
     assert function.params[0].is_optional is True
 
 
+def test_parses_multiline_config_table_after_vararg(tmp_path):
+    path, repo = _write_doc(
+        tmp_path,
+        "docs/api/description/project-target.md",
+        """\
+## add_cflags
+
+Add c compilation flags
+
+#### Function Prototype
+
+```lua
+add_cflags(cflags: <string|array>, ..., {
+    public|interface|private = <boolean>
+})
+```
+
+#### Parameter Description
+
+| Parameter | Description |
+|-----------|-------------|
+| cflags | Compilation flags |
+| ... | More compilation flags |
+| public\\|interface\\|private | Visibility |
+""",
+    )
+
+    function = MarkdownParser().parse_file(str(path), str(repo)).functions[0]
+
+    assert function.fn_args == ["cflags", "..."]
+    assert [param.clean_name for param in function.params] == ["cflags", "...", "opt"]
+    assert function.params[-1].is_config is True
+    assert "opt" not in function.fn_args
+
+
+def test_parses_multiline_config_table_without_vararg(tmp_path):
+    path, repo = _write_doc(
+        tmp_path,
+        "docs/api/description/project-target.md",
+        """\
+## target
+
+Define a project target
+
+#### Function Prototype
+
+```lua
+target(name: <string>, {
+    kind = <string>,
+    files = <string|array>,
+    ...
+})
+```
+
+#### Parameter Description
+
+| Parameter | Description |
+|-----------|-------------|
+| name | Target name |
+| kind | Target kind |
+| files | Target files |
+""",
+    )
+
+    function = MarkdownParser().parse_file(str(path), str(repo)).functions[0]
+
+    assert function.fn_args == ["name", "opt"]
+    assert function.params[-1].is_config is True
+    assert function.params[-1].is_optional is True
+
+
+def test_parses_multiline_overloads_independently(tmp_path):
+    path, repo = _write_doc(
+        tmp_path,
+        "docs/api/description/demo.md",
+        """\
+## demo
+
+Demo function
+
+#### Function Prototype
+
+```lua
+demo(source: <string>, {
+    public = <boolean>
+})
+demo(buffer: <bytes>, {
+    private = <boolean>
+})
+```
+""",
+    )
+
+    function = MarkdownParser().parse_file(str(path), str(repo)).functions[0]
+
+    assert function.fn_args == ["source", "opt", "buffer"]
+    assert [param.clean_name for param in function.params] == [
+        "source",
+        "opt",
+        "buffer",
+    ]
+
+
 def test_ignores_prototype_arguments_when_docs_say_no_parameters(tmp_path):
     path, repo = _write_doc(
         tmp_path,

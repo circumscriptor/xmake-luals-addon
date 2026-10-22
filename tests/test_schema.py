@@ -67,6 +67,21 @@ def test_renders_aliases_and_classes(tmp_path: Path):
     )
 
 
+def test_exposes_declared_class_names(tmp_path: Path):
+    schema = {
+        "aliases": {},
+        "classes": {
+            "TargetAttr": {"fields": {}},
+            "VersionOption": {"fields": {}},
+        },
+    }
+    manager = SchemaManager(
+        str(_write_schema(tmp_path, schema)), FakeInspector(available=False)
+    )
+
+    assert manager.class_names == {"TargetAttr", "VersionOption"}
+
+
 def test_enriches_aliases_from_cli(tmp_path: Path):
     schema = {"aliases": {"Platform": ["linux"]}, "classes": {}}
     manager = SchemaManager(
@@ -130,6 +145,19 @@ def test_generate_common_lua_creates_parent_directories(tmp_path: Path):
 
     assert result == str(output)
     assert output.read_text(encoding="utf-8") == manager.render_common_lua()
+
+
+def test_project_overrides_reference_schema_classes():
+    project_root = Path(__file__).resolve().parents[1]
+    schema = json.loads((project_root / "schema.json").read_text(encoding="utf-8"))
+    overrides = json.loads(
+        (project_root / "overrides.json").read_text(encoding="utf-8")
+    )
+
+    known_types = set(schema["classes"])
+    for key, entry in overrides.items():
+        if "config_type" in entry:
+            assert entry["config_type"] in known_types, key
 
 
 def test_generate_common_lua_accepts_bare_filename(tmp_path: Path, monkeypatch):

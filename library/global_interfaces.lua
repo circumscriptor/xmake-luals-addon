@@ -8,8 +8,10 @@
 ---
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#includes)
 ---
+---@param paths string|string[] Sub-project file or directory path, supports pattern matching like "**/xmake.lua"
+---@param ... string|RootDirOption Variable parameters, can pass multiple paths
 ---@return nil
-function includes() end
+function includes(paths, ...) end
 
 ---
 ---**Scoped: global-interfaces**
@@ -29,8 +31,10 @@ function set_project(name) end
 ---
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#set-version)
 ---
+---@param version string Project version string, e.g. "1.5.1"
+---@param opt? VersionOption Configuration options
 ---@return nil
-function set_version() end
+function set_version(version, opt) end
 
 ---
 ---**Scoped: global-interfaces**
@@ -109,8 +113,10 @@ function add_addons(addons, ...) end
 ---
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#add-requires)
 ---
+---@param packages string|string[] Package name string or array, supports semantic version like "tbox 1.6.*"
+---@param ... string|PackageRequireOption Other package-specific configuration parameters
 ---@return nil
-function add_requires() end
+function add_requires(packages, ...) end
 
 ---
 ---**Scoped: global-interfaces**
@@ -119,8 +125,10 @@ function add_requires() end
 ---
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#add-requireconfs)
 ---
+---@param packages string|string[] Package name string or array, supports pattern matching like "*" or "libpng.zlib"
+---@param ... string|RequireConfOption Other package-specific configuration parameters
 ---@return nil
-function add_requireconfs() end
+function add_requireconfs(packages, ...) end
 
 ---
 ---**Scoped: global-interfaces**
@@ -129,8 +137,10 @@ function add_requireconfs() end
 ---
 ---[Open in browser](https://xmake.io/api/description/global-interfaces#add-repositories)
 ---
+---@param repos string|string[] Repository name and URL string or array, format: "name url"
+---@param ... string|RootDirOption Variable parameters, can pass multiple repositories
 ---@return nil
-function add_repositories() end
+function add_repositories(repos, ...) end
 
 ---
 ---**Scoped: global-interfaces**

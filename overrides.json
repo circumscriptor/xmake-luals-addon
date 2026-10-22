@@ -1,5 +1,69 @@
 {
-    "add_cflags": {
+    "global-interfaces.add_repositories": {
+        "config_type": "RootDirOption"
+    },
+    "global-interfaces.add_requireconfs": {
+        "config_type": "RequireConfOption"
+    },
+    "global-interfaces.add_requires": {
+        "config_type": "PackageRequireOption"
+    },
+    "global-interfaces.includes": {
+        "config_type": "RootDirOption"
+    },
+    "global-interfaces.set_version": {
+        "config_type": "VersionOption"
+    },
+    "option.add_csnippets": {
+        "config_type": "SnippetOption"
+    },
+    "option.add_cxxsnippets": {
+        "config_type": "SnippetOption"
+    },
+    "package.add_components": {
+        "config_type": "ComponentOption"
+    },
+    "package.add_configs": {
+        "config_type": "ConfigOption"
+    },
+    "package.add_linkgroups": {
+        "config_type": "LinkGroupOption"
+    },
+    "package.add_urls": {
+        "config_type": "UrlOption"
+    },
+    "package.set_kind": {
+        "config_type": "PackageKindOption"
+    },
+    "package.set_urls": {
+        "config_type": "UrlOption"
+    },
+    "rule.add_deps": {
+        "config_type": "RuleDependencyOption"
+    },
+    "target.add_arflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_asflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_cflags": {
+        "return_type": "nil",
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_configfiles": {
+        "config_type": "ConfigfilesOption"
+    },
+    "target.add_cuflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_cugencodes": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_culdflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_cxflags": {
         "return_type": "nil",
         "params": [
             {
@@ -9,24 +73,140 @@
             }
         ]
     },
-    "add_cxflags": {
+    "target.add_cxxflags": {
         "return_type": "nil",
-        "params": [
-            {
-                "name": "...",
-                "type": "string|CompilationFlagAttr",
-                "desc": "Compilation flags or attributes"
-            }
-        ]
+        "config_type": "CompilationFlagAttr"
     },
-    "add_cxxflags": {
-        "return_type": "nil",
-        "params": [
-            {
-                "name": "...",
-                "type": "string|CompilationFlagAttr",
-                "desc": "Compilation flags or attributes"
-            }
-        ]
+    "target.add_dcflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_defines": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_deps": {
+        "config_type": "DependencyAttr"
+    },
+    "target.add_embeddirs": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_fcflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_files": {
+        "config_type": "FileAttr"
+    },
+    "target.add_forceincludes": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_frameworkdirs": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_frameworks": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_gcflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_headerfiles": {
+        "config_type": "InstallFilesOption"
+    },
+    "target.add_includedirs": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_installfiles": {
+        "config_type": "InstallFilesOption"
+    },
+    "target.add_languages": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_ldflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_linkdirs": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_linkgroups": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_links": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_mflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_mxflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_mxxflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_packages": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_rcflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_rpathdirs": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_rules": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_scflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_shflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.add_sysincludedirs": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_syslinks": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_tests": {
+        "config_type": "TestOption"
+    },
+    "target.add_undefines": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_vectorexts": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.add_zcflags": {
+        "config_type": "CompilationFlagAttr"
+    },
+    "target.on_prepare_files": {
+        "config_type": "PrepareFilesOption"
+    },
+    "target.set_fpmodels": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.set_languages": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.set_symbols": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.set_toolchains": {
+        "config_type": "ToolchainOption"
+    },
+    "target.set_warnings": {
+        "config_type": "AccessSpecifier"
+    },
+    "target.target": {
+        "config_type": "TargetAttr"
+    },
+    "xpack-component-interfaces.add_installfiles": {
+        "config_type": "InstallFilesOption"
+    },
+    "xpack-component-interfaces.add_sourcefiles": {
+        "config_type": "InstallFilesOption"
+    },
+    "xpack-interfaces.add_installfiles": {
+        "config_type": "InstallFilesOption"
+    },
+    "xpack-interfaces.add_sourcefiles": {
+        "config_type": "InstallFilesOption"
     }
 }

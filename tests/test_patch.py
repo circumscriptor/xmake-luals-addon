@@ -89,6 +89,117 @@ def test_applies_manual_param_and_return_overrides(tmp_path):
     ]
 
 
+def test_config_type_merges_into_variadic_parameter(tmp_path):
+    overrides = _write_overrides(
+        tmp_path,
+        {"target.add_cflags": {"config_type": "CompilationFlagAttr"}},
+    )
+    function = _function(
+        "add_cflags",
+        params=[
+            DocParam("cflags", "string|string[]"),
+            DocParam("...", "any", "More flags"),
+            DocParam("opt", "table", is_optional=True, is_config=True),
+        ],
+        fn_args=["cflags", "..."],
+    )
+
+    DocPatcher(str(overrides)).patch_function(function, False, scope="target")
+
+    assert function.fn_args == ["cflags", "..."]
+    assert [param.clean_name for param in function.params] == ["cflags", "..."]
+    assert function.params[1].type_name == "string|CompilationFlagAttr"
+
+
+def test_config_type_uses_schema_type_for_table_parameter(tmp_path):
+    overrides = _write_overrides(
+        tmp_path,
+        {"global-interfaces.set_version": {"config_type": "VersionOption"}},
+    )
+    function = _function(
+        "set_version",
+        params=[
+            DocParam("version", "string"),
+            DocParam("opt", "table", is_optional=True, is_config=True),
+        ],
+        fn_args=["version", "opt"],
+    )
+
+    DocPatcher(str(overrides)).patch_function(
+        function, False, scope="global-interfaces"
+    )
+
+    assert function.fn_args == ["version", "opt"]
+    assert function.params[1].type_name == "VersionOption"
+
+
+def test_config_type_adds_missing_configuration_parameter(tmp_path):
+    overrides = _write_overrides(
+        tmp_path,
+        {"demo": {"config_type": "TargetAttr"}},
+    )
+    function = _function("demo")
+
+    DocPatcher(str(overrides)).patch_function(function, False)
+
+    assert function.fn_args == ["opt"]
+    assert function.params == [
+        DocParam(
+            "opt",
+            "TargetAttr",
+            "Configuration options",
+            is_optional=True,
+            is_config=True,
+        )
+    ]
+
+
+def test_scoped_override_uses_the_matching_scope(tmp_path):
+    overrides = _write_overrides(
+        tmp_path,
+        {
+            "target.add_deps": {"config_type": "DependencyAttr"},
+            "rule.add_deps": {"config_type": "RuleDependencyOption"},
+        },
+    )
+    target_function = _function(
+        "add_deps",
+        params=[
+            DocParam("deps", "string|string[]"),
+            DocParam("...", "any"),
+            DocParam("opt", "table", is_config=True),
+        ],
+        fn_args=["deps", "..."],
+    )
+    rule_function = _function(
+        "add_deps",
+        params=[
+            DocParam("deps", "string|string[]"),
+            DocParam("...", "any"),
+            DocParam("opt", "table", is_config=True),
+        ],
+        fn_args=["deps", "..."],
+    )
+    patcher = DocPatcher(str(overrides))
+
+    patcher.patch_function(target_function, False, scope="target")
+    patcher.patch_function(rule_function, False, scope="rule")
+
+    assert target_function.params[1].type_name == "string|DependencyAttr"
+    assert rule_function.params[1].type_name == "string|RuleDependencyOption"
+
+
+def test_rejects_unknown_config_type(tmp_path):
+    overrides = _write_overrides(
+        tmp_path,
+        {"demo": {"config_type": "MissingType"}},
+    )
+    patcher = DocPatcher(str(overrides), known_types={"TargetAttr"})
+
+    with pytest.raises(ValueError, match="Unknown config_type"):
+        patcher.patch_function(_function("demo"), False)
+
+
 def test_override_optional_parameter(tmp_path):
     overrides = _write_overrides(
         tmp_path,

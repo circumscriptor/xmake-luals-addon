@@ -124,3 +124,15 @@ def test_cached_docs_match_committed_library(
 
     assert stats.modules == len(committed)
     assert stats.functions > 0
+
+    project_target = generated["project_target.lua"].read_text(encoding="utf-8")
+    assert "---@param opt? TargetAttr Configuration options" in project_target
+    assert "function target(name, opt) end" in project_target
+    assert "---@param cflags string|string[]" in project_target
+    assert "---@param ... string|CompilationFlagAttr" in project_target
+    assert "function add_cflags(cflags, ...) end" in project_target
+    assert "---@param ... string|DependencyAttr" in project_target
+
+    custom_rule = generated["custom_rule.lua"].read_text(encoding="utf-8")
+    assert "---@param ... string|RuleDependencyOption" in custom_rule
+    assert "function add_deps(deps, ...) end" in custom_rule
