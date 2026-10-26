@@ -321,6 +321,90 @@
         ],
         "return_type": "string"
     },
+    "package:has_cfuncs": {
+        "params": [
+            {
+                "name": "funcs",
+                "type": "string|table",
+                "desc": "Function name or function name list"
+            },
+            {
+                "name": "opt?",
+                "type": "SnippetOption",
+                "desc": "Optional options table"
+            }
+        ]
+    },
+    "package:has_cxxfuncs": {
+        "params": [
+            {
+                "name": "funcs",
+                "type": "string|table",
+                "desc": "Function name or function name list"
+            },
+            {
+                "name": "opt?",
+                "type": "SnippetOption",
+                "desc": "Optional options table"
+            }
+        ]
+    },
+    "package:has_ctypes": {
+        "params": [
+            {
+                "name": "types",
+                "type": "string|table",
+                "desc": "Type name or type name list"
+            },
+            {
+                "name": "opt?",
+                "type": "SnippetOption",
+                "desc": "Optional options table"
+            }
+        ]
+    },
+    "package:has_cxxtypes": {
+        "params": [
+            {
+                "name": "types",
+                "type": "string|table",
+                "desc": "Type name or type name list"
+            },
+            {
+                "name": "opt?",
+                "type": "SnippetOption",
+                "desc": "Optional options table"
+            }
+        ]
+    },
+    "package:has_cincludes": {
+        "params": [
+            {
+                "name": "includes",
+                "type": "string|table",
+                "desc": "Include file or include file list"
+            },
+            {
+                "name": "opt?",
+                "type": "SnippetOption",
+                "desc": "Optional options table"
+            }
+        ]
+    },
+    "package:has_cxxincludes": {
+        "params": [
+            {
+                "name": "includes",
+                "type": "string|table",
+                "desc": "Include file or include file list"
+            },
+            {
+                "name": "opt?",
+                "type": "SnippetOption",
+                "desc": "Optional options table"
+            }
+        ]
+    },
     "package:check_csnippets": {
         "params": [
             {

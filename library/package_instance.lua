@@ -390,8 +390,10 @@ function Package:patches() end
 ---
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-has-cfuncs)
 ---
+---@param funcs string|table Function name or function name list
+---@param opt? SnippetOption Optional options table
 ---@return boolean
-function Package:has_cfuncs() end
+function Package:has_cfuncs(funcs, opt) end
 
 ---
 ---- Wether the package has the given C++ functions
@@ -399,8 +401,9 @@ function Package:has_cfuncs() end
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-has-cxxfuncs)
 ---
 ---@param funcs string|table Function name or function name list
+---@param opt? SnippetOption Optional options table
 ---@return boolean
-function Package:has_cxxfuncs(funcs) end
+function Package:has_cxxfuncs(funcs, opt) end
 
 ---
 ---- Wether the package has the given C types
@@ -408,8 +411,9 @@ function Package:has_cxxfuncs(funcs) end
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-has-ctypes)
 ---
 ---@param types string|table Type name or type name list
+---@param opt? SnippetOption Optional options table
 ---@return boolean
-function Package:has_ctypes(types) end
+function Package:has_ctypes(types, opt) end
 
 ---
 ---- Wether the package has the given C++ types
@@ -417,8 +421,9 @@ function Package:has_ctypes(types) end
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-has-cxxtypes)
 ---
 ---@param types string|table Type name or type name list
+---@param opt? SnippetOption Optional options table
 ---@return boolean
-function Package:has_cxxtypes(types) end
+function Package:has_cxxtypes(types, opt) end
 
 ---
 ---- Wether the package has the given C header files
@@ -426,8 +431,9 @@ function Package:has_cxxtypes(types) end
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-has-cincludes)
 ---
 ---@param includes string|table Include file or include file list
+---@param opt? SnippetOption Optional options table
 ---@return boolean
-function Package:has_cincludes(includes) end
+function Package:has_cincludes(includes, opt) end
 
 ---
 ---- Wether the package has the given C++ header files
@@ -435,8 +441,9 @@ function Package:has_cincludes(includes) end
 ---[Open in browser](https://xmake.io/api/scripts/package-instance#package-has-cxxincludes)
 ---
 ---@param includes string|table Include file or include file list
+---@param opt? SnippetOption Optional options table
 ---@return boolean
-function Package:has_cxxincludes(includes) end
+function Package:has_cxxincludes(includes, opt) end
 
 ---
 ---- Wether the given C snippet can be compiled and linked

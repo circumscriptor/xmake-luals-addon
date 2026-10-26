@@ -275,6 +275,12 @@ def test_cached_docs_match_committed_library(
     assert "---@param opt? SnippetOption Optional options table" in target_instance
 
     package_instance = generated["package_instance.lua"].read_text(encoding="utf-8")
+    assert "function Package:has_cfuncs(funcs, opt) end" in package_instance
+    assert "function Package:has_cxxfuncs(funcs, opt) end" in package_instance
+    assert "function Package:has_ctypes(types, opt) end" in package_instance
+    assert "function Package:has_cxxtypes(types, opt) end" in package_instance
+    assert "function Package:has_cincludes(includes, opt) end" in package_instance
+    assert "function Package:has_cxxincludes(includes, opt) end" in package_instance
     assert "function Package:check_csnippets(snippets, opt) end" in package_instance
     assert "function Package:check_fcsnippets(snippets, opt) end" in package_instance
     assert "---@param opt? SnippetOption Optional options table" in package_instance

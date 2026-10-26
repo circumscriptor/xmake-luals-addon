@@ -852,12 +852,12 @@ local function exercise_script_modules()
     sample_package:configs() -- @api package_instance.Package:configs
     sample_package:buildhash() -- @api package_instance.Package:buildhash
     sample_package:patches() -- @api package_instance.Package:patches
-    sample_package:has_cfuncs() -- @api package_instance.Package:has_cfuncs
-    sample_package:has_cxxfuncs("sample") -- @api package_instance.Package:has_cxxfuncs
-    sample_package:has_ctypes("sample") -- @api package_instance.Package:has_ctypes
-    sample_package:has_cxxtypes("sample") -- @api package_instance.Package:has_cxxtypes
-    sample_package:has_cincludes("sample") -- @api package_instance.Package:has_cincludes
-    sample_package:has_cxxincludes("sample") -- @api package_instance.Package:has_cxxincludes
+    sample_package:has_cfuncs("sample", {}) -- @api package_instance.Package:has_cfuncs
+    sample_package:has_cxxfuncs("sample", {}) -- @api package_instance.Package:has_cxxfuncs
+    sample_package:has_ctypes("sample", {}) -- @api package_instance.Package:has_ctypes
+    sample_package:has_cxxtypes("sample", {}) -- @api package_instance.Package:has_cxxtypes
+    sample_package:has_cincludes("sample", {}) -- @api package_instance.Package:has_cincludes
+    sample_package:has_cxxincludes("sample", {}) -- @api package_instance.Package:has_cxxincludes
     sample_package:check_csnippets("sample", {}) -- @api package_instance.Package:check_csnippets
     sample_package:check_cxxsnippets("sample", {}) -- @api package_instance.Package:check_cxxsnippets
     sample_package:check_fcsnippets("sample", {}) -- @api package_instance.Package:check_fcsnippets
